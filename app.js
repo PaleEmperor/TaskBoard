@@ -16,6 +16,13 @@
     { id: "nina", name: "Nina", emoji: "🐾", role: { en: "Dog buddy", fi: "Koirakaveri", de: "Hundekumpel" } },
   ];
 
+  const USER_COLORS = {
+    bjorn: "#4f7cff",
+    sini: "#19a974",
+    linnea: "#ff8a3d",
+    nina: "#c65bcb",
+  };
+
   const languages = [
     { id: "en", flag: "🇬🇧", short: "EN" },
     { id: "fi", flag: "🇫🇮", short: "FI" },
@@ -114,6 +121,7 @@
       categoryShopping: "Shopping",
       categoryHome: "Home",
       categoryWellbeing: "Wellbeing",
+      categoryMisc: "Misc",
       statusRecurring: "Repeats",
       statusEffort: "Effort",
       plusTasks: "{count} tasks",
@@ -214,6 +222,7 @@
       categoryShopping: "Ostokset",
       categoryHome: "Koti",
       categoryWellbeing: "Hyvinvointi",
+      categoryMisc: "Muut",
       statusRecurring: "Toistuu",
       statusEffort: "Työmäärä",
       plusTasks: "{count} tehtävää",
@@ -314,6 +323,7 @@
       categoryShopping: "Einkauf",
       categoryHome: "Zuhause",
       categoryWellbeing: "Wohlbefinden",
+      categoryMisc: "Sonstiges",
       statusRecurring: "Wiederholt sich",
       statusEffort: "Aufwand",
       plusTasks: "{count} Aufgaben",
@@ -349,6 +359,7 @@
     { id: "shopping", key: "categoryShopping" },
     { id: "home", key: "categoryHome" },
     { id: "wellbeing", key: "categoryWellbeing" },
+    { id: "misc", key: "categoryMisc" },
   ];
 
   function createSeedData() {
@@ -1152,7 +1163,13 @@
       button.type = "button";
       button.className = `icon-option${icon === activeIcon ? " active" : ""}`;
       button.textContent = icon;
-      button.addEventListener("click", () => renderIconGrid(icon));
+      button.setAttribute("aria-pressed", icon === activeIcon ? "true" : "false");
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        refs.taskIconInput.value = icon;
+        renderIconGrid(icon);
+      });
       refs.iconGrid.appendChild(button);
     });
   }
@@ -1193,8 +1210,10 @@
 
     const task = item.task;
     const overdue = isItemOverdue(item);
+    const responsibleColor = colorForUser(task.responsibleId);
     card.dataset.taskId = task.id;
     card.dataset.dateKey = item.dateKey;
+    card.style.setProperty("--responsible-color", responsibleColor);
     detailsShell.open = Boolean(ui.expandedCards[item.id]);
     card.classList.toggle("overdue", overdue);
     card.classList.toggle("done", item.done);
@@ -1753,6 +1772,10 @@
       return currentMessages().everyone;
     }
     return users.find((user) => user.id === userId)?.name || userId;
+  }
+
+  function colorForUser(userId) {
+    return USER_COLORS[userId] || "#8aa0b6";
   }
 
   function describeBoardItemLine(item) {
