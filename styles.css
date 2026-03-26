@@ -61,12 +61,14 @@ body[data-theme="dark"] .day-column,
 body[data-theme="dark"] .task-card,
 body[data-theme="dark"] .empty-drop,
 body[data-theme="dark"] .member-tile,
+body[data-theme="dark"] .claim-pool-card,
 body[data-theme="dark"] .quick-task-chip,
 body[data-theme="dark"] .tool-drawer,
 body[data-theme="dark"] .task-form,
 body[data-theme="dark"] .dialog-preview,
 body[data-theme="dark"] .day-strip-symbol,
-body[data-theme="dark"] .delete-drop-zone {
+body[data-theme="dark"] .delete-drop-zone,
+body[data-theme="dark"] .toggle-field {
   background: rgba(35, 43, 52, 0.96);
   color: var(--ink);
   border-color: rgba(167, 181, 192, 0.14);
@@ -1814,6 +1816,37 @@ h1 {
   gap: 4px;
 }
 
+.claim-pool-panel {
+  min-height: 92px;
+}
+
+.claim-pool-strip {
+  display: grid;
+  gap: 8px;
+}
+
+.claim-pool-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px dashed rgba(68, 95, 118, 0.16);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.claim-pool-top {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
+}
+
+.claim-pool-meta,
+.claim-pool-empty {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .family-dock {
   display: grid;
   gap: 6px;
@@ -1979,6 +2012,16 @@ details[open] > .accordion-summary::after {
   gap: 6px;
 }
 
+.toggle-field {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(68, 95, 118, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -1988,6 +2031,11 @@ details[open] > .accordion-summary::after {
   padding: 10px 12px;
   background: #ffffff;
   color: var(--ink);
+}
+
+.toggle-field input {
+  width: 20px;
+  height: 20px;
 }
 
 .field-wide {

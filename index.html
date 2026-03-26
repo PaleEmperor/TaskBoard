@@ -102,6 +102,10 @@
               <h3 id="familyHeading"></h3>
               <div class="family-dock" id="familyDock"></div>
             </section>
+            <section class="panel mini-section tool-panel claim-pool-panel" id="claimPoolPanel">
+              <h3 id="claimPoolHeading"></h3>
+              <div class="claim-pool-strip" id="claimPoolStrip"></div>
+            </section>
             <section class="panel mini-section tool-panel">
               <h3 id="savedTasksHeading"></h3>
               <div class="quick-tasks-strip saved-tasks-strip" id="savedTasksStrip"></div>
@@ -198,6 +202,11 @@
           <label class="field">
             <span id="fieldEffortLabel"></span>
             <select id="taskEffortInput" name="effort"></select>
+          </label>
+
+          <label class="field field-wide toggle-field" for="taskClaimableInput">
+            <span id="fieldClaimableLabel"></span>
+            <input id="taskClaimableInput" name="claimable" type="checkbox" />
           </label>
 
           <label class="field field-wide">

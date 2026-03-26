@@ -110,9 +110,13 @@
       taskInterval: "Every how many days?",
       taskWeekday: "Preferred weekday",
       taskEffort: "Effort",
+      taskClaimable: "Send to claim area",
       taskNotes: "Notes",
       previewLabel: "Preview",
       backupHeading: "Backup",
+      claimPoolHeading: "Claim tasks",
+      claimNow: "Claim",
+      claimEmpty: "Drop tasks here or create them as claimable.",
       exportData: "Export data",
       importData: "Import data",
       save: "Save task",
@@ -234,9 +238,13 @@
       taskInterval: "Kuinka monen päivän välein?",
       taskWeekday: "Suosittu viikonpäivä",
       taskEffort: "Työmäärä",
+      taskClaimable: "Lähetä claim-alueelle",
       taskNotes: "Muistiinpanot",
       previewLabel: "Esikatselu",
       backupHeading: "Varmuuskopio",
+      claimPoolHeading: "Claim-tehtävät",
+      claimNow: "Claim",
+      claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
       exportData: "Vie tiedot",
       importData: "Tuo tiedot",
       save: "Tallenna tehtävä",
@@ -358,9 +366,13 @@
       taskInterval: "Alle wie viele Tage?",
       taskWeekday: "Bevorzugter Wochentag",
       taskEffort: "Aufwand",
+      taskClaimable: "In den Claim-Bereich legen",
       taskNotes: "Notizen",
       previewLabel: "Vorschau",
       backupHeading: "Sicherung",
+      claimPoolHeading: "Claim-Aufgaben",
+      claimNow: "Claim",
+      claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
       exportData: "Daten exportieren",
       importData: "Daten importieren",
       save: "Aufgabe speichern",
@@ -457,10 +469,11 @@
         currentUserId: "bjorn",
         boardDensity: BOARD_DENSITY.everyone,
         weekOffset: 0,
-      activeFilter: "all",
-      showCompleted: false,
-      darkMode: false,
+        activeFilter: "all",
+        showCompleted: false,
+        darkMode: false,
       },
+      claimPool: [],
       taskLibrary: [],
       tasks: [],
     };
@@ -524,6 +537,9 @@
       return createSeedData();
     }
     const normalized = typeof structuredClone === "function" ? structuredClone(data) : JSON.parse(JSON.stringify(data));
+    if (!Array.isArray(normalized.claimPool)) {
+      normalized.claimPool = [];
+    }
     if (!Array.isArray(normalized.taskLibrary)) {
       normalized.taskLibrary = [];
     }
@@ -535,6 +551,7 @@
     }
     normalized.tasks = normalized.tasks.map((task) => normalizeResponsibleRecord(task));
     normalized.taskLibrary = normalized.taskLibrary.map((entry) => normalizeResponsibleRecord(entry));
+    normalized.claimPool = normalized.claimPool.map((entry) => normalizeClaimRecord(entry));
     normalized.tasks.forEach((task) => {
       task.endTime = typeof task.endTime === "string" ? task.endTime : "";
       task.completedById = normalizeCompletionUserId(task.completedById, task);
@@ -544,6 +561,10 @@
     });
     normalized.taskLibrary.forEach((entry) => {
       entry.endTime = typeof entry.endTime === "string" ? entry.endTime : "";
+    });
+    normalized.claimPool.forEach((entry) => {
+      entry.dueTime = "";
+      entry.endTime = "";
     });
     return normalized;
   }
@@ -608,6 +629,9 @@
     familyHeading: document.getElementById("familyHeading"),
     familyDock: document.getElementById("familyDock"),
     familyPanel: document.getElementById("familyPanel"),
+    claimPoolHeading: document.getElementById("claimPoolHeading"),
+    claimPoolPanel: document.getElementById("claimPoolPanel"),
+    claimPoolStrip: document.getElementById("claimPoolStrip"),
     savedTasksHeading: document.getElementById("savedTasksHeading"),
     savedTasksStrip: document.getElementById("savedTasksStrip"),
     quickTasksHeading: document.getElementById("quickTasksHeading"),
@@ -647,6 +671,7 @@
     fieldIntervalLabel: document.getElementById("fieldIntervalLabel"),
     fieldWeekdayLabel: document.getElementById("fieldWeekdayLabel"),
     fieldEffortLabel: document.getElementById("fieldEffortLabel"),
+    fieldClaimableLabel: document.getElementById("fieldClaimableLabel"),
     fieldNotesLabel: document.getElementById("fieldNotesLabel"),
     iconGrid: document.getElementById("iconGrid"),
     taskTitleInput: document.getElementById("taskTitleInput"),
@@ -661,6 +686,7 @@
     taskIntervalInput: document.getElementById("taskIntervalInput"),
     taskWeekdayInput: document.getElementById("taskWeekdayInput"),
     taskEffortInput: document.getElementById("taskEffortInput"),
+    taskClaimableInput: document.getElementById("taskClaimableInput"),
     taskNotesInput: document.getElementById("taskNotesInput"),
     intervalField: document.getElementById("intervalField"),
     weekdayField: document.getElementById("weekdayField"),
@@ -726,6 +752,21 @@
       }
       deleteBoardItemFromPlan(ui.dragTaskId);
       hideDeleteDropZone();
+    });
+    refs.claimPoolPanel.addEventListener("dragover", handleDragOver);
+    refs.claimPoolPanel.addEventListener("dragleave", handleDragLeave);
+    refs.claimPoolPanel.addEventListener("drop", (event) => {
+      handleDragLeave(event);
+      if (!ui.dragTaskId) {
+        return;
+      }
+      if (String(ui.dragTaskId).startsWith("saved:")) {
+        addClaimEntryFromLibrary(ui.dragTaskId.replace("saved:", ""));
+      } else if (String(ui.dragTaskId).startsWith("quick:")) {
+        addClaimEntryFromQuickTemplate(ui.dragTaskId.replace("quick:", ""));
+      } else {
+        moveBoardItemToClaimPool(ui.dragTaskId);
+      }
     });
     [
       refs.taskTitleInput,
@@ -812,6 +853,7 @@
       refs.quickAssignLabel.textContent = t.quickAssignLabel;
     }
     refs.familyHeading.textContent = t.familyHeading;
+    refs.claimPoolHeading.textContent = t.claimPoolHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
     refs.backupHeading.textContent = t.backupHeading;
@@ -834,6 +876,7 @@
     state.settings.activeFilter = "all";
     renderWeekGrid();
     renderFamilyDock();
+    renderClaimPool();
     renderSavedTasks();
     renderQuickTasks();
     renderDialogOptions();
@@ -1309,6 +1352,36 @@
     });
   }
 
+  function renderClaimPool() {
+    const t = currentMessages();
+    refs.claimPoolStrip.innerHTML = "";
+    if (!state.claimPool.length) {
+      const empty = document.createElement("div");
+      empty.className = "claim-pool-empty";
+      empty.textContent = t.claimEmpty;
+      refs.claimPoolStrip.appendChild(empty);
+      return;
+    }
+    state.claimPool.forEach((entry) => {
+      const card = document.createElement("article");
+      card.className = "claim-pool-card";
+      card.innerHTML = `
+        <div class="claim-pool-top">
+          <span class="quick-task-icon">${entry.icon}</span>
+          <strong>${resolveLibraryTitle(entry)}</strong>
+        </div>
+        <div class="claim-pool-meta">${messageForCategory(entry.category)}</div>
+      `;
+      const claimButton = document.createElement("button");
+      claimButton.type = "button";
+      claimButton.className = "ghost-button small-button";
+      claimButton.textContent = t.claimNow;
+      claimButton.addEventListener("click", () => claimPoolTask(entry.id));
+      card.appendChild(claimButton);
+      refs.claimPoolStrip.appendChild(card);
+    });
+  }
+
   function renderQuickTasks() {
     refs.quickTasksStrip.innerHTML = "";
     quickTaskTemplates.forEach((template) => {
@@ -1557,6 +1630,7 @@
     refs.fieldIntervalLabel.textContent = t.taskInterval;
     refs.fieldWeekdayLabel.textContent = t.taskWeekday;
     refs.fieldEffortLabel.textContent = t.taskEffort;
+    refs.fieldClaimableLabel.textContent = t.taskClaimable;
     refs.fieldNotesLabel.textContent = t.taskNotes;
     refs.dialogPreviewLabel.textContent = t.previewLabel;
     refs.deleteTaskButton.textContent = t.delete;
@@ -1726,6 +1800,7 @@
     refs.taskIntervalInput.value = String(task?.interval || 1);
     refs.taskWeekdayInput.value = String(task?.weekday ?? getWeekdayIndex(startOfDay(new Date())));
     refs.taskEffortInput.value = task?.effort || defaults?.effort || "steady";
+    refs.taskClaimableInput.checked = Boolean(defaults?.claimable);
     refs.taskNotesInput.value = task ? resolveTaskNotes(task) : defaults?.notes || "";
     refs.taskTitleInput.value = task ? resolveTaskTitle(task) : defaults?.title || "";
     refs.deleteTaskButton.classList.toggle("hidden", !task);
@@ -1808,6 +1883,78 @@
     renderApp();
   }
 
+  function claimPoolTask(entryId) {
+    const entry = state.claimPool.find((item) => item.id === entryId);
+    if (!entry) {
+      return;
+    }
+    const selectedUserId = state.settings.currentUserId;
+    const task = buildTask({
+      title: entry.titleTranslations || entry.title,
+      icon: entry.icon,
+      category: entry.category,
+      owner: selectedUserId,
+      responsible: selectedUserId,
+      dueDate: formatDateKey(startOfDay(new Date())),
+      dueTime: "",
+      endTime: "",
+      recurrence: "none",
+      effort: entry.effort,
+      notes: entry.notesTranslations || entry.notes,
+    });
+    state.tasks.push(task);
+    state.claimPool = state.claimPool.filter((item) => item.id !== entryId);
+    saveState();
+    renderApp();
+  }
+
+  function addClaimEntryFromLibrary(libraryId) {
+    const entry = state.taskLibrary.find((item) => item.id === libraryId);
+    if (!entry) {
+      return;
+    }
+    state.claimPool.unshift(
+      normalizeClaimRecord({
+        ...entry,
+        id: crypto.randomUUID(),
+        dueTime: "",
+        endTime: "",
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    ui.dragTaskId = null;
+    saveState();
+    renderApp();
+  }
+
+  function addClaimEntryFromQuickTemplate(templateId) {
+    const template = quickTaskTemplates.find((item) => item.id === templateId);
+    if (!template) {
+      return;
+    }
+    state.claimPool.unshift(
+      normalizeClaimRecord({
+        id: crypto.randomUUID(),
+        title: template.title.en,
+        titleTranslations: template.title,
+        icon: template.icon,
+        category: template.category,
+        ownerId: state.settings.currentUserId,
+        responsibleId: "everyone",
+        responsibleIds: ["everyone"],
+        dueTime: "",
+        endTime: "",
+        effort: template.effort,
+        notes: "",
+        notesTranslations: null,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    ui.dragTaskId = null;
+    saveState();
+    renderApp();
+  }
+
   function closeDialog() {
     refs.taskDialog.close();
   }
@@ -1872,6 +2019,7 @@
       interval: Number(refs.taskIntervalInput.value) || 1,
       weekday: Number(refs.taskWeekdayInput.value),
       effort: refs.taskEffortInput.value,
+      claimable: refs.taskClaimableInput.checked,
       notes: refs.taskNotesInput.value.trim(),
     };
 
@@ -1880,6 +2028,18 @@
     }
 
     let taskToPersist;
+
+    if (payload.claimable) {
+      const claimEntry = buildClaimRecordFromPayload(payload);
+      if (ui.dialogMode === "edit" && ui.editingTaskId) {
+        state.tasks = state.tasks.filter((task) => task.id !== ui.editingTaskId);
+      }
+      state.claimPool.unshift(claimEntry);
+      saveState();
+      closeDialog();
+      renderApp();
+      return;
+    }
 
     if (ui.dialogMode === "edit" && ui.editingTaskId) {
       const task = state.tasks.find((item) => item.id === ui.editingTaskId);
@@ -1994,6 +2154,25 @@
     }
   }
 
+  function buildClaimRecordFromPayload(payload) {
+    return normalizeClaimRecord({
+      id: crypto.randomUUID(),
+      title: payload.title,
+      titleTranslations: null,
+      icon: payload.icon,
+      category: payload.category,
+      ownerId: payload.ownerId,
+      responsibleId: payload.responsibleIds[0] || "everyone",
+      responsibleIds: payload.responsibleIds,
+      dueTime: "",
+      endTime: "",
+      effort: payload.effort || "steady",
+      notes: payload.notes || "",
+      notesTranslations: null,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
   function resolveLibraryTitle(entry) {
     if (!entry) {
       return "";
@@ -2060,6 +2239,32 @@
     ui.selectedTaskId = null;
     saveState();
     renderApp();
+  }
+
+  function moveBoardItemToClaimPool(itemId) {
+    const item = findBoardItemById(itemId);
+    if (!item) {
+      return;
+    }
+    state.claimPool.unshift(
+      normalizeClaimRecord({
+        id: crypto.randomUUID(),
+        title: item.task.title,
+        titleTranslations: item.task.titleTranslations,
+        icon: item.task.icon,
+        category: item.task.category,
+        ownerId: item.task.ownerId,
+        responsibleId: item.task.responsibleId,
+        responsibleIds: getResponsibleIds(item.task),
+        dueTime: "",
+        endTime: "",
+        effort: item.task.effort,
+        notes: item.task.notes,
+        notesTranslations: item.task.notesTranslations,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    deleteBoardItemFromPlan(itemId);
   }
 
   function reassignTask(taskId, userId) {
@@ -2529,6 +2734,19 @@
     record.responsibleIds = responsibleIds.length ? responsibleIds : ["everyone"];
     record.responsibleId = record.responsibleIds[0];
     return record;
+  }
+
+  function normalizeClaimRecord(record) {
+    if (!record) {
+      return record;
+    }
+    const normalized = normalizeResponsibleRecord(record);
+    normalized.dueTime = "";
+    normalized.endTime = "";
+    normalized.effort = normalized.effort || "steady";
+    normalized.notes = normalized.notes || "";
+    normalized.notesTranslations = normalized.notesTranslations || null;
+    return normalized;
   }
 
   function getDefaultCompletionUserId(task) {
