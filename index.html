@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="A tablet-first household task board with recurring chores, multilingual support, and drag-friendly planning."
+    />
+    <meta name="theme-color" content="#eef4f8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="HomeFlow" />
+    <title>HomeFlow Board</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="background-glow background-glow-left"></div>
+    <div class="background-glow background-glow-right"></div>
+
+    <div class="app-shell">
+      <header class="hero">
+        <section class="weather-banner" id="weatherBanner" data-weather="clear">
+          <div class="weather-scene" id="weatherScene" aria-hidden="true">
+            <div class="weather-symbol" id="weatherSymbol"></div>
+          </div>
+          <div class="weather-copy">
+            <div class="weather-kicker" id="weatherKicker"></div>
+            <div class="weather-mainline">
+              <strong id="weatherTemp"></strong>
+              <span id="weatherCondition"></span>
+            </div>
+            <div class="weather-subline">
+              <span id="weatherPlace"></span>
+              <span id="weatherDetails"></span>
+            </div>
+          </div>
+        </section>
+
+        <div class="hero-copy">
+          <div class="eyebrow" id="heroEyebrow"></div>
+          <h1 id="appTitle"></h1>
+          <p id="appSubtitle"></p>
+        </div>
+
+        <div class="hero-actions">
+          <div class="panel top-controls">
+            <div class="language-toggle" id="languageToggle"></div>
+            <button class="primary-button" id="quickAddButton" type="button"></button>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section class="panel control-strip">
+          <div class="control-row">
+            <div class="view-switch" id="viewSwitch"></div>
+            <div class="filter-chips" id="filterChips"></div>
+          </div>
+          <div class="refresh-note" id="refreshNote"></div>
+        </section>
+
+        <section class="board-layout">
+          <div class="board-stack">
+            <section class="panel board-panel">
+              <div class="board-panel-header">
+                <div>
+                  <div class="panel-label" id="boardLabel"></div>
+                  <h2 id="weekHeading"></h2>
+                </div>
+                <div class="board-tools">
+                  <button class="ghost-button" id="prevWeekButton" type="button"></button>
+                  <button class="ghost-button" id="todayButton" type="button"></button>
+                  <button class="ghost-button" id="nextWeekButton" type="button"></button>
+                </div>
+              </div>
+              <div class="week-grid" id="weekGrid"></div>
+            </section>
+            <section class="summary-grid" id="summaryGrid"></section>
+            <details class="panel accordion-panel" id="focusAccordion">
+              <summary class="accordion-summary">
+                <div>
+                  <div class="panel-label" id="focusLabel">Quick view</div>
+                  <h3 id="focusSummaryHeading">Week highlights</h3>
+                </div>
+              </summary>
+              <section class="focus-panel" id="focusPanel"></section>
+            </details>
+          </div>
+
+          <aside class="side-nav-panel">
+            <section class="panel mini-section tool-panel" id="familyPanel">
+              <div class="side-title-row">
+                <div>
+                  <div class="panel-label" id="quickAssignLabel"></div>
+                  <h3 id="familyHeading"></h3>
+                </div>
+              </div>
+              <div class="family-dock" id="familyDock"></div>
+            </section>
+          </aside>
+        </section>
+
+        <section class="panel quick-tasks-panel">
+          <div class="quick-tasks-stack">
+            <div>
+              <h3 id="savedTasksHeading"></h3>
+              <div class="quick-tasks-strip saved-tasks-strip" id="savedTasksStrip"></div>
+            </div>
+            <div>
+              <h3 id="quickTasksHeading"></h3>
+              <div class="quick-tasks-strip" id="quickTasksStrip"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="task-dialog" id="taskDialog">
+      <form class="task-form" id="taskForm" method="dialog">
+        <div class="dialog-header">
+          <div>
+            <div class="panel-label" id="dialogEyebrow"></div>
+            <h2 id="dialogTitle"></h2>
+          </div>
+          <button class="icon-button" id="closeDialogButton" type="button" aria-label="Close">✕</button>
+        </div>
+
+        <div class="form-grid">
+          <label class="field">
+            <span id="fieldTitleLabel"></span>
+            <input id="taskTitleInput" name="title" maxlength="60" required />
+          </label>
+
+          <label class="field">
+            <span id="fieldIconLabel"></span>
+            <div class="icon-grid" id="iconGrid"></div>
+            <input id="taskIconInput" name="icon" type="hidden" />
+          </label>
+
+          <label class="field">
+            <span id="fieldCategoryLabel"></span>
+            <select id="taskCategoryInput" name="category"></select>
+          </label>
+
+          <label class="field">
+            <span id="fieldOwnerLabel"></span>
+            <select id="taskOwnerInput" name="owner"></select>
+          </label>
+
+          <label class="field">
+            <span id="fieldResponsibleLabel"></span>
+            <select id="taskResponsibleInput" name="responsible"></select>
+          </label>
+
+          <label class="field">
+            <span id="fieldDayLabel"></span>
+            <input id="taskDayInput" name="dueDate" type="date" required />
+          </label>
+
+          <label class="field">
+            <span id="fieldRepeatLabel"></span>
+            <select id="taskRecurrenceInput" name="recurrence"></select>
+          </label>
+
+          <label class="field field-inline" id="intervalField">
+            <span id="fieldIntervalLabel"></span>
+            <input id="taskIntervalInput" name="interval" type="number" min="1" max="30" value="1" />
+          </label>
+
+          <label class="field field-inline" id="weekdayField">
+            <span id="fieldWeekdayLabel"></span>
+            <select id="taskWeekdayInput" name="weekday"></select>
+          </label>
+
+          <label class="field">
+            <span id="fieldEffortLabel"></span>
+            <select id="taskEffortInput" name="effort"></select>
+          </label>
+
+          <label class="field field-wide">
+            <span id="fieldNotesLabel"></span>
+            <textarea id="taskNotesInput" name="notes" rows="3" maxlength="180"></textarea>
+          </label>
+        </div>
+
+        <div class="dialog-actions">
+          <button class="ghost-button" id="deleteTaskButton" type="button"></button>
+          <button class="ghost-button" id="deleteSeriesButton" type="button"></button>
+          <div class="spacer"></div>
+          <button class="ghost-button" id="cancelTaskButton" type="button"></button>
+          <button class="primary-button" id="saveTaskButton" type="submit"></button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="taskCardTemplate">
+      <article class="task-card" draggable="true">
+        <details class="task-details-shell">
+          <summary class="task-summary">
+            <div class="task-main">
+              <div class="task-icon"></div>
+              <div class="task-copy">
+                <h4 class="task-title"></h4>
+                <p class="task-meta"></p>
+              </div>
+            </div>
+            <span class="task-expand-indicator"></span>
+          </summary>
+          <div class="task-details">
+            <div class="task-badges"></div>
+            <div class="task-actions">
+              <button class="ghost-button small-button edit-task-button" type="button"></button>
+            </div>
+          </div>
+        </details>
+        <button class="complete-chip" type="button"></button>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

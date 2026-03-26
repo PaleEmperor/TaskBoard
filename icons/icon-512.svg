@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="120" fill="#eef4f8"/>
+  <rect x="52" y="70" width="408" height="372" rx="48" fill="#fbfdff" stroke="#9bb6cf" stroke-width="16"/>
+  <rect x="86" y="110" width="340" height="80" rx="26" fill="#d8e8f7"/>
+  <circle cx="132" cy="150" r="18" fill="#ff6f61"/>
+  <circle cx="188" cy="150" r="18" fill="#f5b84d"/>
+  <circle cx="244" cy="150" r="18" fill="#2c985b"/>
+  <rect x="92" y="222" width="152" height="98" rx="24" fill="#eefaf2" stroke="#79c097" stroke-width="10"/>
+  <rect x="268" y="222" width="152" height="98" rx="24" fill="#fff1f3" stroke="#d97a90" stroke-width="10"/>
+  <rect x="92" y="344" width="328" height="60" rx="22" fill="#edf4fb"/>
+  <path d="M138 264l24 24 44-52" fill="none" stroke="#2c985b" stroke-linecap="round" stroke-linejoin="round" stroke-width="18"/>
+  <path d="M308 286h74" fill="none" stroke="#c84f68" stroke-linecap="round" stroke-width="18"/>
+  <path d="M308 256h56" fill="none" stroke="#c84f68" stroke-linecap="round" stroke-width="18"/>
+  <path d="M132 374h176" fill="none" stroke="#5f7281" stroke-linecap="round" stroke-width="18"/>
+  <path d="M338 374h50" fill="none" stroke="#4277cf" stroke-linecap="round" stroke-width="18"/>
+</svg>
