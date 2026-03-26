@@ -1622,7 +1622,7 @@
   function syncDialogFields() {
     const recurrence = refs.taskRecurrenceInput.value;
     refs.intervalField.classList.toggle("hidden", recurrence !== "interval");
-    refs.weekdayField.classList.toggle("hidden", !["weekly", "biweekly"].includes(recurrence));
+    refs.weekdayField.classList.toggle("hidden", !["weekly", "biweekly", "linneaWeeks", "notLinneaWeeks"].includes(recurrence));
     renderTaskPreview();
   }
 
@@ -1894,9 +1894,9 @@
       case "biweekly":
         return diffDays % 14 === 0 && weekdayMatches(task, current);
       case "linneaWeeks":
-        return isLinneaWeek(current);
+        return isLinneaWeek(current) && weekdayMatches(task, current);
       case "notLinneaWeeks":
-        return !isLinneaWeek(current);
+        return !isLinneaWeek(current) && weekdayMatches(task, current);
       case "monthly":
         return current.getDate() === anchor.getDate();
       case "interval":
