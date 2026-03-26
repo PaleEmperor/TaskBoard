@@ -1858,3 +1858,20 @@ details[open] > .accordion-summary::after {
 .quick-task-icon {
   font-size: 0.96rem;
 }
+
+.tool-drawer {
+  display: flex !important;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tool-drawer-header,
+.tool-panel {
+  flex: 0 0 auto;
+}
+
+.tool-panel {
+  min-height: fit-content;
+  overflow: visible;
+}
