@@ -74,6 +74,10 @@
                 <div class="board-tools">
                   <button class="ghost-button" id="prevWeekButton" type="button"></button>
                   <button class="ghost-button" id="nextWeekButton" type="button"></button>
+                  <button class="claim-bell-button" id="claimBellButton" type="button" aria-label="Open claim tasks">
+                    <span class="claim-bell-icon">🔔</span>
+                    <span class="claim-bell-count" id="claimBellCount"></span>
+                  </button>
                   <button class="tool-drawer-toggle" id="toolDrawerToggle" type="button" aria-label="Open tools">☰</button>
                 </div>
               </div>
@@ -101,10 +105,6 @@
             <section class="panel mini-section tool-panel" id="familyPanel">
               <h3 id="familyHeading"></h3>
               <div class="family-dock" id="familyDock"></div>
-            </section>
-            <section class="panel mini-section tool-panel claim-pool-panel" id="claimPoolPanel">
-              <h3 id="claimPoolHeading"></h3>
-              <div class="claim-pool-strip" id="claimPoolStrip"></div>
             </section>
             <section class="panel mini-section tool-panel">
               <h3 id="savedTasksHeading"></h3>
@@ -242,6 +242,30 @@
           <div class="spacer"></div>
           <button class="ghost-button" id="cancelParticipantButton" type="button"></button>
           <button class="primary-button" id="confirmParticipantButton" type="submit"></button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="task-dialog participant-dialog claim-dialog" id="claimDialog">
+      <form class="task-form participant-form" id="claimDialogForm">
+        <div class="dialog-header">
+          <div>
+            <div class="panel-label" id="claimDialogEyebrow"></div>
+            <h2 id="claimDialogTitle"></h2>
+          </div>
+          <button class="icon-button" id="closeClaimDialogButton" type="button" aria-label="Close">✕</button>
+        </div>
+
+        <div class="participant-copy" id="claimDialogCopy"></div>
+        <div class="field field-wide">
+          <span id="claimDialogWhoLabel"></span>
+          <div class="responsible-picker participant-picker" id="claimDialogUserPicker"></div>
+        </div>
+        <div class="claim-pool-strip claim-dialog-strip" id="claimDialogList"></div>
+
+        <div class="dialog-actions">
+          <div class="spacer"></div>
+          <button class="ghost-button" id="closeClaimDialogFooterButton" type="button"></button>
         </div>
       </form>
     </dialog>

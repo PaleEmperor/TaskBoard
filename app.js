@@ -117,6 +117,9 @@
       claimPoolHeading: "Claim tasks",
       claimNow: "Claim",
       claimEmpty: "Drop tasks here or create them as claimable.",
+      claimInbox: "Claim inbox",
+      claimWho: "Who are you?",
+      claimInboxCopy: "Claim a task and it will be added to today with no time.",
       exportData: "Export data",
       importData: "Import data",
       save: "Save task",
@@ -245,6 +248,9 @@
       claimPoolHeading: "Claim-tehtävät",
       claimNow: "Claim",
       claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
+      claimInbox: "Claim-tehtävät",
+      claimWho: "Kuka olet?",
+      claimInboxCopy: "Claimattu tehtävä lisätään tälle päivälle ilman aikaa.",
       exportData: "Vie tiedot",
       importData: "Tuo tiedot",
       save: "Tallenna tehtävä",
@@ -373,6 +379,9 @@
       claimPoolHeading: "Claim-Aufgaben",
       claimNow: "Claim",
       claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
+      claimInbox: "Claim-Aufgaben",
+      claimWho: "Wer bist du?",
+      claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefügt.",
       exportData: "Daten exportieren",
       importData: "Daten importieren",
       save: "Aufgabe speichern",
@@ -574,6 +583,7 @@
     dialogMode: "create",
     editingTaskId: null,
     pendingCompletionItemId: null,
+    claimDialogUserId: null,
     dragTaskId: null,
     selectedTaskId: null,
     expandedCards: {},
@@ -623,15 +633,14 @@
     weekHeading: document.getElementById("weekHeading"),
     prevWeekButton: document.getElementById("prevWeekButton"),
     nextWeekButton: document.getElementById("nextWeekButton"),
+    claimBellButton: document.getElementById("claimBellButton"),
+    claimBellCount: document.getElementById("claimBellCount"),
     todayButton: document.getElementById("todayButton"),
     weekGrid: document.getElementById("weekGrid"),
     quickAssignLabel: document.getElementById("quickAssignLabel"),
     familyHeading: document.getElementById("familyHeading"),
     familyDock: document.getElementById("familyDock"),
     familyPanel: document.getElementById("familyPanel"),
-    claimPoolHeading: document.getElementById("claimPoolHeading"),
-    claimPoolPanel: document.getElementById("claimPoolPanel"),
-    claimPoolStrip: document.getElementById("claimPoolStrip"),
     savedTasksHeading: document.getElementById("savedTasksHeading"),
     savedTasksStrip: document.getElementById("savedTasksStrip"),
     quickTasksHeading: document.getElementById("quickTasksHeading"),
@@ -653,6 +662,16 @@
     closeParticipantDialogButton: document.getElementById("closeParticipantDialogButton"),
     cancelParticipantButton: document.getElementById("cancelParticipantButton"),
     confirmParticipantButton: document.getElementById("confirmParticipantButton"),
+    claimDialog: document.getElementById("claimDialog"),
+    claimDialogForm: document.getElementById("claimDialogForm"),
+    claimDialogEyebrow: document.getElementById("claimDialogEyebrow"),
+    claimDialogTitle: document.getElementById("claimDialogTitle"),
+    claimDialogCopy: document.getElementById("claimDialogCopy"),
+    claimDialogWhoLabel: document.getElementById("claimDialogWhoLabel"),
+    claimDialogUserPicker: document.getElementById("claimDialogUserPicker"),
+    claimDialogList: document.getElementById("claimDialogList"),
+    closeClaimDialogButton: document.getElementById("closeClaimDialogButton"),
+    closeClaimDialogFooterButton: document.getElementById("closeClaimDialogFooterButton"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
     dialogEyebrow: document.getElementById("dialogEyebrow"),
@@ -716,6 +735,10 @@
       ui.drawerOpen = false;
       renderApp();
     });
+    refs.claimBellButton.addEventListener("click", () => openClaimDialog());
+    refs.claimBellButton.addEventListener("dragover", handleDragOver);
+    refs.claimBellButton.addEventListener("dragleave", handleDragLeave);
+    refs.claimBellButton.addEventListener("drop", handleClaimBellDrop);
     document.addEventListener("pointerdown", (event) => {
       if (!ui.drawerOpen) {
         return;
@@ -752,21 +775,6 @@
       }
       deleteBoardItemFromPlan(ui.dragTaskId);
       hideDeleteDropZone();
-    });
-    refs.claimPoolPanel.addEventListener("dragover", handleDragOver);
-    refs.claimPoolPanel.addEventListener("dragleave", handleDragLeave);
-    refs.claimPoolPanel.addEventListener("drop", (event) => {
-      handleDragLeave(event);
-      if (!ui.dragTaskId) {
-        return;
-      }
-      if (String(ui.dragTaskId).startsWith("saved:")) {
-        addClaimEntryFromLibrary(ui.dragTaskId.replace("saved:", ""));
-      } else if (String(ui.dragTaskId).startsWith("quick:")) {
-        addClaimEntryFromQuickTemplate(ui.dragTaskId.replace("quick:", ""));
-      } else {
-        moveBoardItemToClaimPool(ui.dragTaskId);
-      }
     });
     [
       refs.taskTitleInput,
@@ -823,6 +831,8 @@
     refs.closeParticipantDialogButton.addEventListener("click", closeParticipantDialog);
     refs.cancelParticipantButton.addEventListener("click", closeParticipantDialog);
     refs.participantForm.addEventListener("submit", handleParticipantSubmit);
+    refs.closeClaimDialogButton.addEventListener("click", closeClaimDialog);
+    refs.closeClaimDialogFooterButton.addEventListener("click", closeClaimDialog);
   }
 
   function renderApp() {
@@ -853,7 +863,6 @@
       refs.quickAssignLabel.textContent = t.quickAssignLabel;
     }
     refs.familyHeading.textContent = t.familyHeading;
-    refs.claimPoolHeading.textContent = t.claimPoolHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
     refs.backupHeading.textContent = t.backupHeading;
@@ -867,6 +876,9 @@
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.deleteDropZoneLabel.textContent = t.deleteFromPlan;
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
+    refs.claimBellCount.textContent = state.claimPool.length ? String(state.claimPool.length) : "";
+    refs.claimBellButton.classList.toggle("has-items", state.claimPool.length > 0);
+    refs.claimBellButton.classList.toggle("ringing", state.claimPool.length > 0);
     document.body.dataset.theme = effectiveDarkMode ? "dark" : "light";
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
@@ -876,7 +888,6 @@
     state.settings.activeFilter = "all";
     renderWeekGrid();
     renderFamilyDock();
-    renderClaimPool();
     renderSavedTasks();
     renderQuickTasks();
     renderDialogOptions();
@@ -1352,14 +1363,14 @@
     });
   }
 
-  function renderClaimPool() {
+  function renderClaimPool(container = refs.claimDialogList, claimUserId = ui.claimDialogUserId || state.settings.currentUserId) {
     const t = currentMessages();
-    refs.claimPoolStrip.innerHTML = "";
+    container.innerHTML = "";
     if (!state.claimPool.length) {
       const empty = document.createElement("div");
       empty.className = "claim-pool-empty";
       empty.textContent = t.claimEmpty;
-      refs.claimPoolStrip.appendChild(empty);
+      container.appendChild(empty);
       return;
     }
     state.claimPool.forEach((entry) => {
@@ -1376,9 +1387,9 @@
       claimButton.type = "button";
       claimButton.className = "ghost-button small-button";
       claimButton.textContent = t.claimNow;
-      claimButton.addEventListener("click", () => claimPoolTask(entry.id));
+      claimButton.addEventListener("click", () => claimPoolTask(entry.id, claimUserId));
       card.appendChild(claimButton);
-      refs.claimPoolStrip.appendChild(card);
+      container.appendChild(card);
     });
   }
 
@@ -1883,12 +1894,12 @@
     renderApp();
   }
 
-  function claimPoolTask(entryId) {
+  function claimPoolTask(entryId, userId = state.settings.currentUserId) {
     const entry = state.claimPool.find((item) => item.id === entryId);
     if (!entry) {
       return;
     }
-    const selectedUserId = state.settings.currentUserId;
+    const selectedUserId = userId || state.settings.currentUserId;
     const task = buildTask({
       title: entry.titleTranslations || entry.title,
       icon: entry.icon,
@@ -1904,8 +1915,14 @@
     });
     state.tasks.push(task);
     state.claimPool = state.claimPool.filter((item) => item.id !== entryId);
+    state.settings.currentUserId = selectedUserId;
     saveState();
     renderApp();
+    if (!state.claimPool.length && refs.claimDialog.open) {
+      closeClaimDialog();
+    } else if (refs.claimDialog.open) {
+      renderClaimDialog();
+    }
   }
 
   function addClaimEntryFromLibrary(libraryId) {
@@ -2465,6 +2482,44 @@
     refs.participantDialog.close();
   }
 
+  function openClaimDialog() {
+    ui.claimDialogUserId = state.settings.currentUserId;
+    renderClaimDialog();
+    refs.claimDialog.showModal();
+  }
+
+  function closeClaimDialog() {
+    refs.claimDialog.close();
+  }
+
+  function renderClaimDialogUserPicker(selectedUserId) {
+    refs.claimDialogUserPicker.innerHTML = "";
+    users.forEach((user) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `responsible-chip${selectedUserId === user.id ? " active" : ""}`;
+      button.textContent = `${user.emoji} ${user.name}`;
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        ui.claimDialogUserId = user.id;
+        renderClaimDialog();
+      });
+      refs.claimDialogUserPicker.appendChild(button);
+    });
+  }
+
+  function renderClaimDialog() {
+    const t = currentMessages();
+    const selectedUserId = ui.claimDialogUserId || state.settings.currentUserId;
+    refs.claimDialogEyebrow.textContent = t.claimPoolHeading;
+    refs.claimDialogTitle.textContent = t.claimInbox;
+    refs.claimDialogCopy.textContent = t.claimInboxCopy;
+    refs.claimDialogWhoLabel.textContent = t.claimWho;
+    refs.closeClaimDialogFooterButton.textContent = t.cancel;
+    renderClaimDialogUserPicker(selectedUserId);
+    renderClaimPool(refs.claimDialogList, selectedUserId);
+  }
+
   function renderParticipantPicker(allowedIds, selectedIds) {
     const activeIds = normalizeCompletionUserIds(selectedIds, null, allowedIds[0]).filter((id) => allowedIds.includes(id));
     refs.participantPicker.dataset.value = activeIds.join(",");
@@ -2924,6 +2979,20 @@
 
   function shouldShowDeleteDropZone() {
     return Boolean(ui.dragTaskId) && !String(ui.dragTaskId).startsWith("saved:") && !String(ui.dragTaskId).startsWith("quick:");
+  }
+
+  function handleClaimBellDrop(event) {
+    handleDragLeave(event);
+    if (!ui.dragTaskId) {
+      return;
+    }
+    if (String(ui.dragTaskId).startsWith("saved:")) {
+      addClaimEntryFromLibrary(ui.dragTaskId.replace("saved:", ""));
+    } else if (String(ui.dragTaskId).startsWith("quick:")) {
+      addClaimEntryFromQuickTemplate(ui.dragTaskId.replace("quick:", ""));
+    } else {
+      moveBoardItemToClaimPool(ui.dragTaskId);
+    }
   }
 
   function showDeleteDropZone() {

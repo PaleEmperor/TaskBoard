@@ -1185,6 +1185,59 @@ h1 {
   font-size: 0.8rem;
 }
 
+.claim-bell-button {
+  position: relative;
+  min-width: 46px;
+  min-height: 42px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(68, 95, 118, 0.14);
+  background: #ffffff;
+  color: var(--ink);
+  display: inline-grid;
+  place-items: center;
+}
+
+.claim-bell-icon {
+  font-size: 1rem;
+  line-height: 1;
+  transform-origin: top center;
+}
+
+.claim-bell-button.has-items .claim-bell-count {
+  display: grid;
+}
+
+.claim-bell-count {
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #c84f68;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: none;
+  place-items: center;
+}
+
+.claim-bell-button.ringing .claim-bell-icon {
+  animation: bell-ring 1.8s ease-in-out infinite;
+}
+
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(10deg); }
+  20% { transform: rotate(-9deg); }
+  30% { transform: rotate(8deg); }
+  40% { transform: rotate(-7deg); }
+  50% { transform: rotate(5deg); }
+  60% { transform: rotate(0deg); }
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1816,10 +1869,6 @@ h1 {
   gap: 4px;
 }
 
-.claim-pool-panel {
-  min-height: 92px;
-}
-
 .claim-pool-strip {
   display: grid;
   gap: 8px;
@@ -1845,6 +1894,12 @@ h1 {
 .claim-pool-empty {
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.claim-dialog-strip {
+  max-height: min(48vh, 420px);
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .family-dock {
