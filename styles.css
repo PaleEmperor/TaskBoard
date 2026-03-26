@@ -265,6 +265,34 @@ body[data-theme="dark"] .participant-picker {
   background: transparent;
 }
 
+body[data-theme="dark"] .responsible-picker .claim-chip,
+body[data-theme="dark"] .participant-picker .claim-chip {
+  background: rgba(57, 69, 82, 0.98);
+  color: #f3f7fb;
+  border-color: rgba(180, 194, 207, 0.24);
+}
+
+body[data-theme="dark"] .responsible-chip {
+  background: rgba(57, 69, 82, 0.98);
+  color: #f3f7fb;
+  border-color: rgba(180, 194, 207, 0.24);
+}
+
+body[data-theme="dark"] .responsible-picker .claim-chip.active,
+body[data-theme="dark"] .participant-picker .claim-chip.active {
+  background: rgba(84, 122, 176, 0.34);
+  color: #ffffff;
+  border-color: rgba(129, 169, 224, 0.46);
+  box-shadow: inset 0 0 0 1px rgba(129, 169, 224, 0.22);
+}
+
+body[data-theme="dark"] .responsible-chip.active {
+  background: rgba(84, 122, 176, 0.34);
+  color: #ffffff;
+  border-color: rgba(129, 169, 224, 0.46);
+  box-shadow: inset 0 0 0 1px rgba(129, 169, 224, 0.22);
+}
+
 body[data-theme="dark"] .task-dialog .ghost-button,
 body[data-theme="dark"] .task-dialog .icon-button {
   background: rgba(52, 63, 75, 0.98);
