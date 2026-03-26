@@ -136,6 +136,7 @@
       save: "Save task",
       cancel: "Cancel",
       delete: "Delete",
+      deleteFromPlan: "Delete from plan",
       complete: "Complete",
       reopen: "Reopen",
       didItFor: "I did it for {user}",
@@ -253,6 +254,7 @@
       save: "Tallenna tehtävä",
       cancel: "Peruuta",
       delete: "Poista",
+      deleteFromPlan: "Poista suunnitelmasta",
       complete: "Valmis",
       reopen: "Avaa uudelleen",
       didItFor: "Minä tein tämän: {user}",
@@ -370,6 +372,7 @@
       save: "Aufgabe speichern",
       cancel: "Abbrechen",
       delete: "Löschen",
+      deleteFromPlan: "Aus Plan löschen",
       complete: "Erledigt",
       reopen: "Wieder öffnen",
       didItFor: "Ich habe das für {user} gemacht",
@@ -454,8 +457,9 @@
         currentUserId: "bjorn",
         boardDensity: BOARD_DENSITY.everyone,
         weekOffset: 0,
-        activeFilter: "all",
-        showCompleted: false,
+      activeFilter: "all",
+      showCompleted: false,
+      darkMode: false,
       },
       taskLibrary: [],
       tasks: [],
@@ -524,6 +528,9 @@
     if (typeof normalized.settings.showCompleted !== "boolean") {
       normalized.settings.showCompleted = false;
     }
+    if (typeof normalized.settings.darkMode !== "boolean") {
+      normalized.settings.darkMode = false;
+    }
     normalized.tasks = normalized.tasks.map((task) => normalizeResponsibleRecord(task));
     normalized.taskLibrary = normalized.taskLibrary.map((entry) => normalizeResponsibleRecord(entry));
     normalized.tasks.forEach((task) => {
@@ -546,6 +553,7 @@
     expandedCards: {},
     focusDateKey: null,
     drawerOpen: false,
+    reopenDrawerAfterDrag: false,
     weather: {
       status: "loading",
       place: WEATHER_FALLBACK.name,
@@ -576,6 +584,8 @@
     toolDrawerTitle: document.getElementById("toolDrawerTitle"),
     showCompletedLabel: document.getElementById("showCompletedLabel"),
     showCompletedToggle: document.getElementById("showCompletedToggle"),
+    darkModeLabel: document.getElementById("darkModeLabel"),
+    darkModeToggle: document.getElementById("darkModeToggle"),
     summaryGrid: document.getElementById("summaryGrid"),
     viewSwitch: document.getElementById("viewSwitch"),
     filterChips: document.getElementById("filterChips"),
@@ -602,6 +612,8 @@
     importDataButton: document.getElementById("importDataButton"),
     importDataInput: document.getElementById("importDataInput"),
     celebrationLayer: document.getElementById("celebrationLayer"),
+    deleteDropZone: document.getElementById("deleteDropZone"),
+    deleteDropZoneLabel: document.getElementById("deleteDropZoneLabel"),
     taskDialog: document.getElementById("taskDialog"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
@@ -683,9 +695,24 @@
       saveState();
       renderApp();
     });
+    refs.darkModeToggle.addEventListener("change", () => {
+      state.settings.darkMode = refs.darkModeToggle.checked;
+      saveState();
+      renderApp();
+    });
     refs.exportDataButton.addEventListener("click", exportBoardData);
     refs.importDataButton.addEventListener("click", () => refs.importDataInput.click());
     refs.importDataInput.addEventListener("change", importBoardData);
+    refs.deleteDropZone.addEventListener("dragover", handleDragOver);
+    refs.deleteDropZone.addEventListener("dragleave", handleDragLeave);
+    refs.deleteDropZone.addEventListener("drop", (event) => {
+      handleDragLeave(event);
+      if (!ui.dragTaskId || !shouldShowDeleteDropZone()) {
+        return;
+      }
+      deleteBoardItemFromPlan(ui.dragTaskId);
+      hideDeleteDropZone();
+    });
     [
       refs.taskTitleInput,
       refs.taskCategoryInput,
@@ -775,7 +802,12 @@
     refs.toolDrawerTitle.textContent = "Tools";
     refs.showCompletedLabel.textContent = "Show completed";
     refs.showCompletedToggle.checked = Boolean(state.settings.showCompleted);
+    refs.darkModeLabel.textContent = state.settings.language === "fi" ? "Tumma tila" : state.settings.language === "de" ? "Dunkelmodus" : "Dark mode";
+    refs.darkModeToggle.checked = Boolean(state.settings.darkMode);
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
+    refs.deleteDropZoneLabel.textContent = t.deleteFromPlan;
+    refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
+    document.body.dataset.theme = state.settings.darkMode ? "dark" : "light";
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
     refs.todayButton.textContent = t.everyone;
@@ -870,20 +902,41 @@
 
   function renderWeatherRanking() {
     const t = currentMessages();
-    const medals = [t.rankingGold, t.rankingSilver, t.rankingBronze];
-    const leaderboard = getCompletionLeaderboard().slice(0, 3);
+    const leaderboard = getCompletionLeaderboard()
+      .map((entry, index, list) => ({
+        ...entry,
+        place: index > 0 && entry.count === list[index - 1].count ? list[index - 1].place : index + 1,
+      }))
+      .filter((entry) => entry.place <= 3)
+      .slice(0, 3);
     if (!leaderboard.length) {
       refs.weatherRanking.innerHTML = "";
       return;
     }
+    const medals = {
+      1: t.rankingGold,
+      2: t.rankingSilver,
+      3: t.rankingBronze,
+    };
+    const positionOrder = { 2: 0, 1: 1, 3: 2 };
+    const podiumOrder = leaderboard
+      .slice()
+      .sort((left, right) => {
+        const leftOrder = positionOrder[left.place] ?? 3;
+        const rightOrder = positionOrder[right.place] ?? 3;
+        if (leftOrder !== rightOrder) {
+          return leftOrder - rightOrder;
+        }
+        return left.user.name.localeCompare(right.user.name);
+      });
     refs.weatherRanking.innerHTML = `
       <div class="weather-ranking-title">${t.rankingTitle}</div>
       <div class="weather-ranking-podium">
-        ${leaderboard
+        ${podiumOrder
           .map(
-            (entry, index) => `
-              <div class="weather-ranking-item place-${index + 1}" style="--podium-color: ${colorForUser(entry.user.id)}">
-                <div class="weather-ranking-medal">${medals[index]}</div>
+            (entry) => `
+              <div class="weather-ranking-item place-${entry.place}" style="--podium-color: ${colorForUser(entry.user.id)}">
+                <div class="weather-ranking-medal">${medals[entry.place]}</div>
                 <div class="weather-ranking-name">${entry.user.name}</div>
                 <div class="weather-ranking-count">${entry.count}</div>
               </div>
@@ -1248,6 +1301,7 @@
       button.innerHTML = `<span class="quick-task-icon">${template.icon}</span><span>${template.title[state.settings.language] || template.title.en}</span>`;
       button.addEventListener("dragstart", (event) => {
         ui.dragTaskId = `quick:${template.id}`;
+        closeToolDrawerForDrag();
         if (event.dataTransfer) {
           event.dataTransfer.effectAllowed = "copy";
           event.dataTransfer.setData("text/plain", `quick:${template.id}`);
@@ -1256,6 +1310,7 @@
       button.addEventListener("dragend", () => {
         ui.dragTaskId = null;
         clearDropTargets();
+        reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
         openTaskDialog(null, {
@@ -1280,6 +1335,7 @@
       button.innerHTML = `<span class="quick-task-icon">${entry.icon}</span><span>${resolveLibraryTitle(entry)}</span>`;
       button.addEventListener("dragstart", (event) => {
         ui.dragTaskId = `saved:${entry.id}`;
+        closeToolDrawerForDrag();
         if (event.dataTransfer) {
           event.dataTransfer.effectAllowed = "copy";
           event.dataTransfer.setData("text/plain", `saved:${entry.id}`);
@@ -1288,6 +1344,7 @@
       button.addEventListener("dragend", () => {
         ui.dragTaskId = null;
         clearDropTargets();
+        reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
         openTaskDialog(null, {
@@ -1579,6 +1636,7 @@
       ui.dragTaskId = item.id;
       ui.selectedTaskId = task.id;
       card.classList.add("dragging");
+      showDeleteDropZone();
       if (event.dataTransfer) {
         event.dataTransfer.effectAllowed = "move";
         event.dataTransfer.setData("text/plain", item.id);
@@ -1588,6 +1646,7 @@
       ui.dragTaskId = null;
       card.classList.remove("dragging");
       clearDropTargets();
+      hideDeleteDropZone();
     });
 
     icon.textContent = task.icon;
@@ -1955,6 +2014,30 @@
       return;
     }
     moveRecurringOccurrence(item, { dueDate: dateKey });
+  }
+
+  function deleteBoardItemFromPlan(itemId) {
+    const item = findBoardItemById(itemId);
+    if (!item) {
+      return;
+    }
+    if (item.kind === "single") {
+      state.tasks = state.tasks.filter((task) => task.id !== item.task.id);
+    } else {
+      const task = state.tasks.find((entry) => entry.id === item.task.id);
+      if (!task) {
+        return;
+      }
+      task.exceptionDates = Array.isArray(task.exceptionDates) ? task.exceptionDates : [];
+      if (!task.exceptionDates.includes(item.dateKey)) {
+        task.exceptionDates.push(item.dateKey);
+      }
+      task.updatedAt = new Date().toISOString();
+    }
+    ui.dragTaskId = null;
+    ui.selectedTaskId = null;
+    saveState();
+    renderApp();
   }
 
   function reassignTask(taskId, userId) {
@@ -2470,6 +2553,36 @@
 
   function clearDropTargets() {
     document.querySelectorAll(".drop-target").forEach((element) => element.classList.remove("drop-target"));
+  }
+
+  function shouldShowDeleteDropZone() {
+    return Boolean(ui.dragTaskId) && !String(ui.dragTaskId).startsWith("saved:") && !String(ui.dragTaskId).startsWith("quick:");
+  }
+
+  function showDeleteDropZone() {
+    if (!shouldShowDeleteDropZone()) {
+      return;
+    }
+    refs.deleteDropZone.classList.add("visible");
+  }
+
+  function hideDeleteDropZone() {
+    refs.deleteDropZone.classList.remove("visible", "drop-target");
+  }
+
+  function closeToolDrawerForDrag() {
+    ui.reopenDrawerAfterDrag = ui.drawerOpen;
+    ui.drawerOpen = false;
+    refs.toolDrawer.classList.remove("open");
+  }
+
+  function reopenToolDrawerAfterDrag() {
+    if (!ui.reopenDrawerAfterDrag) {
+      return;
+    }
+    ui.reopenDrawerAfterDrag = false;
+    ui.drawerOpen = true;
+    refs.toolDrawer.classList.add("open");
   }
 
   function getDisplayedWeekStart() {

@@ -23,6 +23,10 @@
 
     <div class="app-shell">
       <div class="celebration-layer" id="celebrationLayer" aria-hidden="true"></div>
+      <div class="delete-drop-zone" id="deleteDropZone" aria-hidden="true">
+        <span class="delete-drop-zone-icon">🗑️</span>
+        <span class="delete-drop-zone-label" id="deleteDropZoneLabel"></span>
+      </div>
       <header class="hero">
         <div class="hero-brand">
           <span class="hero-brand-title" id="appTitle"></span>
@@ -88,6 +92,10 @@
               <label class="toggle-row" for="showCompletedToggle">
                 <span id="showCompletedLabel">Show completed</span>
                 <input id="showCompletedToggle" type="checkbox" />
+              </label>
+              <label class="toggle-row" for="darkModeToggle">
+                <span id="darkModeLabel">Dark mode</span>
+                <input id="darkModeToggle" type="checkbox" />
               </label>
             </section>
             <section class="panel mini-section tool-panel" id="familyPanel">
