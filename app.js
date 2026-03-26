@@ -2044,7 +2044,11 @@
   }
 
   function formatDateKey(date) {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const normalized = typeof date === "string" ? parseDateKey(date) : date;
+    if (!(normalized instanceof Date) || Number.isNaN(normalized.getTime())) {
+      return "";
+    }
+    return `${normalized.getFullYear()}-${String(normalized.getMonth() + 1).padStart(2, "0")}-${String(normalized.getDate()).padStart(2, "0")}`;
   }
 
   function parseDateKey(value) {
