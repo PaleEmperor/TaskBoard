@@ -958,11 +958,20 @@
       const assigned = state.tasks.filter((task) => task.responsibleId === user.id && task.status === "open").length;
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `member-tile${state.settings.currentUserId === user.id ? " active" : ""}`;
+      const isActiveMember =
+        state.settings.boardDensity === BOARD_DENSITY.mine && state.settings.currentUserId === user.id;
+      button.className = `member-tile${isActiveMember ? " active" : ""}`;
       button.dataset.userId = user.id;
+      button.style.setProperty("--responsible-color", colorForUser(user.id));
       button.addEventListener("click", () => {
         if (ui.selectedTaskId) {
           reassignTask(ui.selectedTaskId, user.id);
+          return;
+        }
+        if (isActiveMember) {
+          state.settings.boardDensity = BOARD_DENSITY.everyone;
+          saveState();
+          renderApp();
           return;
         }
         state.settings.currentUserId = user.id;
