@@ -36,24 +36,24 @@ body {
 }
 
 body[data-theme="dark"] {
-  --bg: #1f2730;
-  --bg-deep: #141a20;
-  --panel: rgba(35, 43, 52, 0.96);
-  --panel-strong: rgba(41, 50, 60, 0.99);
-  --ink: #edf2f6;
-  --muted: #a7b5c0;
-  --border: rgba(167, 181, 192, 0.16);
-  --shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
-  background: linear-gradient(180deg, #182028 0%, #11171d 100%);
+  --bg: #1a2129;
+  --bg-deep: #0f1419;
+  --panel: rgba(34, 42, 51, 0.98);
+  --panel-strong: rgba(42, 51, 61, 0.99);
+  --ink: #f3f7fb;
+  --muted: #bdc9d3;
+  --border: rgba(180, 194, 207, 0.22);
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  background: linear-gradient(180deg, #151b22 0%, #0d1217 100%);
 }
 
 body[data-theme="dark"] .weather-banner {
-  background: linear-gradient(180deg, rgba(32, 40, 49, 0.96), rgba(25, 33, 40, 0.98));
-  border-color: rgba(167, 181, 192, 0.14);
+  background: linear-gradient(180deg, rgba(28, 36, 44, 0.98), rgba(19, 26, 32, 0.99));
+  border-color: rgba(180, 194, 207, 0.18);
 }
 
 body[data-theme="dark"] .weather-copy {
-  background: linear-gradient(90deg, rgba(24, 31, 38, 0.12), rgba(34, 42, 50, 0.84) 22%, rgba(28, 36, 43, 0.98));
+  background: linear-gradient(90deg, rgba(16, 22, 28, 0.16), rgba(31, 39, 47, 0.9) 22%, rgba(22, 29, 35, 0.99));
 }
 
 body[data-theme="dark"] .panel,
@@ -68,10 +68,11 @@ body[data-theme="dark"] .task-form,
 body[data-theme="dark"] .dialog-preview,
 body[data-theme="dark"] .day-strip-symbol,
 body[data-theme="dark"] .delete-drop-zone,
+body[data-theme="dark"] .claim-drop-zone,
 body[data-theme="dark"] .toggle-field {
-  background: rgba(35, 43, 52, 0.96);
+  background: rgba(34, 42, 51, 0.98);
   color: var(--ink);
-  border-color: rgba(167, 181, 192, 0.14);
+  border-color: rgba(180, 194, 207, 0.18);
 }
 
 body[data-theme="dark"] .ghost-button,
@@ -84,18 +85,301 @@ body[data-theme="dark"] .lang-chip,
 body[data-theme="dark"] .persona-chip,
 body[data-theme="dark"] .view-chip,
 body[data-theme="dark"] .filter-chip {
-  background: rgba(49, 59, 70, 0.96);
+  background: rgba(52, 63, 75, 0.98);
   color: var(--ink);
-  border-color: rgba(167, 181, 192, 0.14);
+  border-color: rgba(180, 194, 207, 0.2);
 }
 
 body[data-theme="dark"] .field input,
 body[data-theme="dark"] .field select,
 body[data-theme="dark"] .field textarea,
 body[data-theme="dark"] .icon-option {
-  background: rgba(24, 31, 38, 0.96);
+  background: rgba(15, 21, 27, 0.98);
   color: var(--ink);
-  border-color: rgba(167, 181, 192, 0.16);
+  border-color: rgba(180, 194, 207, 0.24);
+}
+
+body[data-theme="dark"] .weather-kicker,
+body[data-theme="dark"] .weather-subline,
+body[data-theme="dark"] .claim-pool-meta,
+body[data-theme="dark"] .claim-pool-requested,
+body[data-theme="dark"] .claim-pool-empty,
+body[data-theme="dark"] .day-heading span,
+body[data-theme="dark"] .task-meta,
+body[data-theme="dark"] .dialog-preview-label,
+body[data-theme="dark"] .panel-label {
+  color: #c7d2dc;
+}
+
+body[data-theme="dark"] .task-card.done {
+  background: rgba(28, 62, 44, 0.92);
+  border-color: rgba(90, 170, 116, 0.34);
+}
+
+body[data-theme="dark"] .task-card.overdue {
+  background: rgba(74, 33, 42, 0.94);
+  border-color: rgba(211, 97, 121, 0.34);
+}
+
+body[data-theme="dark"] .empty-drop,
+body[data-theme="dark"] .claim-pool-card,
+body[data-theme="dark"] .day-strip-symbol {
+  background: rgba(28, 35, 43, 0.98);
+}
+
+body[data-theme="dark"] .member-tile.active,
+body[data-theme="dark"] .lang-chip.active,
+body[data-theme="dark"] .persona-chip.active,
+body[data-theme="dark"] .view-chip.active,
+body[data-theme="dark"] .filter-chip.active {
+  background: rgba(61, 74, 88, 0.98);
+  border-color: rgba(119, 158, 214, 0.34);
+}
+
+body[data-theme="dark"] .claim-chip {
+  background: rgba(76, 104, 145, 0.22);
+  color: var(--ink);
+  border-color: rgba(119, 158, 214, 0.24);
+}
+
+body[data-theme="dark"] #quickAddButton,
+body[data-theme="dark"] .complete-chip {
+  color: #f8fffd;
+}
+
+body[data-theme="dark"] .hero-brand-credit,
+body[data-theme="dark"] .weather-ranking-title,
+body[data-theme="dark"] .weather-ranking-medal,
+body[data-theme="dark"] .claim-bell-button,
+body[data-theme="dark"] .claim-bell-count,
+body[data-theme="dark"] .delete-drop-zone,
+body[data-theme="dark"] .claim-drop-zone,
+body[data-theme="dark"] .day-strip-alert,
+body[data-theme="dark"] .toggle-row,
+body[data-theme="dark"] .task-dialog::backdrop,
+body[data-theme="dark"] .participant-copy {
+  color: var(--ink);
+}
+
+body[data-theme="dark"] .hero-brand-credit,
+body[data-theme="dark"] .weather-ranking-title,
+body[data-theme="dark"] .weather-ranking-medal,
+body[data-theme="dark"] .claim-pool-meta,
+body[data-theme="dark"] .claim-pool-requested,
+body[data-theme="dark"] .claim-pool-empty,
+body[data-theme="dark"] .task-meta,
+body[data-theme="dark"] .dialog-preview-label,
+body[data-theme="dark"] .panel-label,
+body[data-theme="dark"] .participant-copy,
+body[data-theme="dark"] .day-heading span,
+body[data-theme="dark"] .day-strip-symbol-title {
+  color: #cbd6df;
+}
+
+body[data-theme="dark"] .weather-mainline strong,
+body[data-theme="dark"] .weather-mainline span,
+body[data-theme="dark"] .weather-place,
+body[data-theme="dark"] .weather-condition,
+body[data-theme="dark"] .claim-pool-top strong,
+body[data-theme="dark"] .task-title,
+body[data-theme="dark"] .member-tile strong,
+body[data-theme="dark"] .day-heading strong,
+body[data-theme="dark"] .dialog-header h2,
+body[data-theme="dark"] .field span,
+body[data-theme="dark"] .toggle-field span,
+body[data-theme="dark"] .tool-drawer-header strong {
+  color: #f4f8fb;
+}
+
+body[data-theme="dark"] .board-panel,
+body[data-theme="dark"] .tool-panel,
+body[data-theme="dark"] .summary-card,
+body[data-theme="dark"] .focus-card,
+body[data-theme="dark"] .participant-form,
+body[data-theme="dark"] .claim-dialog-strip,
+body[data-theme="dark"] .dialog-preview {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+body[data-theme="dark"] .badge {
+  background: rgba(55, 66, 78, 0.98);
+  color: #e6edf3;
+  border-color: rgba(180, 194, 207, 0.18);
+}
+
+body[data-theme="dark"] .task-card.done .badge {
+  background: rgba(46, 92, 62, 0.9);
+  color: #e7fff0;
+  border-color: rgba(98, 182, 124, 0.26);
+}
+
+body[data-theme="dark"] .task-card.overdue .badge {
+  background: rgba(96, 44, 56, 0.92);
+  color: #ffe8ee;
+  border-color: rgba(221, 110, 136, 0.28);
+}
+
+body[data-theme="dark"] .day-column.today {
+  border-color: rgba(119, 158, 214, 0.44);
+  box-shadow: inset 0 0 0 2px rgba(119, 158, 214, 0.12);
+}
+
+body[data-theme="dark"] .day-strip-day,
+body[data-theme="dark"] .day-strip-count,
+body[data-theme="dark"] .day-strip-alert,
+body[data-theme="dark"] .task-expand-indicator {
+  background: rgba(55, 66, 78, 0.98);
+  border-color: rgba(180, 194, 207, 0.18);
+}
+
+body[data-theme="dark"] .day-strip-alert {
+  background: rgba(96, 44, 56, 0.92);
+  color: #ffd8e1;
+  border-color: rgba(221, 110, 136, 0.28);
+}
+
+body[data-theme="dark"] .task-icon {
+  background: rgba(54, 69, 87, 0.9);
+}
+
+body[data-theme="dark"] .weather-ranking-item {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--podium-color, #8aa0b6) 10%, rgba(61, 72, 83, 0.98)),
+    color-mix(in srgb, var(--podium-color, #8aa0b6) 22%, rgba(43, 52, 62, 0.98))
+  );
+  border-color: color-mix(in srgb, var(--podium-color, #8aa0b6) 22%, rgba(180, 194, 207, 0.16));
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body[data-theme="dark"] .weather-ranking-item::after {
+  background: color-mix(in srgb, var(--podium-color, #8aa0b6) 24%, rgba(58, 70, 82, 0.96));
+}
+
+body[data-theme="dark"] .weather-ranking-count {
+  color: #eef5fb;
+}
+
+body[data-theme="dark"] .claim-bell-button,
+body[data-theme="dark"] .tool-drawer-toggle {
+  background: rgba(52, 63, 75, 0.98);
+  color: #eef4fa;
+  border-color: rgba(180, 194, 207, 0.2);
+}
+
+body[data-theme="dark"] .claim-bell-count {
+  background: #d15f79;
+  color: #fff;
+}
+
+body[data-theme="dark"] .delete-drop-zone {
+  background: rgba(79, 37, 47, 0.96);
+  color: #ffe9ef;
+  border-color: rgba(221, 110, 136, 0.28);
+}
+
+body[data-theme="dark"] .delete-drop-zone.drop-target {
+  background: rgba(102, 44, 57, 0.98);
+}
+
+body[data-theme="dark"] .claim-drop-zone {
+  background: rgba(40, 55, 76, 0.96);
+  color: #e8f1ff;
+  border-color: rgba(119, 158, 214, 0.28);
+}
+
+body[data-theme="dark"] .claim-drop-zone.drop-target {
+  background: rgba(49, 67, 92, 0.98);
+}
+
+body[data-theme="dark"] .task-form::-webkit-scrollbar-track,
+body[data-theme="dark"] .icon-grid::-webkit-scrollbar-track,
+body[data-theme="dark"] .claim-dialog-strip::-webkit-scrollbar-track {
+  background: rgba(180, 194, 207, 0.1);
+}
+
+body[data-theme="dark"] .task-form::-webkit-scrollbar-thumb,
+body[data-theme="dark"] .icon-grid::-webkit-scrollbar-thumb,
+body[data-theme="dark"] .claim-dialog-strip::-webkit-scrollbar-thumb {
+  background: rgba(180, 194, 207, 0.28);
+}
+
+body[data-theme="dark"] .task-form::-webkit-scrollbar-thumb:active,
+body[data-theme="dark"] .icon-grid::-webkit-scrollbar-thumb:active,
+body[data-theme="dark"] .claim-dialog-strip::-webkit-scrollbar-thumb:active {
+  background: rgba(180, 194, 207, 0.42);
+}
+
+body[data-theme="dark"] .responsible-chip,
+body[data-theme="dark"] .icon-option {
+  color: #eef4fa;
+}
+
+body[data-theme="dark"] .responsible-chip.active,
+body[data-theme="dark"] .icon-option.active {
+  background: rgba(75, 94, 117, 0.98);
+  border-color: rgba(132, 168, 221, 0.34);
+}
+
+body[data-theme="dark"] .toggle-row input,
+body[data-theme="dark"] .toggle-field input {
+  accent-color: #7fa6db;
+}
+
+body[data-theme="dark"] .empty-drop {
+  color: #d1dbe4;
+  border-color: rgba(180, 194, 207, 0.24);
+}
+
+body[data-theme="dark"] .claim-chip:disabled,
+body[data-theme="dark"] .credit-task-button:disabled {
+  opacity: 0.7;
+}
+
+body[data-theme="dark"] .claim-dialog .task-form,
+body[data-theme="dark"] .claim-dialog .participant-form,
+body[data-theme="dark"] .claim-dialog .dialog-header,
+body[data-theme="dark"] .claim-dialog .dialog-actions,
+body[data-theme="dark"] .claim-dialog .field,
+body[data-theme="dark"] .claim-dialog .claim-dialog-strip {
+  background: rgba(24, 31, 38, 0.98);
+  color: var(--ink);
+}
+
+body[data-theme="dark"] .claim-dialog .dialog-header,
+body[data-theme="dark"] .claim-dialog .dialog-actions {
+  background:
+    linear-gradient(180deg, rgba(24, 31, 38, 0.98), rgba(24, 31, 38, 0.92) 76%, rgba(24, 31, 38, 0));
+}
+
+body[data-theme="dark"] .claim-dialog .dialog-actions {
+  background:
+    linear-gradient(180deg, rgba(24, 31, 38, 0), rgba(24, 31, 38, 0.92) 26%, rgba(24, 31, 38, 0.98));
+}
+
+body[data-theme="dark"] .claim-dialog .claim-pool-card {
+  background: rgba(32, 40, 49, 0.98);
+  border-color: rgba(180, 194, 207, 0.18);
+}
+
+body[data-theme="dark"] .claim-dialog .ghost-button,
+body[data-theme="dark"] .claim-dialog .icon-button,
+body[data-theme="dark"] .claim-dialog .responsible-chip {
+  background: rgba(50, 61, 73, 0.98);
+  color: #eef4fa;
+  border-color: rgba(180, 194, 207, 0.2);
+}
+
+body[data-theme="dark"] .claim-dialog .responsible-chip.active {
+  background: rgba(74, 92, 114, 0.98);
+  border-color: rgba(132, 168, 221, 0.36);
+}
+
+body[data-theme="dark"] .claim-dialog .claim-pool-empty,
+body[data-theme="dark"] .claim-dialog .claim-pool-meta,
+body[data-theme="dark"] .claim-dialog .claim-pool-requested,
+body[data-theme="dark"] .claim-dialog .participant-copy {
+  color: #d0d9e1;
 }
 
 button,
@@ -1165,10 +1449,13 @@ h1 {
   justify-content: center;
   padding: 6px;
   font-size: 1.1rem;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 .lang-chip span {
   line-height: 1;
+  font-family: inherit;
+  font-size: 1.15rem;
 }
 
 .persona-chip.active,
@@ -1927,6 +2214,17 @@ h1 {
 .claim-pool-empty {
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.claim-pool-requested {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.claim-pool-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .claim-dialog-strip {

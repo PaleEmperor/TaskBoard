@@ -116,7 +116,10 @@
       backupHeading: "Backup",
       claimPoolHeading: "Claim tasks",
       claimNow: "Claim",
+      removeClaimTask: "Remove",
       claimEmpty: "Drop tasks here or create them as claimable.",
+      sendToClaimInbox: "Send to claim inbox",
+      requestedBy: "Requested by {user}",
       claimInbox: "Claim inbox",
       claimWho: "Who are you?",
       claimInboxCopy: "Claim a task and it will be added to today with no time.",
@@ -247,7 +250,10 @@
       backupHeading: "Varmuuskopio",
       claimPoolHeading: "Claim-tehtävät",
       claimNow: "Claim",
+      removeClaimTask: "Poista",
       claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
+      sendToClaimInbox: "Lähetä claim-tehtäviin",
+      requestedBy: "Pyytänyt: {user}",
       claimInbox: "Claim-tehtävät",
       claimWho: "Kuka olet?",
       claimInboxCopy: "Claimattu tehtävä lisätään tälle päivälle ilman aikaa.",
@@ -378,7 +384,10 @@
       backupHeading: "Sicherung",
       claimPoolHeading: "Claim-Aufgaben",
       claimNow: "Claim",
+      removeClaimTask: "Entfernen",
       claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
+      sendToClaimInbox: "In Claim-Aufgaben legen",
+      requestedBy: "Angefragt von {user}",
       claimInbox: "Claim-Aufgaben",
       claimWho: "Wer bist du?",
       claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefügt.",
@@ -890,7 +899,7 @@
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.deleteDropZoneLabel.textContent = t.deleteFromPlan;
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
-    refs.claimDropZoneLabel.textContent = t.claimPoolHeading;
+    refs.claimDropZoneLabel.textContent = t.sendToClaimInbox;
     refs.claimDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
     refs.claimBellCount.textContent = state.claimPool.length ? String(state.claimPool.length) : "";
     refs.claimBellButton.classList.toggle("has-items", state.claimPool.length > 0);
@@ -1398,13 +1407,22 @@
           <strong>${resolveLibraryTitle(entry)}</strong>
         </div>
         <div class="claim-pool-meta">${messageForCategory(entry.category)}</div>
+        <div class="claim-pool-requested">${t.requestedBy.replace("{user}", displayUser(entry.ownerId))}</div>
       `;
       const claimButton = document.createElement("button");
       claimButton.type = "button";
       claimButton.className = "ghost-button small-button";
       claimButton.textContent = t.claimNow;
       claimButton.addEventListener("click", () => claimPoolTask(entry.id, claimUserId));
-      card.appendChild(claimButton);
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "ghost-button small-button";
+      removeButton.textContent = t.removeClaimTask;
+      removeButton.addEventListener("click", () => removeClaimPoolTask(entry.id));
+      const actions = document.createElement("div");
+      actions.className = "claim-pool-actions";
+      actions.append(claimButton, removeButton);
+      card.appendChild(actions);
       container.appendChild(card);
     });
   }
@@ -1420,6 +1438,7 @@
       button.addEventListener("dragstart", (event) => {
         ui.dragTaskId = `quick:${template.id}`;
         closeToolDrawerForDrag();
+        showDeleteDropZone();
         if (event.dataTransfer) {
           event.dataTransfer.effectAllowed = "copy";
           event.dataTransfer.setData("text/plain", `quick:${template.id}`);
@@ -1428,6 +1447,8 @@
       button.addEventListener("dragend", () => {
         ui.dragTaskId = null;
         clearDropTargets();
+        hideDeleteDropZone();
+        hideClaimDropZone();
         reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
@@ -1454,6 +1475,7 @@
       button.addEventListener("dragstart", (event) => {
         ui.dragTaskId = `saved:${entry.id}`;
         closeToolDrawerForDrag();
+        showDeleteDropZone();
         if (event.dataTransfer) {
           event.dataTransfer.effectAllowed = "copy";
           event.dataTransfer.setData("text/plain", `saved:${entry.id}`);
@@ -1462,6 +1484,8 @@
       button.addEventListener("dragend", () => {
         ui.dragTaskId = null;
         clearDropTargets();
+        hideDeleteDropZone();
+        hideClaimDropZone();
         reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
@@ -1921,7 +1945,7 @@
       title: entry.titleTranslations || entry.title,
       icon: entry.icon,
       category: entry.category,
-      owner: selectedUserId,
+      owner: entry.ownerId,
       responsible: selectedUserId,
       dueDate: formatDateKey(startOfDay(new Date())),
       dueTime: "",
@@ -1939,6 +1963,19 @@
       closeClaimDialog();
     } else if (refs.claimDialog.open) {
       renderClaimDialog();
+    }
+  }
+
+  function removeClaimPoolTask(entryId) {
+    state.claimPool = state.claimPool.filter((item) => item.id !== entryId);
+    saveState();
+    renderApp();
+    if (refs.claimDialog.open) {
+      if (!state.claimPool.length) {
+        closeClaimDialog();
+      } else {
+        renderClaimDialog();
+      }
     }
   }
 
@@ -2277,17 +2314,11 @@
 
   function deleteDraggedItem(itemId) {
     const value = String(itemId);
-    if (value.startsWith("saved:")) {
-      const libraryId = value.replace("saved:", "");
-      state.taskLibrary = state.taskLibrary.filter((item) => item.id !== libraryId);
-      ui.dragTaskId = null;
-      saveState();
-      renderApp();
-      return;
-    }
-    if (value.startsWith("quick:")) {
+    if (value.startsWith("saved:") || value.startsWith("quick:")) {
       ui.dragTaskId = null;
       clearDropTargets();
+      hideDeleteDropZone();
+      hideClaimDropZone();
       return;
     }
     deleteBoardItemFromPlan(itemId);

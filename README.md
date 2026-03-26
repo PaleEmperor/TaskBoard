@@ -1,22 +1,28 @@
 # HomeFlow Board
 
-HomeFlow Board is a static, tablet-first household task board built for GitHub Pages. It runs without a build step, stores data in the browser, and is optimized for a shared family tablet with large controls and drag-first interaction.
+HomeFlow Board is a browser-based household board built for a shared wall tablet. It is designed around a real weekly routine: one focused day at a time, large touch targets, fast drag actions, recurring chores, claimable tasks, and a board that can stay open in the kitchen or hallway all day.
 
-## Features
+It runs as a static site on GitHub Pages, stores data locally in the browser, and can be installed on Android as a PWA.
 
-- Weekly board focused on the current week
-- Recurring tasks with daily, weekday, weekly, biweekly, monthly, and custom interval rules
-- Separate `owner` and `responsible` fields
-- English, Finnish, and German localization
-- Drag to reschedule by day
-- Drag to reassign to another family member
-- Done zone for fast completion
-- Overdue visibility
-- Clean start with no preplanned tasks
-- Local persistence through `localStorage`
-- Static deployment ready for GitHub Pages
-- Installable offline PWA
-- Minimal Android wrapper project
+## Current scope
+
+- Current-week household board with one expanded day and compact side days
+- Touch-first drag and drop for moving, deleting, reassigning, and sending tasks to the claim inbox
+- Recurring tasks, including interval rules and special Linnea-week logic
+- Separate `owner` and `responsible` handling
+- Optional task time or same-day time range
+- Claim inbox for tasks that should be picked up by whoever wants to do them
+- Completion tracking with a simple leaderboard
+- English, Finnish, and German UI
+- Offline-friendly PWA install for tablet use
+
+## What it is not
+
+- not a multi-user synced cloud app
+- not a backend-driven task manager
+- not dependent on a build step or framework runtime
+
+Everything is plain HTML, CSS, and JavaScript so it is easy to host, inspect, and adjust.
 
 ## Publish on GitHub Pages
 
@@ -29,7 +35,7 @@ HomeFlow Board is a static, tablet-first household task board built for GitHub P
 
 ## Local use
 
-Open `index.html` in a browser. For a wall tablet, run the browser in fullscreen and use your Android always-on or kiosk settings to keep the board visible.
+Open `index.html` in a browser. For tablet use, run it fullscreen and keep the device on a charger. The app is meant to work with as little typing as possible once the main routines are in place.
 
 ## Install On The Tablet
 
@@ -72,4 +78,4 @@ Notes:
 
 ## Storage note
 
-All data is stored in the current browser only. If you later want sync between multiple devices, the clean next step is a small backend or a GitHub-hosted JSON sync layer.
+All data is stored in the current browser only. Backups can be exported and imported from the tools menu. If this ever needs real sync between devices, that would require adding a backend.
