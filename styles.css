@@ -1276,14 +1276,32 @@ h1 {
 }
 
 .day-strip-symbol {
-  width: 28px;
-  height: 28px;
+  width: 100%;
+  min-height: 44px;
   border-radius: 10px;
   display: grid;
-  place-items: center;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+  padding: 4px 2px;
   background: #ffffff;
   border: 1px solid color-mix(in srgb, var(--responsible-color, #8aa0b6) 34%, rgba(68, 95, 118, 0.12));
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--responsible-color, #8aa0b6) 70%, white 30%);
+}
+
+.day-strip-symbol-icon {
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.day-strip-symbol-title {
+  font-size: 0.52rem;
+  line-height: 1.1;
+  max-width: 100%;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .day-strip-symbol.empty {

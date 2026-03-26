@@ -978,7 +978,7 @@
           .slice(0, 3)
           .map(
             (item) =>
-              `<span class="day-strip-symbol" style="--responsible-color: ${colorForUser(item.task.responsibleId)}">${item.task.icon}</span>`
+              `<span class="day-strip-symbol" style="--responsible-color: ${colorForUser(item.task.responsibleId)}"><span class="day-strip-symbol-icon">${item.task.icon}</span><span class="day-strip-symbol-title">${resolveTaskTitle(item.task)}</span></span>`
           )
           .join("");
         column.innerHTML = `
