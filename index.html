@@ -23,6 +23,11 @@
 
     <div class="app-shell">
       <header class="hero">
+        <div class="hero-brand">
+          <span class="hero-brand-title" id="appTitle"></span>
+          <span class="hero-brand-credit">by Björn ❤️</span>
+        </div>
+
         <section class="weather-banner" id="weatherBanner" data-weather="clear">
           <div class="weather-scene" id="weatherScene" aria-hidden="true">
             <div class="weather-symbol" id="weatherSymbol"></div>
@@ -40,26 +45,15 @@
           </div>
         </section>
 
-        <div class="hero-copy">
-          <div class="eyebrow" id="heroEyebrow"></div>
-          <h1 id="appTitle"></h1>
-          <p id="appSubtitle"></p>
-        </div>
-
-        <div class="hero-actions">
-          <div class="panel top-controls">
-            <div class="language-toggle" id="languageToggle"></div>
-            <button class="primary-button" id="quickAddButton" type="button"></button>
-          </div>
+        <div class="panel top-controls">
+          <div class="language-toggle" id="languageToggle"></div>
+          <button class="primary-button" id="quickAddButton" type="button"></button>
+          <button class="ghost-button" id="todayButton" type="button"></button>
         </div>
       </header>
 
       <main class="dashboard">
         <section class="panel control-strip">
-          <div class="control-row">
-            <div class="view-switch" id="viewSwitch"></div>
-            <div class="filter-chips" id="filterChips"></div>
-          </div>
           <div class="refresh-note" id="refreshNote"></div>
         </section>
 
@@ -74,7 +68,6 @@
                 </div>
                 <div class="board-tools">
                   <button class="ghost-button" id="prevWeekButton" type="button"></button>
-                  <button class="ghost-button" id="todayButton" type="button"></button>
                   <button class="ghost-button" id="nextWeekButton" type="button"></button>
                 </div>
               </div>
@@ -113,7 +106,7 @@
     </div>
 
     <dialog class="task-dialog" id="taskDialog">
-      <form class="task-form" id="taskForm" method="dialog">
+      <form class="task-form" id="taskForm">
         <div class="dialog-header">
           <div>
             <div class="panel-label" id="dialogEyebrow"></div>

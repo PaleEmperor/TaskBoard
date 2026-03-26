@@ -1275,6 +1275,23 @@ h1 {
   line-height: 1.1;
 }
 
+.day-strip-symbol {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--responsible-color, #8aa0b6) 34%, rgba(68, 95, 118, 0.12));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--responsible-color, #8aa0b6) 70%, white 30%);
+}
+
+.day-strip-symbol.empty {
+  color: #8aa0b6;
+  border-color: rgba(68, 95, 118, 0.12);
+  box-shadow: inset 0 0 0 2px rgba(68, 95, 118, 0.08);
+}
+
 .day-strip-count,
 .day-strip-alert {
   width: 28px;
@@ -1897,6 +1914,11 @@ details[open] > .accordion-summary::after {
   gap: 6px;
   position: relative;
   z-index: 1;
+  max-height: 232px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  align-content: start;
 }
 
 .icon-option {
@@ -1907,6 +1929,15 @@ details[open] > .accordion-summary::after {
   cursor: pointer;
   pointer-events: auto;
   touch-action: manipulation;
+}
+
+.icon-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.icon-grid::-webkit-scrollbar-thumb {
+  background: rgba(68, 95, 118, 0.22);
+  border-radius: 999px;
 }
 
 .task-card {
@@ -1929,4 +1960,64 @@ details[open] > .accordion-summary::after {
   background: color-mix(in srgb, var(--responsible-color, #8aa0b6) 10%, white 90%);
   border-color: color-mix(in srgb, var(--responsible-color, #8aa0b6) 46%, rgba(68, 95, 118, 0.12));
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--responsible-color, #8aa0b6) 78%, white 22%);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.hero-brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.hero-brand-title {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.hero-brand-credit {
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.weather-banner {
+  grid-column: auto;
+}
+
+.top-controls {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.top-controls .language-toggle {
+  flex-wrap: nowrap;
+}
+
+.top-controls .primary-button,
+.top-controls .ghost-button {
+  min-height: 38px;
+  white-space: nowrap;
+}
+
+.control-strip {
+  display: none;
+}
+
+.hero-copy,
+.hero-actions {
+  display: none;
 }

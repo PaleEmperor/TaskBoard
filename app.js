@@ -10,17 +10,17 @@
   const WEATHER_FALLBACK = { name: "Rovaniemi", latitude: 66.5039, longitude: 25.7294 };
 
   const users = [
-    { id: "bjorn", name: "Björn", emoji: "🛠️", role: { en: "Planner", fi: "Suunnittelija", de: "Planer" } },
+    { id: "bjorn", name: "Björn", emoji: "🍄", role: { en: "Planner", fi: "Suunnittelija", de: "Planer" } },
     { id: "sini", name: "Sini", emoji: "🌿", role: { en: "Home captain", fi: "Kodinhoitaja", de: "Haushaltsprofi" } },
-    { id: "linnea", name: "Linnea", emoji: "🌈", role: { en: "Kid explorer", fi: "Pikku tutkija", de: "Kinderheldin" } },
+    { id: "linnea", name: "Linnea", emoji: "🦄", role: { en: "Kid explorer", fi: "Pikku tutkija", de: "Kinderheldin" } },
     { id: "nina", name: "Nina", emoji: "🐾", role: { en: "Dog buddy", fi: "Koirakaveri", de: "Hundekumpel" } },
   ];
 
   const USER_COLORS = {
-    bjorn: "#4f7cff",
-    sini: "#19a974",
-    linnea: "#ff8a3d",
-    nina: "#c65bcb",
+    bjorn: "#7b5cff",
+    sini: "#f2c94c",
+    linnea: "#f3a6ac",
+    nina: "#7a2434",
   };
 
   const languages = [
@@ -29,7 +29,18 @@
     { id: "de", flag: "🇩🇪", short: "DE" },
   ];
 
-  const iconChoices = ["🧺", "🍽️", "🧹", "🐶", "🎒", "🛒", "🌿", "🛁", "📚", "🧸", "🍎", "🚪", "🛏️", "💌", "🏃", "🌙"];
+  const iconChoices = [
+    "🧺", "🍽️", "🧹", "🪣", "🧽", "🧼", "🧴", "🪥", "🚿", "🛁", "🧻", "🗑️",
+    "🪠", "🛏️", "🛋️", "🚪", "🪟", "🪴", "💡", "🔑", "📦", "🧯", "🔋", "🪫",
+    "🐶", "🦮", "🐕", "🐾", "🦴", "🥣", "🧸", "🪀", "🎲", "🧩", "🎨", "🖍️",
+    "🎒", "📚", "✏️", "📝", "📎", "✂️", "📌", "📖", "🧮", "🎵", "🎹", "🏃",
+    "🚲", "⚽", "🏀", "🧦", "👕", "👖", "🧥", "🧢", "👟", "🪮", "💊", "🩹",
+    "🪥", "🍎", "🥪", "🍞", "🥛", "🍼", "🍌", "🍓", "🥕", "🍲", "🍳", "🥣",
+    "☕", "🫖", "🍽️", "🥄", "🔪", "🛒", "💌", "📅", "⏰", "✅", "⭐", "❤️",
+    "🌿", "🌼", "☀️", "🌙", "❄️", "☔", "🎁", "🚗", "🚌", "🏠", "🛠️", "🔧",
+    "🔨", "🪛", "🧰", "💻", "📱", "🔌", "🎬", "🎮", "🧃", "🍪", "🧁", "🍕",
+    "🍝", "🥗", "🧹", "🪜", "📷", "🪙", "💳", "🛍️", "🎈", "🕯️", "🙏", "💤"
+  ];
   const effortOptions = ["light", "steady", "big"];
   const weekdayKeys = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   const quickTaskTemplates = [
@@ -564,7 +575,9 @@
       renderApp();
     });
     refs.todayButton.addEventListener("click", () => {
+      state.settings.boardDensity = BOARD_DENSITY.everyone;
       state.settings.weekOffset = 0;
+      state.settings.activeFilter = "all";
       saveState();
       renderApp();
     });
@@ -576,11 +589,17 @@
 
   function renderApp() {
     const t = currentMessages();
-    refs.heroEyebrow.textContent = t.heroEyebrow;
     renderWeatherBanner();
-    refs.appTitle.textContent = t.title;
-    refs.appSubtitle.textContent = "";
-    refs.appSubtitle.classList.add("hidden");
+    if (refs.heroEyebrow) {
+      refs.heroEyebrow.textContent = t.heroEyebrow;
+    }
+    if (refs.appTitle) {
+      refs.appTitle.textContent = t.title;
+    }
+    if (refs.appSubtitle) {
+      refs.appSubtitle.textContent = "";
+      refs.appSubtitle.classList.add("hidden");
+    }
     refs.quickAddButton.textContent = t.quickAdd;
     refs.refreshNote.textContent = "";
     refs.refreshNote.classList.add("hidden");
@@ -603,11 +622,10 @@
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
-    refs.todayButton.textContent = t.today;
+    refs.todayButton.textContent = t.everyone;
     fillDialogLabels();
     renderLanguageToggle();
-    renderViewSwitch();
-    renderFilterChips();
+    state.settings.activeFilter = "all";
     renderWeekGrid();
     renderFamilyDock();
     renderSavedTasks();
@@ -693,49 +711,6 @@
       el.className = "summary-card";
       el.innerHTML = `<span>${card.label}</span><strong style="color:${card.accent}">${card.value}</strong>`;
       refs.summaryGrid.appendChild(el);
-    });
-  }
-
-  function renderViewSwitch() {
-    const t = currentMessages();
-    refs.viewSwitch.innerHTML = "";
-    [
-      { id: BOARD_DENSITY.everyone, label: t.everyone },
-      { id: BOARD_DENSITY.mine, label: t.mine },
-      { id: BOARD_DENSITY.family, label: t.family },
-    ].forEach((view) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `view-chip${state.settings.boardDensity === view.id ? " active" : ""}`;
-      button.textContent = view.label;
-      button.addEventListener("click", () => {
-        state.settings.boardDensity = view.id;
-        saveState();
-        renderApp();
-      });
-      refs.viewSwitch.appendChild(button);
-    });
-  }
-
-  function renderFilterChips() {
-    const t = currentMessages();
-    refs.filterChips.innerHTML = "";
-    const filters = [
-      { id: "all", label: t.everyone },
-      { id: "today", label: t.dueToday },
-      { id: "overdue", label: t.overdue },
-    ];
-    filters.forEach((filter) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = `filter-chip${state.settings.activeFilter === filter.id ? " active" : ""}`;
-      chip.textContent = filter.label;
-      chip.addEventListener("click", () => {
-        state.settings.activeFilter = filter.id;
-        saveState();
-        renderApp();
-      });
-      refs.filterChips.appendChild(chip);
     });
   }
 
@@ -937,7 +912,13 @@
         }
         column.appendChild(taskList);
       } else {
-        const taskIcons = tasks.slice(0, 3).map((item) => item.icon).join(" ");
+        const taskIcons = tasks
+          .slice(0, 3)
+          .map(
+            (item) =>
+              `<span class="day-strip-symbol" style="--responsible-color: ${colorForUser(item.task.responsibleId)}">${item.task.icon}</span>`
+          )
+          .join("");
         column.innerHTML = `
           <div class="day-strip">
             <div class="day-strip-day">${t.weekdayLong[weekdayKeys[index]].slice(0, 1)}</div>
@@ -1372,7 +1353,7 @@
     event.preventDefault();
     const payload = {
       title: refs.taskTitleInput.value.trim(),
-      icon: refs.taskIconInput.value,
+      icon: refs.taskIconInput.value || iconChoices[0],
       category: refs.taskCategoryInput.value,
       ownerId: refs.taskOwnerInput.value,
       responsibleId: refs.taskResponsibleInput.value,
