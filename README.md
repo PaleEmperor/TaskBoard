@@ -4,6 +4,8 @@ HomeFlow Board is a browser-based household board built for a shared wall tablet
 
 It runs as a static site on GitHub Pages, stores data locally in the browser, and can be installed on Android as a PWA.
 
+I built this for my family. We are pretty autistic, so the board leans hard into clarity, low-friction interaction, visible structure, and routines that are easy to understand at a glance. Feel free to change things around and make it work for your family. We have fun with it.
+
 ## Current scope
 
 - Current-week household board with one expanded day and compact side days

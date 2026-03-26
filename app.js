@@ -24,9 +24,9 @@
   };
 
   const languages = [
-    { id: "en", flag: "🇬🇧", short: "EN" },
-    { id: "fi", flag: "🇫🇮", short: "FI" },
-    { id: "de", flag: "🇩🇪", short: "DE" },
+    { id: "en", countryCode: "GB", short: "EN" },
+    { id: "fi", countryCode: "FI", short: "FI" },
+    { id: "de", countryCode: "DE", short: "DE" },
   ];
 
   const iconChoices = [
@@ -1064,9 +1064,10 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `lang-chip${language.id === state.settings.language ? " active" : ""}`;
+      button.dataset.lang = language.id;
       button.setAttribute("aria-label", language.short);
       button.title = language.short;
-      button.innerHTML = `<span>${language.flag}</span>`;
+      button.innerHTML = `<span class="sr-only">${language.short}</span>`;
       button.addEventListener("click", () => {
         state.settings.language = language.id;
         saveState();
