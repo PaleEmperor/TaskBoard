@@ -49,10 +49,36 @@
     { id: "trash", icon: "🗑️", category: "home", effort: "light", title: { en: "Trash", fi: "Roskis", de: "Müll" } },
     { id: "dogwalk", icon: "🐶", category: "dog", effort: "steady", title: { en: "Dog walk", fi: "Koiralenkki", de: "Hundespaziergang" } },
     { id: "tidy", icon: "🧹", category: "cleaning", effort: "steady", title: { en: "Quick tidy", fi: "Pikasiivous", de: "Kurz aufräumen" } },
+    { id: "vacuum", icon: "🪠", category: "cleaning", effort: "big", title: { en: "Vacuuming", fi: "Imurointi", de: "Staubsaugen" } },
+    { id: "bedsheets", icon: "🛏️", category: "home", effort: "steady", title: { en: "Change bed sheets", fi: "Vaihda lakanat", de: "Bettwäsche wechseln" } },
     { id: "shopping", icon: "🛒", category: "shopping", effort: "steady", title: { en: "Shopping", fi: "Kauppa", de: "Einkauf" } },
     { id: "school", icon: "🎒", category: "school", effort: "light", title: { en: "School bag", fi: "Reppu", de: "Schultasche" } },
     { id: "bath", icon: "🛁", category: "family", effort: "steady", title: { en: "Bath time", fi: "Kylpy", de: "Badezeit" } }
   ];
+
+  const celebrationPhrases = {
+    en: [
+      "Good job", "Well done", "Nice work", "Great work", "Awesome", "Brilliant", "Excellent", "Super", "Fantastic", "Amazing",
+      "You did it", "So good", "Strong work", "Clean win", "Beautiful", "Solid work", "Great effort", "Keep going", "Shiny work", "Lovely job",
+      "Top work", "That helped", "Huge help", "So tidy", "What a win", "Big success", "Gold star", "Champion", "Nailed it", "Perfect",
+      "Smart move", "Wonderful", "Excellent job", "That was fast", "So smooth", "Legend", "Power move", "House hero", "Family hero", "Great energy",
+      "Fantastic job", "Sharp work", "Mission done", "Beautiful work", "Nice one", "Strong finish", "Helpful", "Treasure", "Sweet", "Yes"
+    ],
+    fi: [
+      "Hyvä", "Hienoa", "Mahtavaa", "Loistavaa", "Upeaa", "Todella hyvä", "Hyvin tehty", "Jes", "Super", "Huippua",
+      "Nyt onnistui", "Tosi hyvä", "Komeaa", "Kaunista työtä", "Mainiota", "Tämä auttoi", "Iso apu", "Hyvä veto", "Loistotyö", "Täydellistä",
+      "Tosi siistiä", "Aivan mahtavaa", "Vau", "Tarkkaa työtä", "Hyvä meininki", "Huikeaa", "Kultatähti", "Mestari", "Nappiin meni", "Tästä tuli hyvä",
+      "Tyylikästä", "Helposti hoidettu", "Nyt sujuu", "Perhesankari", "Kotisankari", "Mahtava veto", "Todella hienoa", "Ihanaa", "Upea homma", "Taitavaa",
+      "Vahva suoritus", "Tämä onnistui", "Hyvä loppu", "Reipasta", "Huipputyö", "Juuri näin", "Siisti homma", "Toimii", "Hyvin meni", "Jes taas"
+    ],
+    de: [
+      "Gut gemacht", "Sehr gut", "Klasse", "Super", "Stark", "Wunderbar", "Prima", "Großartig", "Fantastisch", "Ausgezeichnet",
+      "Sauber", "Top", "Richtig gut", "Schön gemacht", "Bravo", "Das hilft", "Große Hilfe", "Starke Arbeit", "Perfekt", "Toll",
+      "Genau so", "Sehr schön", "Läuft", "Gold wert", "Richtig stark", "Hausheld", "Familienheld", "Spitze", "Erledigt", "Voll gut",
+      "Meisterhaft", "Elegant", "Saubere Arbeit", "Was für ein Erfolg", "Klug gelöst", "Wirklich toll", "Top Arbeit", "Starker Abschluss", "Wunderbar gemacht", "Yes",
+      "Mega", "Fein", "Sehr hilfreich", "Richtig sauber", "Beste Arbeit", "Schöner Treffer", "Stark gemacht", "Gute Energie", "Richtig klasse", "Gewonnen"
+    ],
+  };
 
   const messages = {
     en: {
@@ -97,6 +123,7 @@
       taskResponsible: "Responsible",
       taskDay: "Day",
       taskTime: "Time",
+      taskEndTime: "Until",
       taskRepeat: "Repeat",
       taskInterval: "Every how many days?",
       taskWeekday: "Preferred weekday",
@@ -111,6 +138,10 @@
       delete: "Delete",
       complete: "Complete",
       reopen: "Reopen",
+      didItFor: "I did it for {user}",
+      countedFor: "Counted for {user}",
+      dayCleared: "Day complete",
+      dayClearedSub: "Everything for today is done",
       edit: "Edit",
       emptyDay: "Drop tasks here or use a quick routine",
       owner: "Owner",
@@ -153,6 +184,10 @@
       weatherLoading: "Loading weather",
       weatherUnavailable: "Weather unavailable",
       weatherFallback: "Helsinki",
+      rankingTitle: "Task podium",
+      rankingGold: "Gold",
+      rankingSilver: "Silver",
+      rankingBronze: "Bronze",
       weekdayLong: {
         monday: "Monday",
         tuesday: "Tuesday",
@@ -205,6 +240,7 @@
       taskResponsible: "Vastuuhenkilö",
       taskDay: "Päivä",
       taskTime: "Aika",
+      taskEndTime: "Asti",
       taskRepeat: "Toistuvuus",
       taskInterval: "Kuinka monen päivän välein?",
       taskWeekday: "Suosittu viikonpäivä",
@@ -219,6 +255,10 @@
       delete: "Poista",
       complete: "Valmis",
       reopen: "Avaa uudelleen",
+      didItFor: "Minä tein tämän: {user}",
+      countedFor: "Laskettu käyttäjälle {user}",
+      dayCleared: "Päivä valmis",
+      dayClearedSub: "Kaikki tämän päivän tehtävät on tehty",
       edit: "Muokkaa",
       emptyDay: "Pudota tehtäviä tähän tai käytä pikanappia",
       owner: "Omistaja",
@@ -261,6 +301,10 @@
       weatherLoading: "Ladataan säätä",
       weatherUnavailable: "Sää ei saatavilla",
       weatherFallback: "Helsinki",
+      rankingTitle: "Tehtäväpalkinnot",
+      rankingGold: "Kulta",
+      rankingSilver: "Hopea",
+      rankingBronze: "Pronssi",
       weekdayLong: {
         monday: "Maanantai",
         tuesday: "Tiistai",
@@ -313,6 +357,7 @@
       taskResponsible: "Verantwortlich",
       taskDay: "Tag",
       taskTime: "Uhrzeit",
+      taskEndTime: "Bis",
       taskRepeat: "Wiederholung",
       taskInterval: "Alle wie viele Tage?",
       taskWeekday: "Bevorzugter Wochentag",
@@ -327,6 +372,10 @@
       delete: "Löschen",
       complete: "Erledigt",
       reopen: "Wieder öffnen",
+      didItFor: "Ich habe das für {user} gemacht",
+      countedFor: "Gezählt für {user}",
+      dayCleared: "Tag geschafft",
+      dayClearedSub: "Alles für diesen Tag ist erledigt",
       edit: "Bearbeiten",
       emptyDay: "Aufgaben hier ablegen oder eine Routine benutzen",
       owner: "Besitzer",
@@ -369,6 +418,10 @@
       weatherLoading: "Wetter lädt",
       weatherUnavailable: "Kein Wetter verfügbar",
       weatherFallback: "Helsinki",
+      rankingTitle: "Aufgaben-Podest",
+      rankingGold: "Gold",
+      rankingSilver: "Silber",
+      rankingBronze: "Bronze",
       weekdayLong: {
         monday: "Montag",
         tuesday: "Dienstag",
@@ -410,6 +463,8 @@
   }
 
   function buildTask(config) {
+    const responsibleIds = normalizeResponsibleIds(config.responsible);
+    const finalResponsibleIds = responsibleIds.length ? responsibleIds : ["everyone"];
     return {
       id: crypto.randomUUID(),
       title: typeof config.title === "string" ? config.title : config.title.en,
@@ -417,9 +472,11 @@
       icon: config.icon,
       category: config.category,
       ownerId: config.owner,
-      responsibleId: config.responsible,
+      responsibleId: finalResponsibleIds[0],
+      responsibleIds: finalResponsibleIds,
       dueDate: formatDateKey(config.dueDate),
       dueTime: typeof config.dueTime === "string" ? config.dueTime : "",
+      endTime: typeof config.endTime === "string" ? config.endTime : "",
       recurrence: config.recurrence || "none",
       interval: config.interval || 1,
       weekday: typeof config.weekday === "number" ? config.weekday : null,
@@ -428,7 +485,9 @@
       notesTranslations: typeof config.notes === "string" ? null : config.notes || null,
       status: "open",
       completedAt: null,
+      completedById: null,
       completionDates: [],
+      completionByDate: {},
       exceptionDates: [],
       libraryId: config.libraryId || null,
       seriesId: config.seriesId || null,
@@ -465,6 +524,16 @@
     if (typeof normalized.settings.showCompleted !== "boolean") {
       normalized.settings.showCompleted = false;
     }
+    normalized.tasks = normalized.tasks.map((task) => normalizeResponsibleRecord(task));
+    normalized.taskLibrary = normalized.taskLibrary.map((entry) => normalizeResponsibleRecord(entry));
+    normalized.tasks.forEach((task) => {
+      task.endTime = typeof task.endTime === "string" ? task.endTime : "";
+      task.completedById = normalizeCompletionUserId(task.completedById, task);
+      task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+    });
+    normalized.taskLibrary.forEach((entry) => {
+      entry.endTime = typeof entry.endTime === "string" ? entry.endTime : "";
+    });
     return normalized;
   }
 
@@ -496,6 +565,7 @@
     weatherCondition: document.getElementById("weatherCondition"),
     weatherPlace: document.getElementById("weatherPlace"),
     weatherDetails: document.getElementById("weatherDetails"),
+    weatherRanking: document.getElementById("weatherRanking"),
     appTitle: document.getElementById("appTitle"),
     appSubtitle: document.getElementById("appSubtitle"),
     languageToggle: document.getElementById("languageToggle"),
@@ -531,6 +601,7 @@
     exportDataButton: document.getElementById("exportDataButton"),
     importDataButton: document.getElementById("importDataButton"),
     importDataInput: document.getElementById("importDataInput"),
+    celebrationLayer: document.getElementById("celebrationLayer"),
     taskDialog: document.getElementById("taskDialog"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
@@ -545,6 +616,7 @@
     fieldResponsibleLabel: document.getElementById("fieldResponsibleLabel"),
     fieldDayLabel: document.getElementById("fieldDayLabel"),
     fieldTimeLabel: document.getElementById("fieldTimeLabel"),
+    fieldEndTimeLabel: document.getElementById("fieldEndTimeLabel"),
     fieldRepeatLabel: document.getElementById("fieldRepeatLabel"),
     fieldIntervalLabel: document.getElementById("fieldIntervalLabel"),
     fieldWeekdayLabel: document.getElementById("fieldWeekdayLabel"),
@@ -558,6 +630,7 @@
     taskResponsibleInput: document.getElementById("taskResponsibleInput"),
     taskDayInput: document.getElementById("taskDayInput"),
     taskTimeInput: document.getElementById("taskTimeInput"),
+    taskEndTimeInput: document.getElementById("taskEndTimeInput"),
     taskRecurrenceInput: document.getElementById("taskRecurrenceInput"),
     taskIntervalInput: document.getElementById("taskIntervalInput"),
     taskWeekdayInput: document.getElementById("taskWeekdayInput"),
@@ -591,6 +664,20 @@
       ui.drawerOpen = false;
       renderApp();
     });
+    document.addEventListener("pointerdown", (event) => {
+      if (!ui.drawerOpen) {
+        return;
+      }
+      const target = event.target;
+      if (!(target instanceof Node)) {
+        return;
+      }
+      if (refs.toolDrawer.contains(target) || refs.toolDrawerToggle.contains(target)) {
+        return;
+      }
+      ui.drawerOpen = false;
+      renderApp();
+    });
     refs.showCompletedToggle.addEventListener("change", () => {
       state.settings.showCompleted = refs.showCompletedToggle.checked;
       saveState();
@@ -606,6 +693,7 @@
       refs.taskResponsibleInput,
       refs.taskDayInput,
       refs.taskTimeInput,
+      refs.taskEndTimeInput,
       refs.taskRecurrenceInput,
       refs.taskIntervalInput,
       refs.taskWeekdayInput,
@@ -713,6 +801,7 @@
       refs.weatherCondition.textContent = t.weatherLoading;
       refs.weatherPlace.textContent = t.weatherFallback;
       refs.weatherDetails.textContent = "";
+      renderWeatherRanking();
       return;
     }
 
@@ -721,13 +810,88 @@
       refs.weatherCondition.textContent = t.weatherUnavailable;
       refs.weatherPlace.textContent = weather.place || t.weatherFallback;
       refs.weatherDetails.textContent = "";
+      renderWeatherRanking();
       return;
     }
 
     refs.weatherTemp.textContent = `${Math.round(weather.temperature)}°`;
-    refs.weatherCondition.textContent = weather.condition;
+    refs.weatherCondition.textContent = localizeWeatherCondition(weather.condition);
     refs.weatherPlace.textContent = weather.place;
-    refs.weatherDetails.textContent = weather.wind ? `${Math.round(weather.wind)} km/h` : "";
+    refs.weatherDetails.textContent = weather.wind ? `🌬 ${formatWindMetersPerSecond(weather.wind)} m/s` : "";
+    renderWeatherRanking();
+  }
+
+  function localizeWeatherCondition(condition) {
+    const label = String(condition || "");
+    const map = {
+      en: {
+        Sunny: "Sunny",
+        "Clear night": "Clear night",
+        "Partly cloudy": "Partly cloudy",
+        Cloudy: "Cloudy",
+        Fog: "Fog",
+        Rain: "Rain",
+        Snow: "Snow",
+        Storm: "Storm",
+        Fair: "Fair",
+        Night: "Night",
+      },
+      fi: {
+        Sunny: "Aurinkoista",
+        "Clear night": "Selkeä yö",
+        "Partly cloudy": "Puolipilvistä",
+        Cloudy: "Pilvistä",
+        Fog: "Sumua",
+        Rain: "Sadetta",
+        Snow: "Lunta",
+        Storm: "Myrskyä",
+        Fair: "Selkeää",
+        Night: "Yö",
+      },
+      de: {
+        Sunny: "Sonnig",
+        "Clear night": "Klare Nacht",
+        "Partly cloudy": "Teilweise bewölkt",
+        Cloudy: "Bewölkt",
+        Fog: "Nebel",
+        Rain: "Regen",
+        Snow: "Schnee",
+        Storm: "Sturm",
+        Fair: "Heiter",
+        Night: "Nacht",
+      },
+    };
+    return map[state.settings.language]?.[label] || label;
+  }
+
+  function formatWindMetersPerSecond(windSpeedKmh) {
+    return (Number(windSpeedKmh || 0) / 3.6).toFixed(1);
+  }
+
+  function renderWeatherRanking() {
+    const t = currentMessages();
+    const medals = [t.rankingGold, t.rankingSilver, t.rankingBronze];
+    const leaderboard = getCompletionLeaderboard().slice(0, 3);
+    if (!leaderboard.length) {
+      refs.weatherRanking.innerHTML = "";
+      return;
+    }
+    refs.weatherRanking.innerHTML = `
+      <div class="weather-ranking-title">${t.rankingTitle}</div>
+      <div class="weather-ranking-podium">
+        ${leaderboard
+          .map(
+            (entry, index) => `
+              <div class="weather-ranking-item place-${index + 1}" style="--podium-color: ${colorForUser(entry.user.id)}">
+                <div class="weather-ranking-medal">${medals[index]}</div>
+                <div class="weather-ranking-name">${entry.user.name}</div>
+                <div class="weather-ranking-count">${entry.count}</div>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    `;
   }
 
   function symbolForWeatherTheme(theme) {
@@ -941,6 +1105,39 @@
           moveTaskToDate(ui.selectedTaskId, column.dataset.date);
         }
       });
+      if (isFocused) {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        column.addEventListener(
+          "touchstart",
+          (event) => {
+            const touch = event.changedTouches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+          },
+          { passive: true }
+        );
+        column.addEventListener(
+          "touchend",
+          (event) => {
+            const touch = event.changedTouches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            if (Math.abs(deltaX) < 36 || Math.abs(deltaX) < Math.abs(deltaY)) {
+              return;
+            }
+            const currentIndex = weekDateKeys.indexOf(ui.focusDateKey);
+            if (deltaX < 0 && currentIndex < weekDateKeys.length - 1) {
+              ui.focusDateKey = weekDateKeys[currentIndex + 1];
+              renderApp();
+            } else if (deltaX > 0 && currentIndex > 0) {
+              ui.focusDateKey = weekDateKeys[currentIndex - 1];
+              renderApp();
+            }
+          },
+          { passive: true }
+        );
+      }
 
       const openCount = tasks.filter((item) => !item.done).length;
       const overdueCount = tasks.filter(isItemOverdue).length;
@@ -984,7 +1181,7 @@
           .slice(0, 3)
           .map(
             (item) =>
-              `<span class="day-strip-symbol" style="--responsible-color: ${colorForUser(item.task.responsibleId)}"><span class="day-strip-symbol-icon">${item.task.icon}</span><span class="day-strip-symbol-title">${resolveTaskTitle(item.task)}</span></span>`
+              `<span class="day-strip-symbol" style="--responsible-color: ${colorForUser(getResponsibleIds(item.task)[0])}"><span class="day-strip-symbol-icon">${item.task.icon}</span><span class="day-strip-symbol-title">${resolveTaskTitle(item.task)}</span></span>`
           )
           .join("");
         column.innerHTML = `
@@ -1004,7 +1201,7 @@
   function renderFamilyDock() {
     refs.familyDock.innerHTML = "";
     users.forEach((user) => {
-      const assigned = state.tasks.filter((task) => task.responsibleId === user.id && task.status === "open").length;
+      const assigned = state.tasks.filter((task) => getResponsibleIds(task).includes(user.id) && task.status === "open").length;
       const button = document.createElement("button");
       button.type = "button";
       const isActiveMember =
@@ -1118,10 +1315,7 @@
       }))
     );
     fillSelect(refs.taskOwnerInput, users.map((user) => ({ value: user.id, label: `${user.emoji} ${user.name}` })));
-    fillSelect(
-      refs.taskResponsibleInput,
-      [{ value: "everyone", label: currentMessages().everyone }].concat(users.map((user) => ({ value: user.id, label: `${user.emoji} ${user.name}` })))
-    );
+    renderResponsiblePicker();
     fillSelect(refs.taskEffortInput, effortOptions.map((effort) => ({ value: effort, label: currentMessages()[effort] })));
     fillSelect(refs.taskWeekdayInput, weekdayKeys.map((key, index) => ({ value: String(index), label: currentMessages().weekdayLong[key] })));
     fillSelect(refs.taskRecurrenceInput, [
@@ -1236,6 +1430,40 @@
     });
   }
 
+  function renderResponsiblePicker(selectedIds) {
+    const activeIds = normalizeResponsibleIds(selectedIds || refs.taskResponsibleInput.dataset.value?.split(",") || state.settings.currentUserId);
+    refs.taskResponsibleInput.dataset.value = activeIds.join(",");
+    refs.taskResponsibleInput.innerHTML = "";
+    [{ id: "everyone", label: currentMessages().everyone }].concat(
+      users.map((user) => ({ id: user.id, label: `${user.emoji} ${user.name}` }))
+    ).forEach((entry) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `responsible-chip${activeIds.includes(entry.id) ? " active" : ""}`;
+      button.textContent = entry.label;
+      button.addEventListener("click", () => {
+        let nextIds;
+        if (entry.id === "everyone") {
+          nextIds = ["everyone"];
+        } else {
+          const currentIds = normalizeResponsibleIds(refs.taskResponsibleInput.dataset.value?.split(","));
+          nextIds = currentIds.filter((id) => id !== "everyone");
+          if (nextIds.includes(entry.id)) {
+            nextIds = nextIds.filter((id) => id !== entry.id);
+          } else {
+            nextIds.push(entry.id);
+          }
+          if (!nextIds.length) {
+            nextIds = [state.settings.currentUserId];
+          }
+        }
+        renderResponsiblePicker(nextIds);
+        renderTaskPreview();
+      });
+      refs.taskResponsibleInput.appendChild(button);
+    });
+  }
+
   function fillDialogLabels() {
     const t = currentMessages();
     refs.dialogEyebrow.textContent = ui.dialogMode === "edit" ? t.editTask : t.addTask;
@@ -1247,6 +1475,7 @@
     refs.fieldResponsibleLabel.textContent = t.taskResponsible;
     refs.fieldDayLabel.textContent = t.taskDay;
     refs.fieldTimeLabel.textContent = t.taskTime;
+    refs.fieldEndTimeLabel.textContent = t.taskEndTime;
     refs.fieldRepeatLabel.textContent = t.taskRepeat;
     refs.fieldIntervalLabel.textContent = t.taskInterval;
     refs.fieldWeekdayLabel.textContent = t.taskWeekday;
@@ -1263,9 +1492,11 @@
     const title = refs.taskTitleInput.value.trim() || "Task title";
     const icon = refs.taskIconInput.value || iconChoices[0];
     const ownerId = refs.taskOwnerInput.value || state.settings.currentUserId;
-    const responsibleId = refs.taskResponsibleInput.value || state.settings.currentUserId;
+    const responsibleIds = normalizeResponsibleIds(refs.taskResponsibleInput.dataset.value?.split(",") || state.settings.currentUserId);
+    const responsibleId = responsibleIds[0] || state.settings.currentUserId;
     const dueDate = refs.taskDayInput.value || formatDateKey(startOfDay(new Date()));
     const dueTime = refs.taskTimeInput.value || "";
+    const endTime = refs.taskEndTimeInput.value || "";
     const recurrence = refs.taskRecurrenceInput.value || "none";
     const effort = refs.taskEffortInput.value || "steady";
     const category = refs.taskCategoryInput.value || "home";
@@ -1286,13 +1517,13 @@
     detailsShell.open = true;
     iconNode.textContent = icon;
     titleNode.textContent = title;
-    metaNode.textContent = buildPreviewMetaLine({ category, responsibleId, dueDate, dueTime });
+    metaNode.textContent = buildPreviewMetaLine({ category, responsibleIds, dueDate, dueTime, endTime });
     complete.textContent = t.complete;
     complete.disabled = true;
     editButton.remove();
 
     badges.appendChild(createBadge(`${t.owner}: ${displayUser(ownerId)}`));
-    badges.appendChild(createBadge(`${t.responsible}: ${displayUser(responsibleId)}`));
+    badges.appendChild(createBadge(`${t.responsible}: ${displayUsers(responsibleIds)}`));
     badges.appendChild(createBadge(`${t.statusEffort}: ${t[effort]}`));
     if (recurrence !== "none") {
       badges.appendChild(createBadge(`${t.statusRecurring}: ${recurrenceLabel(recurrence)}`));
@@ -1302,7 +1533,7 @@
     refs.taskPreviewCard.appendChild(fragment);
   }
 
-  function buildPreviewMetaLine({ category, responsibleId, dueDate, dueTime }) {
+  function buildPreviewMetaLine({ category, responsibleIds, dueDate, dueTime, endTime }) {
     const due = parseDateKey(dueDate);
     const t = currentMessages();
     let dueLabel = formatNumericDate(due);
@@ -1311,8 +1542,9 @@
     } else if (isSameDay(due, addDays(startOfDay(new Date()), 1))) {
       dueLabel = t.dueTomorrow;
     }
-    const timeLabel = dueTime ? `${dueTime} • ` : "";
-    return `${messageForCategory(category)} • ${displayUser(responsibleId)} • ${timeLabel}${dueLabel}`;
+    const timeLabel = formatTaskTimeRange({ dueTime, endTime });
+    const timePrefix = timeLabel ? `${timeLabel} • ` : "";
+    return `${messageForCategory(category)} • ${displayUsers(responsibleIds)} • ${timePrefix}${dueLabel}`;
   }
 
   function createTaskCard(item) {
@@ -1327,10 +1559,12 @@
     const meta = fragment.querySelector(".task-meta");
     const badges = fragment.querySelector(".task-badges");
     const editButton = fragment.querySelector(".edit-task-button");
+    const creditButton = fragment.querySelector(".credit-task-button");
 
     const task = item.task;
     const overdue = isItemOverdue(item);
-    const responsibleColor = colorForUser(task.responsibleId);
+    const responsibleIds = getResponsibleIds(task);
+    const responsibleColor = colorForUser(responsibleIds[0]);
     card.dataset.taskId = task.id;
     card.dataset.dateKey = item.dateKey;
     card.style.setProperty("--responsible-color", responsibleColor);
@@ -1363,9 +1597,18 @@
     complete.addEventListener("click", () => toggleTaskCompletion(item, !item.done));
     editButton.textContent = t.edit;
     editButton.addEventListener("click", () => openTaskDialog(task.id));
+    if (item.done) {
+      const currentCreditId = getCompletionUserIdForItem(item);
+      const targetUserId = state.settings.currentUserId;
+      const targetUserLabel = displayUser(targetUserId);
+      creditButton.classList.remove("hidden");
+      creditButton.disabled = currentCreditId === targetUserId;
+      creditButton.textContent = (currentCreditId === targetUserId ? t.countedFor : t.didItFor).replace("{user}", targetUserLabel);
+      creditButton.addEventListener("click", () => creditTaskCompletion(item, targetUserId));
+    }
 
     badges.appendChild(createBadge(`${t.owner}: ${displayUser(task.ownerId)}`));
-    badges.appendChild(createBadge(`${t.responsible}: ${displayUser(task.responsibleId)}`));
+    badges.appendChild(createBadge(`${t.responsible}: ${displayUsers(responsibleIds)}`));
     badges.appendChild(createBadge(`${t.statusEffort}: ${t[task.effort]}`));
     if (task.recurrence !== "none") {
       badges.appendChild(createBadge(`${t.statusRecurring}: ${recurrenceLabel(task.recurrence)}`));
@@ -1396,9 +1639,10 @@
     refs.taskIconInput.value = task?.icon || defaults?.icon || iconChoices[0];
     refs.taskCategoryInput.value = task?.category || defaults?.category || "home";
     refs.taskOwnerInput.value = task?.ownerId || defaults?.ownerId || state.settings.currentUserId;
-    refs.taskResponsibleInput.value = task?.responsibleId || defaults?.responsibleId || state.settings.currentUserId;
+    renderResponsiblePicker(task?.responsibleIds || defaults?.responsibleIds || task?.responsibleId || defaults?.responsibleId || state.settings.currentUserId);
     refs.taskDayInput.value = task?.dueDate || defaults?.dueDate || today;
     refs.taskTimeInput.value = task?.dueTime || defaults?.dueTime || "";
+    refs.taskEndTimeInput.value = task?.endTime || defaults?.endTime || "";
     refs.taskRecurrenceInput.value = task?.recurrence || "none";
     refs.taskIntervalInput.value = String(task?.interval || 1);
     refs.taskWeekdayInput.value = String(task?.weekday ?? getWeekdayIndex(startOfDay(new Date())));
@@ -1427,7 +1671,9 @@
       category: template.category,
       ownerId: selectedUserId,
       responsibleId: selectedUserId,
+      responsibleIds: [selectedUserId],
       dueDate: dateKey,
+      endTime: "",
       recurrence: "none",
       interval: 1,
       weekday: null,
@@ -1436,7 +1682,9 @@
       notesTranslations: null,
       status: "open",
       completedAt: null,
+      completedById: null,
       completionDates: [],
+      completionByDate: {},
       exceptionDates: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -1458,9 +1706,10 @@
       icon: entry.icon,
       category: entry.category,
       owner: selectedUserId,
-      responsible: selectedUserId,
+      responsible: getResponsibleIds(entry).length > 1 ? getResponsibleIds(entry) : selectedUserId,
       dueDate: dateKey,
       dueTime: entry.dueTime || "",
+      endTime: entry.endTime || "",
       recurrence: entry.recurrence,
       interval: entry.interval,
       weekday: entry.weekday,
@@ -1534,9 +1783,10 @@
       icon: refs.taskIconInput.value || iconChoices[0],
       category: refs.taskCategoryInput.value,
       ownerId: refs.taskOwnerInput.value,
-      responsibleId: refs.taskResponsibleInput.value,
+      responsibleIds: normalizeResponsibleIds(refs.taskResponsibleInput.dataset.value?.split(",") || state.settings.currentUserId),
       dueDate: refs.taskDayInput.value,
       dueTime: refs.taskTimeInput.value,
+      endTime: refs.taskEndTimeInput.value,
       recurrence: refs.taskRecurrenceInput.value,
       interval: Number(refs.taskIntervalInput.value) || 1,
       weekday: Number(refs.taskWeekdayInput.value),
@@ -1556,9 +1806,12 @@
         return;
       }
       Object.assign(task, payload, {
+        responsibleId: payload.responsibleIds[0] || "everyone",
         titleTranslations: null,
         notesTranslations: null,
         completionDates: task.completionDates || [],
+        completionByDate: normalizeCompletionByDate(task.completionByDate, task),
+        completedById: normalizeCompletionUserId(task.completedById, task),
         updatedAt: new Date().toISOString(),
       });
       if (task.recurrence !== "none" && !task.seriesId) {
@@ -1571,9 +1824,10 @@
         icon: payload.icon,
         category: payload.category,
         owner: payload.ownerId,
-        responsible: payload.responsibleId,
+        responsible: payload.responsibleIds,
         dueDate: payload.dueDate,
         dueTime: payload.dueTime,
+        endTime: payload.endTime,
         recurrence: payload.recurrence,
         interval: payload.interval,
         weekday: payload.weekday,
@@ -1640,7 +1894,9 @@
       category: task.category,
       ownerId: task.ownerId,
       responsibleId: task.responsibleId,
+      responsibleIds: getResponsibleIds(task),
       dueTime: task.dueTime || "",
+      endTime: task.endTime || "",
       recurrence: task.recurrence || "none",
       interval: task.interval || 1,
       weekday: typeof task.weekday === "number" ? task.weekday : null,
@@ -1707,6 +1963,7 @@
       return;
     }
     task.responsibleId = userId;
+    task.responsibleIds = [userId];
     task.updatedAt = new Date().toISOString();
     ui.selectedTaskId = null;
     saveState();
@@ -1722,7 +1979,7 @@
       reassignTask(item.task.id, userId);
       return;
     }
-    moveRecurringOccurrence(item, { responsibleId: userId });
+    moveRecurringOccurrence(item, { responsibleId: userId, responsibleIds: [userId] });
   }
 
   function moveRecurringOccurrence(item, changes) {
@@ -1743,8 +2000,10 @@
       category: task.category,
       ownerId: task.ownerId,
       responsibleId: changes.responsibleId || task.responsibleId,
+      responsibleIds: changes.responsibleIds || getResponsibleIds(task),
       dueDate: changes.dueDate || item.dateKey,
       dueTime: task.dueTime || "",
+      endTime: task.endTime || "",
       recurrence: "none",
       interval: 1,
       weekday: null,
@@ -1755,7 +2014,9 @@
       seriesId: task.seriesId || task.id,
       status: "open",
       completedAt: null,
+      completedById: null,
       completionDates: [],
+      completionByDate: {},
       exceptionDates: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -1778,21 +2039,100 @@
     if (!task) {
       return;
     }
+    const openBefore = countOpenBoardItemsForDate(boardItem.dateKey);
     if (task.recurrence !== "none") {
       task.completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
+      task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
       if (shouldComplete) {
         if (!task.completionDates.includes(boardItem.dateKey)) {
           task.completionDates.push(boardItem.dateKey);
         }
+        task.completionByDate[boardItem.dateKey] = getDefaultCompletionUserId(task);
       } else {
         task.completionDates = task.completionDates.filter((dateKey) => dateKey !== boardItem.dateKey);
+        delete task.completionByDate[boardItem.dateKey];
       }
     } else {
       task.status = shouldComplete ? "done" : "open";
       task.completedAt = shouldComplete ? new Date().toISOString() : null;
+      task.completedById = shouldComplete ? getDefaultCompletionUserId(task) : null;
     }
     task.updatedAt = new Date().toISOString();
     ui.selectedTaskId = null;
+    saveState();
+    renderApp();
+    if (shouldComplete) {
+      launchCelebrationBurst();
+      const openAfter = countOpenBoardItemsForDate(boardItem.dateKey);
+      if (openBefore > 0 && openAfter === 0) {
+        launchDayCompletionCelebration();
+      }
+    }
+  }
+
+  function launchCelebrationBurst() {
+    if (!refs.celebrationLayer) {
+      return;
+    }
+    const phrases = celebrationPhrases[state.settings.language] || celebrationPhrases.en;
+    const burstCount = Math.min(18, phrases.length);
+    for (let index = 0; index < burstCount; index += 1) {
+      const chip = document.createElement("div");
+      chip.className = "celebration-chip";
+      chip.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+      chip.style.setProperty("--x", `${8 + Math.random() * 84}%`);
+      chip.style.setProperty("--delay", `${Math.random() * 0.35}s`);
+      chip.style.setProperty("--duration", `${2.2 + Math.random() * 1.3}s`);
+      chip.style.setProperty("--drift", `${(Math.random() - 0.5) * 120}px`);
+      chip.style.setProperty("--rotate", `${(Math.random() - 0.5) * 18}deg`);
+      refs.celebrationLayer.appendChild(chip);
+      window.setTimeout(() => chip.remove(), 4200);
+    }
+  }
+
+  function launchDayCompletionCelebration() {
+    if (!refs.celebrationLayer) {
+      return;
+    }
+    const t = currentMessages();
+    const banner = document.createElement("div");
+    banner.className = "day-clear-banner";
+    banner.innerHTML = `<strong>${t.dayCleared}</strong><span>${t.dayClearedSub}</span>`;
+    refs.celebrationLayer.appendChild(banner);
+    window.setTimeout(() => banner.remove(), 3600);
+
+    for (let index = 0; index < 28; index += 1) {
+      const piece = document.createElement("div");
+      piece.className = "confetti-piece";
+      piece.style.setProperty("--x", `${4 + Math.random() * 92}%`);
+      piece.style.setProperty("--delay", `${Math.random() * 0.18}s`);
+      piece.style.setProperty("--duration", `${2.2 + Math.random() * 1.2}s`);
+      piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 160}px`);
+      piece.style.setProperty("--spin", `${240 + Math.random() * 240}deg`);
+      piece.style.setProperty("--confetti-color", confettiColorForIndex(index));
+      refs.celebrationLayer.appendChild(piece);
+      window.setTimeout(() => piece.remove(), 3800);
+    }
+  }
+
+  function creditTaskCompletion(boardItem, userId) {
+    const task = state.tasks.find((item) => item.id === boardItem.task.id);
+    if (!task || !users.some((user) => user.id === userId)) {
+      return;
+    }
+    if (task.recurrence !== "none") {
+      task.completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
+      if (!task.completionDates.includes(boardItem.dateKey)) {
+        return;
+      }
+      task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      task.completionByDate[boardItem.dateKey] = userId;
+    } else if (task.status === "done") {
+      task.completedById = userId;
+    } else {
+      return;
+    }
+    task.updatedAt = new Date().toISOString();
     saveState();
     renderApp();
   }
@@ -1820,6 +2160,16 @@
         task.completionDates = [];
         changed = true;
       }
+      const normalizedCompletionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      if (JSON.stringify(task.completionByDate || {}) !== JSON.stringify(normalizedCompletionByDate)) {
+        task.completionByDate = normalizedCompletionByDate;
+        changed = true;
+      }
+      const normalizedCompletedById = normalizeCompletionUserId(task.completedById, task);
+      if (task.completedById !== normalizedCompletedById) {
+        task.completedById = normalizedCompletedById;
+        changed = true;
+      }
       if (!Array.isArray(task.exceptionDates)) {
         task.exceptionDates = [];
         changed = true;
@@ -1834,6 +2184,15 @@
     const weekStart = getDisplayedWeekStart();
     const weekEnd = addDays(weekStart, 6);
     return state.tasks.flatMap((task) => getBoardItemsForTask(task, weekStart, weekEnd)).filter(matchesBoardFilters).sort(compareBoardItems);
+  }
+
+  function getAllBoardItemsForDate(dateKey) {
+    const date = parseDateKey(dateKey);
+    return state.tasks.flatMap((task) => getBoardItemsForTask(task, date, date));
+  }
+
+  function countOpenBoardItemsForDate(dateKey) {
+    return getAllBoardItemsForDate(dateKey).filter((item) => !item.done).length;
   }
 
   function getItemsForDay(dayDate) {
@@ -1921,7 +2280,7 @@
     if (state.settings.activeFilter === "overdue" && !isItemOverdue(item)) {
       return false;
     }
-    if (state.settings.boardDensity === BOARD_DENSITY.mine && task.responsibleId !== state.settings.currentUserId) {
+    if (state.settings.boardDensity === BOARD_DENSITY.mine && !getResponsibleIds(task).includes(state.settings.currentUserId)) {
       return false;
     }
     return true;
@@ -1936,7 +2295,9 @@
     if (leftTime !== rightTime) {
       return leftTime.localeCompare(rightTime);
     }
-    if (left.task.responsibleId === state.settings.currentUserId && right.task.responsibleId !== state.settings.currentUserId) {
+    const leftIncludesCurrent = getResponsibleIds(left.task).includes(state.settings.currentUserId);
+    const rightIncludesCurrent = getResponsibleIds(right.task).includes(state.settings.currentUserId);
+    if (leftIncludesCurrent && !rightIncludesCurrent) {
       return -1;
     }
     return resolveTaskTitle(left.task).localeCompare(resolveTaskTitle(right.task));
@@ -1958,8 +2319,105 @@
     return users.find((user) => user.id === userId)?.name || userId;
   }
 
+  function normalizeResponsibleIds(value) {
+    const raw = Array.isArray(value) ? value : [value];
+    const cleaned = raw.filter((entry) => entry === "everyone" || users.some((user) => user.id === entry));
+    const unique = Array.from(new Set(cleaned));
+    if (unique.includes("everyone")) {
+      return ["everyone"];
+    }
+    return unique;
+  }
+
+  function normalizeResponsibleRecord(record) {
+    if (!record) {
+      return record;
+    }
+    const responsibleIds = normalizeResponsibleIds(record.responsibleIds?.length ? record.responsibleIds : record.responsibleId);
+    record.responsibleIds = responsibleIds.length ? responsibleIds : ["everyone"];
+    record.responsibleId = record.responsibleIds[0];
+    return record;
+  }
+
+  function getDefaultCompletionUserId(task) {
+    const responsibleIds = getResponsibleIds(task).filter((id) => id !== "everyone");
+    return responsibleIds[0] || task?.ownerId || state.settings.currentUserId || "bjorn";
+  }
+
+  function normalizeCompletionUserId(userId, task) {
+    if (userId == null) {
+      return userId;
+    }
+    return users.some((user) => user.id === userId) ? userId : getDefaultCompletionUserId(task);
+  }
+
+  function normalizeCompletionByDate(map, task) {
+    if (!map || typeof map !== "object" || Array.isArray(map)) {
+      return {};
+    }
+    return Object.fromEntries(
+      Object.entries(map).filter(
+        ([dateKey, userId]) => /^\d{4}-\d{2}-\d{2}$/.test(dateKey) && normalizeCompletionUserId(userId, task) === userId
+      )
+    );
+  }
+
+  function getResponsibleIds(task) {
+    return normalizeResponsibleIds(task?.responsibleIds?.length ? task.responsibleIds : task?.responsibleId);
+  }
+
+  function getCompletionUserIdForItem(item) {
+    const task = item?.task;
+    if (!task) {
+      return null;
+    }
+    if (task.recurrence !== "none") {
+      const completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      return completionByDate[item.dateKey] || getDefaultCompletionUserId(task);
+    }
+    return normalizeCompletionUserId(task.completedById, task) || getDefaultCompletionUserId(task);
+  }
+
+  function displayUsers(userIds) {
+    const ids = normalizeResponsibleIds(userIds);
+    return ids.map(displayUser).join(", ");
+  }
+
   function colorForUser(userId) {
     return USER_COLORS[userId] || "#8aa0b6";
+  }
+
+  function confettiColorForIndex(index) {
+    const palette = ["#7b5cff", "#f2c94c", "#f3a6ac", "#7a2434", "#1b8f8a", "#4277cf"];
+    return palette[index % palette.length];
+  }
+
+  function formatTaskTimeRange(task) {
+    const start = task?.dueTime || "";
+    const end = task?.endTime || "";
+    if (start && end) {
+      return `${start}-${end}`;
+    }
+    return start || "";
+  }
+
+  function parseTimeValue(value) {
+    if (typeof value !== "string" || !value.includes(":")) {
+      return null;
+    }
+    const [hours, minutes] = value.split(":").map(Number);
+    if (!Number.isInteger(hours) || !Number.isInteger(minutes)) {
+      return null;
+    }
+    return { hours, minutes };
+  }
+
+  function buildDateTime(date, timeValue) {
+    const parsed = parseTimeValue(timeValue);
+    if (!parsed) {
+      return null;
+    }
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), parsed.hours, parsed.minutes, 0, 0);
   }
 
   function describeBoardItemLine(item) {
@@ -1972,8 +2430,9 @@
     } else if (isSameDay(dueDate, addDays(startOfDay(new Date()), 1))) {
       dueLabel = t.dueTomorrow;
     }
-    const timeLabel = task.dueTime ? `${task.dueTime} • ` : "";
-    return `${messageForCategory(task.category)} • ${displayUser(task.responsibleId)} • ${timeLabel}${dueLabel}`;
+    const timeRange = formatTaskTimeRange(task);
+    const timeLabel = timeRange ? `${timeRange} • ` : "";
+    return `${messageForCategory(task.category)} • ${displayUsers(getResponsibleIds(task))} • ${timeLabel}${dueLabel}`;
   }
 
   function resolveTaskTitle(task) {
@@ -2032,7 +2491,20 @@
   }
 
   function isItemOverdue(item) {
-    return !item.done && parseDateKey(item.dateKey) < startOfDay(new Date());
+    if (item.done) {
+      return false;
+    }
+    const now = new Date();
+    const itemDate = parseDateKey(item.dateKey);
+    const today = startOfDay(now);
+    if (itemDate < today) {
+      return true;
+    }
+    if (!isSameDay(itemDate, now)) {
+      return false;
+    }
+    const overdueAt = buildDateTime(itemDate, item.task.endTime || item.task.dueTime);
+    return overdueAt ? now > overdueAt : false;
   }
 
   function countCompletedToday() {
@@ -2043,6 +2515,22 @@
       }
       return count + (task.completedAt ? (isSameDay(new Date(task.completedAt), new Date()) ? 1 : 0) : 0);
     }, 0);
+  }
+
+  function getCompletionLeaderboard() {
+    return users
+      .map((user) => ({
+        user,
+        count: state.tasks.reduce((total, task) => {
+          if (task.recurrence !== "none") {
+            const completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
+            const completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+            return total + completionDates.filter((dateKey) => (completionByDate[dateKey] || getDefaultCompletionUserId(task)) === user.id).length;
+          }
+          return total + (task.completedAt && (normalizeCompletionUserId(task.completedById, task) || getDefaultCompletionUserId(task)) === user.id ? 1 : 0);
+        }, 0),
+      }))
+      .sort((left, right) => right.count - left.count || left.user.name.localeCompare(right.user.name));
   }
 
   function startOfWeek(date) {

@@ -22,6 +22,7 @@
     <div class="background-glow background-glow-right"></div>
 
     <div class="app-shell">
+      <div class="celebration-layer" id="celebrationLayer" aria-hidden="true"></div>
       <header class="hero">
         <div class="hero-brand">
           <span class="hero-brand-title" id="appTitle"></span>
@@ -42,6 +43,7 @@
               <span id="weatherPlace"></span>
               <span id="weatherDetails"></span>
             </div>
+            <div class="weather-ranking" id="weatherRanking"></div>
           </div>
         </section>
 
@@ -152,7 +154,7 @@
 
           <label class="field">
             <span id="fieldResponsibleLabel"></span>
-            <select id="taskResponsibleInput" name="responsible"></select>
+            <div class="responsible-picker" id="taskResponsibleInput"></div>
           </label>
 
           <label class="field">
@@ -163,6 +165,11 @@
           <label class="field">
             <span id="fieldTimeLabel"></span>
             <input id="taskTimeInput" name="dueTime" type="time" />
+          </label>
+
+          <label class="field">
+            <span id="fieldEndTimeLabel"></span>
+            <input id="taskEndTimeInput" name="endTime" type="time" />
           </label>
 
           <label class="field">
@@ -218,6 +225,7 @@
             <div class="task-badges"></div>
             <div class="task-actions">
               <button class="ghost-button small-button edit-task-button" type="button"></button>
+              <button class="ghost-button small-button credit-task-button hidden" type="button"></button>
             </div>
           </div>
         </details>
