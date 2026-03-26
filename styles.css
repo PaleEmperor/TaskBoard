@@ -930,10 +930,11 @@ h1 {
 
 .board-layout {
   display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
   margin-top: 6px;
   align-items: start;
+  position: relative;
 }
 
 .week-grid {
@@ -985,19 +986,9 @@ h1 {
   font-size: 0.88rem;
 }
 
-.quick-tasks-panel {
-  margin-top: 8px;
-  padding: 10px 12px;
-}
-
-.quick-tasks-stack {
-  display: grid;
-  gap: 10px;
-}
-
 .quick-tasks-strip {
   display: grid;
-  grid-template-columns: repeat(8, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin-top: 6px;
 }
@@ -1033,20 +1024,7 @@ h1 {
   gap: 10px;
 }
 
-.side-nav-panel {
-  display: grid;
-  gap: 8px;
-  align-content: start;
-  grid-column: 1;
-  grid-row: 1;
-  min-height: calc(100vh - 16px);
-  padding: 4px 0;
-  overflow: hidden;
-}
-
 .board-stack {
-  grid-column: 2;
-  grid-row: 1;
   min-width: 0;
 }
 
@@ -1054,6 +1032,52 @@ h1 {
   padding: 8px;
   min-height: 0;
   overflow: hidden;
+}
+
+.tool-drawer-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 12;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(68, 95, 118, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  box-shadow: 0 8px 18px rgba(32, 48, 61, 0.08);
+}
+
+.tool-drawer {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  width: min(360px, calc(100vw - 20px));
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(244, 248, 251, 0.98);
+  border: 1px solid rgba(68, 95, 118, 0.12);
+  border-radius: 22px;
+  box-shadow: 0 18px 38px rgba(32, 48, 61, 0.16);
+  transform: translateX(calc(100% + 20px));
+  transition: transform 180ms ease;
+  z-index: 20;
+  overflow-y: auto;
+}
+
+.tool-drawer.open {
+  transform: translateX(0);
+}
+
+.tool-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 2px 4px;
 }
 
 .focus-band {
@@ -1661,4 +1685,176 @@ details[open] > .accordion-summary::after {
   .quick-tasks-strip {
     grid-template-columns: repeat(2, minmax(120px, 1fr));
   }
+}
+
+/* Final compact overrides */
+.hero {
+  gap: 6px;
+}
+
+.hero-actions {
+  gap: 6px;
+}
+
+.weather-banner {
+  min-height: 96px;
+  grid-template-columns: 96px 1fr;
+}
+
+.weather-copy {
+  padding: 10px 14px;
+}
+
+.weather-symbol {
+  font-size: 1.9rem;
+}
+
+.hero-copy {
+  padding: 10px 12px;
+  min-height: 82px;
+}
+
+.top-controls,
+.control-strip,
+.focus-panel,
+.board-panel,
+.side-panel,
+.tool-panel {
+  padding: 8px;
+}
+
+.summary-grid,
+#summaryGrid,
+#focusAccordion,
+#focusPanel {
+  display: none !important;
+}
+
+.board-layout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+}
+
+.board-panel-header {
+  gap: 8px;
+}
+
+.board-tools {
+  gap: 6px;
+}
+
+.week-grid {
+  margin-top: 10px;
+  gap: 6px;
+  padding-bottom: 4px;
+}
+
+.day-column {
+  min-height: 300px;
+  padding: 8px 6px;
+  border-radius: 18px;
+  gap: 8px;
+}
+
+.day-column.collapsed {
+  min-width: 60px;
+  min-height: 300px;
+  padding: 8px 4px;
+}
+
+.day-heading strong {
+  font-size: 0.92rem;
+}
+
+.day-heading span {
+  font-size: 0.74rem;
+}
+
+.day-add-button {
+  min-height: 32px;
+  padding: 6px 8px;
+  font-size: 0.76rem;
+}
+
+.badge {
+  padding: 4px 8px;
+  font-size: 0.74rem;
+}
+
+.task-list {
+  gap: 8px;
+}
+
+.task-card {
+  padding: 10px;
+  border-radius: 16px;
+  gap: 8px;
+}
+
+.task-summary {
+  gap: 8px;
+}
+
+.task-title {
+  font-size: 0.88rem;
+}
+
+.task-meta {
+  font-size: 0.72rem;
+}
+
+.complete-chip {
+  min-height: 36px;
+  font-size: 0.8rem;
+}
+
+.empty-drop {
+  width: min(100%, 180px);
+  min-height: 54px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+}
+
+.tool-drawer-toggle {
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+}
+
+.tool-drawer {
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  width: min(312px, calc(100vw - 16px));
+  gap: 6px;
+  padding: 8px;
+  border-radius: 18px;
+}
+
+.tool-drawer-header {
+  padding: 0 0 2px;
+}
+
+.family-dock {
+  gap: 6px;
+}
+
+.member-tile {
+  padding: 8px;
+  gap: 2px;
+}
+
+.quick-tasks-strip {
+  gap: 6px;
+}
+
+.quick-task-chip {
+  min-height: 48px;
+  padding: 6px;
+}
+
+.quick-task-icon {
+  font-size: 0.96rem;
 }

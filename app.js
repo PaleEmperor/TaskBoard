@@ -424,6 +424,7 @@
     selectedTaskId: null,
     expandedCards: {},
     focusDateKey: null,
+    drawerOpen: false,
     weather: {
       status: "loading",
       place: WEATHER_FALLBACK.name,
@@ -447,6 +448,10 @@
     appSubtitle: document.getElementById("appSubtitle"),
     languageToggle: document.getElementById("languageToggle"),
     quickAddButton: document.getElementById("quickAddButton"),
+    toolDrawerToggle: document.getElementById("toolDrawerToggle"),
+    toolDrawer: document.getElementById("toolDrawer"),
+    toolDrawerClose: document.getElementById("toolDrawerClose"),
+    toolDrawerTitle: document.getElementById("toolDrawerTitle"),
     summaryGrid: document.getElementById("summaryGrid"),
     viewSwitch: document.getElementById("viewSwitch"),
     filterChips: document.getElementById("filterChips"),
@@ -516,6 +521,14 @@
 
   function bindEvents() {
     refs.quickAddButton.addEventListener("click", () => openTaskDialog());
+    refs.toolDrawerToggle.addEventListener("click", () => {
+      ui.drawerOpen = true;
+      renderApp();
+    });
+    refs.toolDrawerClose.addEventListener("click", () => {
+      ui.drawerOpen = false;
+      renderApp();
+    });
     refs.closeDialogButton.addEventListener("click", closeDialog);
     refs.cancelTaskButton.addEventListener("click", closeDialog);
     refs.prevWeekButton.addEventListener("click", () => {
@@ -550,21 +563,27 @@
     refs.refreshNote.textContent = "";
     refs.refreshNote.classList.add("hidden");
     refs.boardLabel.textContent = t.boardLabel;
-    refs.focusLabel.textContent = t.focusLabel;
-    refs.focusSummaryHeading.textContent = t.focusSummaryHeading;
-    refs.quickAssignLabel.textContent = t.quickAssignLabel;
+    if (refs.focusLabel) {
+      refs.focusLabel.textContent = t.focusLabel;
+    }
+    if (refs.focusSummaryHeading) {
+      refs.focusSummaryHeading.textContent = t.focusSummaryHeading;
+    }
+    if (refs.quickAssignLabel) {
+      refs.quickAssignLabel.textContent = t.quickAssignLabel;
+    }
     refs.familyHeading.textContent = t.familyHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
+    refs.toolDrawerTitle.textContent = "Tools";
+    refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
     refs.todayButton.textContent = t.today;
     fillDialogLabels();
     renderLanguageToggle();
-    renderSummaryGrid();
     renderViewSwitch();
     renderFilterChips();
-    renderFocusPanel();
     renderWeekGrid();
     renderFamilyDock();
     renderSavedTasks();
