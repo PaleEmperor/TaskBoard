@@ -92,7 +92,6 @@
       prevWeek: "<- Week",
       nextWeek: "Week ->",
       today: "Today",
-      goToDate: "Go to",
       focusTitle: "Keep the week flowing",
       focusOverdue: "Needs attention",
       focusToday: "Today on deck",
@@ -121,7 +120,8 @@
       claimEmpty: "Drop tasks here or create them as claimable.",
       sendToClaimInbox: "Send to claim inbox",
       requestedBy: "Requested by {user}",
-      claimInbox: "Claim inbox",
+    claimInbox: "Claim inbox",
+    openClaimTasks: "Open claim tasks: {count}",
       claimWho: "Who are you?",
       claimInboxCopy: "Claim a task and it will be added to today with no time.",
       exportData: "Export data",
@@ -227,7 +227,6 @@
       prevWeek: "<- Viikko",
       nextWeek: "Viikko ->",
       today: "Tänään",
-      goToDate: "Siirry",
       focusTitle: "Pidä viikko liikkeessä",
       focusOverdue: "Tarvitsee huomiota",
       focusToday: "Tänään vuorossa",
@@ -256,7 +255,8 @@
       claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
       sendToClaimInbox: "Lähetä claim-tehtäviin",
       requestedBy: "Pyytänyt: {user}",
-      claimInbox: "Claim-tehtävät",
+    claimInbox: "Claim-tehtävät",
+    openClaimTasks: "Avaa claim-tehtävät: {count}",
       claimWho: "Kuka olet?",
       claimInboxCopy: "Claimattu tehtävä lisätään tälle päivälle ilman aikaa.",
       exportData: "Vie tiedot",
@@ -362,7 +362,6 @@
       prevWeek: "<- Woche",
       nextWeek: "Woche ->",
       today: "Heute",
-      goToDate: "Gehe zu",
       focusTitle: "Die Woche im Fluss halten",
       focusOverdue: "Braucht Aufmerksamkeit",
       focusToday: "Heute dran",
@@ -391,7 +390,8 @@
       claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
       sendToClaimInbox: "In Claim-Aufgaben legen",
       requestedBy: "Angefragt von {user}",
-      claimInbox: "Claim-Aufgaben",
+    claimInbox: "Claim-Aufgaben",
+    openClaimTasks: "Claim-Aufgaben öffnen: {count}",
       claimWho: "Wer bist du?",
       claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefügt.",
       exportData: "Daten exportieren",
@@ -646,9 +646,8 @@
     prevWeekButton: document.getElementById("prevWeekButton"),
     todayButton: document.getElementById("todayButton"),
     nextWeekButton: document.getElementById("nextWeekButton"),
-    goToDateButton: document.getElementById("goToDateButton"),
-    goToDateInput: document.getElementById("goToDateInput"),
     claimBellButton: document.getElementById("claimBellButton"),
+    claimBellText: document.getElementById("claimBellText"),
     claimBellCount: document.getElementById("claimBellCount"),
     weekGrid: document.getElementById("weekGrid"),
     quickAssignLabel: document.getElementById("quickAssignLabel"),
@@ -841,26 +840,15 @@
       renderApp();
     });
     refs.todayButton.addEventListener("click", () => {
-      jumpToDate(new Date());
+      state.settings.weekOffset = 0;
+      ui.focusDateKey = formatDateKey(new Date());
+      saveState();
+      renderApp();
     });
     refs.nextWeekButton.addEventListener("click", () => {
       state.settings.weekOffset += 1;
       saveState();
       renderApp();
-    });
-    refs.goToDateButton.addEventListener("click", () => {
-      refs.goToDateInput.value = ui.focusDateKey || formatDateKey(new Date());
-      if (typeof refs.goToDateInput.showPicker === "function") {
-        refs.goToDateInput.showPicker();
-      } else {
-        refs.goToDateInput.click();
-      }
-    });
-    refs.goToDateInput.addEventListener("change", () => {
-      if (!refs.goToDateInput.value) {
-        return;
-      }
-      jumpToDate(parseDateKey(refs.goToDateInput.value));
     });
     refs.taskRecurrenceInput.addEventListener("change", syncDialogFields);
     refs.taskForm.addEventListener("submit", handleTaskSubmit);
@@ -916,6 +904,8 @@
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
     refs.claimDropZoneLabel.textContent = t.sendToClaimInbox;
     refs.claimDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
+    refs.claimBellText.textContent = t.openClaimTasks.replace("{count}", String(state.claimPool.length));
+    refs.claimBellButton.setAttribute("aria-label", t.openClaimTasks.replace("{count}", String(state.claimPool.length)));
     refs.claimBellCount.textContent = state.claimPool.length ? String(state.claimPool.length) : "";
     refs.claimBellButton.classList.toggle("has-items", state.claimPool.length > 0);
     refs.claimBellButton.classList.toggle("ringing", state.claimPool.length > 0);
@@ -923,7 +913,6 @@
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.todayButton.textContent = t.today;
     refs.nextWeekButton.textContent = t.nextWeek;
-    refs.goToDateButton.textContent = t.goToDate;
     fillDialogLabels();
     renderLanguageToggle();
     state.settings.activeFilter = "all";
@@ -3096,16 +3085,6 @@
 
   function getDisplayedWeekStart() {
     return addDays(startOfWeek(new Date()), state.settings.weekOffset * 7);
-  }
-
-  function jumpToDate(date) {
-    const targetDate = startOfDay(date);
-    const currentWeekStart = startOfWeek(new Date());
-    const targetWeekStart = startOfWeek(targetDate);
-    state.settings.weekOffset = Math.round(daysBetween(currentWeekStart, targetWeekStart) / 7);
-    ui.focusDateKey = formatDateKey(targetDate);
-    saveState();
-    renderApp();
   }
 
   function fillSelect(select, options) {
