@@ -26,15 +26,6 @@ I built this for my family. We are pretty autistic, so the board leans hard into
 
 Everything is plain HTML, CSS, and JavaScript so it is easy to host, inspect, and adjust.
 
-## Publish on GitHub Pages
-
-1. Create a new GitHub repository.
-2. Upload the files from this folder.
-3. In GitHub, open `Settings` -> `Pages`.
-4. Choose `Deploy from a branch`.
-5. Select the `main` branch and `/root`.
-6. Save.
-
 ## Local use
 
 Open `index.html` in a browser. For tablet use, run it fullscreen and keep the device on a charger. The app is meant to work with as little typing as possible once the main routines are in place.

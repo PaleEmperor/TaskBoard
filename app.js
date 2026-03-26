@@ -89,9 +89,10 @@
       doneZoneLabel: "Finish fast",
       doneHeading: "Done zone",
       doneDrop: "Drop a task here to mark it done",
-      prevWeek: "Earlier",
-      nextWeek: "Later",
-      today: "This week",
+      prevWeek: "<- Week",
+      nextWeek: "Week ->",
+      today: "Today",
+      goToDate: "Go to",
       focusTitle: "Keep the week flowing",
       focusOverdue: "Needs attention",
       focusToday: "Today on deck",
@@ -223,9 +224,10 @@
       doneZoneLabel: "Valmis nopeasti",
       doneHeading: "Valmis-alue",
       doneDrop: "Pudota tehtävä tähän merkataaksesi sen valmiiksi",
-      prevWeek: "Aiempi",
-      nextWeek: "Seuraava",
-      today: "Tämä viikko",
+      prevWeek: "<- Viikko",
+      nextWeek: "Viikko ->",
+      today: "Tänään",
+      goToDate: "Siirry",
       focusTitle: "Pidä viikko liikkeessä",
       focusOverdue: "Tarvitsee huomiota",
       focusToday: "Tänään vuorossa",
@@ -357,9 +359,10 @@
       doneZoneLabel: "Schnell abschließen",
       doneHeading: "Erledigt-Zone",
       doneDrop: "Aufgabe hier ablegen, um sie als erledigt zu markieren",
-      prevWeek: "Früher",
-      nextWeek: "Später",
-      today: "Diese Woche",
+      prevWeek: "<- Woche",
+      nextWeek: "Woche ->",
+      today: "Heute",
+      goToDate: "Gehe zu",
       focusTitle: "Die Woche im Fluss halten",
       focusOverdue: "Braucht Aufmerksamkeit",
       focusToday: "Heute dran",
@@ -641,10 +644,12 @@
     boardLabel: document.getElementById("boardLabel"),
     weekHeading: document.getElementById("weekHeading"),
     prevWeekButton: document.getElementById("prevWeekButton"),
+    todayButton: document.getElementById("todayButton"),
     nextWeekButton: document.getElementById("nextWeekButton"),
+    goToDateButton: document.getElementById("goToDateButton"),
+    goToDateInput: document.getElementById("goToDateInput"),
     claimBellButton: document.getElementById("claimBellButton"),
     claimBellCount: document.getElementById("claimBellCount"),
-    todayButton: document.getElementById("todayButton"),
     weekGrid: document.getElementById("weekGrid"),
     quickAssignLabel: document.getElementById("quickAssignLabel"),
     familyHeading: document.getElementById("familyHeading"),
@@ -835,17 +840,27 @@
       saveState();
       renderApp();
     });
+    refs.todayButton.addEventListener("click", () => {
+      jumpToDate(new Date());
+    });
     refs.nextWeekButton.addEventListener("click", () => {
       state.settings.weekOffset += 1;
       saveState();
       renderApp();
     });
-    refs.todayButton.addEventListener("click", () => {
-      state.settings.boardDensity = BOARD_DENSITY.everyone;
-      state.settings.weekOffset = 0;
-      state.settings.activeFilter = "all";
-      saveState();
-      renderApp();
+    refs.goToDateButton.addEventListener("click", () => {
+      refs.goToDateInput.value = ui.focusDateKey || formatDateKey(new Date());
+      if (typeof refs.goToDateInput.showPicker === "function") {
+        refs.goToDateInput.showPicker();
+      } else {
+        refs.goToDateInput.click();
+      }
+    });
+    refs.goToDateInput.addEventListener("change", () => {
+      if (!refs.goToDateInput.value) {
+        return;
+      }
+      jumpToDate(parseDateKey(refs.goToDateInput.value));
     });
     refs.taskRecurrenceInput.addEventListener("change", syncDialogFields);
     refs.taskForm.addEventListener("submit", handleTaskSubmit);
@@ -906,11 +921,13 @@
     refs.claimBellButton.classList.toggle("ringing", state.claimPool.length > 0);
     document.body.dataset.theme = effectiveDarkMode ? "dark" : "light";
     refs.prevWeekButton.textContent = t.prevWeek;
+    refs.todayButton.textContent = t.today;
     refs.nextWeekButton.textContent = t.nextWeek;
-    refs.todayButton.textContent = t.everyone;
+    refs.goToDateButton.textContent = t.goToDate;
     fillDialogLabels();
     renderLanguageToggle();
     state.settings.activeFilter = "all";
+    state.settings.boardDensity = BOARD_DENSITY.everyone;
     renderWeekGrid();
     renderFamilyDock();
     renderSavedTasks();
@@ -1355,8 +1372,7 @@
       const assigned = state.tasks.filter((task) => getResponsibleIds(task).includes(user.id) && task.status === "open").length;
       const button = document.createElement("button");
       button.type = "button";
-      const isActiveMember =
-        state.settings.boardDensity === BOARD_DENSITY.mine && state.settings.currentUserId === user.id;
+      const isActiveMember = state.settings.currentUserId === user.id;
       button.className = `member-tile${isActiveMember ? " active" : ""}`;
       button.dataset.userId = user.id;
       button.style.setProperty("--responsible-color", colorForUser(user.id));
@@ -1365,14 +1381,7 @@
           reassignTask(ui.selectedTaskId, user.id);
           return;
         }
-        if (isActiveMember) {
-          state.settings.boardDensity = BOARD_DENSITY.everyone;
-          saveState();
-          renderApp();
-          return;
-        }
         state.settings.currentUserId = user.id;
-        state.settings.boardDensity = BOARD_DENSITY.mine;
         saveState();
         renderApp();
       });
@@ -2799,9 +2808,6 @@
     if (state.settings.activeFilter === "overdue" && !isItemOverdue(item)) {
       return false;
     }
-    if (state.settings.boardDensity === BOARD_DENSITY.mine && !getResponsibleIds(task).includes(state.settings.currentUserId)) {
-      return false;
-    }
     return true;
   }
 
@@ -2813,11 +2819,6 @@
     const rightTime = right.task.dueTime || "99:99";
     if (leftTime !== rightTime) {
       return leftTime.localeCompare(rightTime);
-    }
-    const leftIncludesCurrent = getResponsibleIds(left.task).includes(state.settings.currentUserId);
-    const rightIncludesCurrent = getResponsibleIds(right.task).includes(state.settings.currentUserId);
-    if (leftIncludesCurrent && !rightIncludesCurrent) {
-      return -1;
     }
     return resolveTaskTitle(left.task).localeCompare(resolveTaskTitle(right.task));
   }
@@ -3095,6 +3096,16 @@
 
   function getDisplayedWeekStart() {
     return addDays(startOfWeek(new Date()), state.settings.weekOffset * 7);
+  }
+
+  function jumpToDate(date) {
+    const targetDate = startOfDay(date);
+    const currentWeekStart = startOfWeek(new Date());
+    const targetWeekStart = startOfWeek(targetDate);
+    state.settings.weekOffset = Math.round(daysBetween(currentWeekStart, targetWeekStart) / 7);
+    ui.focusDateKey = formatDateKey(targetDate);
+    saveState();
+    renderApp();
   }
 
   function fillSelect(select, options) {
