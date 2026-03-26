@@ -1848,6 +1848,7 @@ details[open] > .accordion-summary::after {
 
 .quick-tasks-strip {
   gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
 .quick-task-chip {
@@ -1874,4 +1875,18 @@ details[open] > .accordion-summary::after {
 .tool-panel {
   min-height: fit-content;
   overflow: visible;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.88rem;
+}
+
+.toggle-row input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
 }

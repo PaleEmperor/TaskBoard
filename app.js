@@ -359,6 +359,7 @@
         boardDensity: BOARD_DENSITY.everyone,
         weekOffset: 0,
         activeFilter: "all",
+        showCompleted: false,
       },
       taskLibrary: [],
       tasks: [],
@@ -406,6 +407,9 @@
       if (!Array.isArray(parsed.taskLibrary)) {
         parsed.taskLibrary = [];
       }
+      if (typeof parsed.settings.showCompleted !== "boolean") {
+        parsed.settings.showCompleted = false;
+      }
       return parsed;
     } catch (error) {
       return createSeedData();
@@ -452,6 +456,8 @@
     toolDrawer: document.getElementById("toolDrawer"),
     toolDrawerClose: document.getElementById("toolDrawerClose"),
     toolDrawerTitle: document.getElementById("toolDrawerTitle"),
+    showCompletedLabel: document.getElementById("showCompletedLabel"),
+    showCompletedToggle: document.getElementById("showCompletedToggle"),
     summaryGrid: document.getElementById("summaryGrid"),
     viewSwitch: document.getElementById("viewSwitch"),
     filterChips: document.getElementById("filterChips"),
@@ -529,6 +535,11 @@
       ui.drawerOpen = false;
       renderApp();
     });
+    refs.showCompletedToggle.addEventListener("change", () => {
+      state.settings.showCompleted = refs.showCompletedToggle.checked;
+      saveState();
+      renderApp();
+    });
     refs.closeDialogButton.addEventListener("click", closeDialog);
     refs.cancelTaskButton.addEventListener("click", closeDialog);
     refs.prevWeekButton.addEventListener("click", () => {
@@ -576,6 +587,8 @@
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
     refs.toolDrawerTitle.textContent = "Tools";
+    refs.showCompletedLabel.textContent = "Show completed";
+    refs.showCompletedToggle.checked = Boolean(state.settings.showCompleted);
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
@@ -830,7 +843,7 @@
   function renderWeekGrid() {
     const t = currentMessages();
     const weekStart = getDisplayedWeekStart();
-    refs.weekHeading.textContent = `${formatDateRange(weekStart)} â€¢ ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
+    refs.weekHeading.textContent = `${formatDateRange(weekStart)} • ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
     refs.weekGrid.innerHTML = "";
 
     const todayKey = formatDateKey(startOfDay(new Date()));
@@ -1701,6 +1714,9 @@
 
   function matchesBoardFilters(item) {
     const task = item.task;
+    if (!state.settings.showCompleted && item.done) {
+      return false;
+    }
     if (state.settings.activeFilter === "today" && !isSameDay(parseDateKey(item.dateKey), startOfDay(new Date()))) {
       return false;
     }
