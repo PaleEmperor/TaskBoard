@@ -423,6 +423,7 @@
     dragTaskId: null,
     selectedTaskId: null,
     expandedCards: {},
+    focusDateKey: null,
     weather: {
       status: "loading",
       place: WEATHER_FALLBACK.name,
@@ -803,6 +804,107 @@
       }
 
       column.appendChild(taskList);
+      refs.weekGrid.appendChild(column);
+    }
+  }
+
+  function renderWeekGrid() {
+    const t = currentMessages();
+    const weekStart = getDisplayedWeekStart();
+    refs.weekHeading.textContent = `${formatDateRange(weekStart)} â€¢ ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
+    refs.weekGrid.innerHTML = "";
+
+    const todayKey = formatDateKey(startOfDay(new Date()));
+    const weekDateKeys = Array.from({ length: 7 }, (_, index) => formatDateKey(addDays(weekStart, index)));
+    if (!ui.focusDateKey || !weekDateKeys.includes(ui.focusDateKey)) {
+      ui.focusDateKey = weekDateKeys.includes(todayKey) ? todayKey : weekDateKeys[0];
+    }
+    refs.weekGrid.style.gridTemplateColumns = weekDateKeys
+      .map((dateKey) => (dateKey === ui.focusDateKey ? "minmax(300px, 2.3fr)" : "minmax(68px, 0.5fr)"))
+      .join(" ");
+
+    for (let index = 0; index < 7; index += 1) {
+      const dayDate = addDays(weekStart, index);
+      const dayKey = formatDateKey(dayDate);
+      const tasks = getItemsForDay(dayDate);
+      const isFocused = dayKey === ui.focusDateKey;
+      const column = document.createElement("section");
+      column.className = `day-column${isSameDay(dayDate, new Date()) ? " today" : ""}${isFocused ? " focused" : " collapsed"}`;
+      column.dataset.date = dayKey;
+      column.addEventListener("dragover", handleDragOver);
+      column.addEventListener("dragleave", handleDragLeave);
+      column.addEventListener("drop", (event) => {
+        handleDragLeave(event);
+        if (ui.dragTaskId) {
+          if (String(ui.dragTaskId).startsWith("saved:")) {
+            createTaskFromLibrary(ui.dragTaskId.replace("saved:", ""), column.dataset.date);
+          } else if (String(ui.dragTaskId).startsWith("quick:")) {
+            createQuickTaskFromTemplate(ui.dragTaskId.replace("quick:", ""), column.dataset.date);
+          } else {
+            moveBoardItemToDate(ui.dragTaskId, column.dataset.date);
+          }
+        }
+      });
+      column.addEventListener("click", () => {
+        if (!isFocused && !ui.selectedTaskId) {
+          ui.focusDateKey = column.dataset.date;
+          renderApp();
+          return;
+        }
+        if (ui.selectedTaskId) {
+          moveTaskToDate(ui.selectedTaskId, column.dataset.date);
+        }
+      });
+
+      const openCount = tasks.filter((item) => !item.done).length;
+      const overdueCount = tasks.filter(isItemOverdue).length;
+      if (isFocused) {
+        column.innerHTML = `
+          <div class="day-heading">
+            <div>
+              <strong>${t.weekdayLong[weekdayKeys[index]]}</strong>
+              <span>${formatNumericDate(dayDate)}</span>
+            </div>
+            <button class="ghost-button small-button day-add-button" type="button">+ ${t.quickAdd}</button>
+          </div>
+          <div class="day-overview">
+            <span class="badge">${openCount === 1 ? t.plusTask : t.plusTasks.replace("{count}", String(openCount))}</span>
+            ${overdueCount ? `<span class="badge">${t.overdue}</span>` : ""}
+          </div>
+        `;
+        column.querySelector(".day-add-button").addEventListener("click", (event) => {
+          event.stopPropagation();
+          openTaskDialog(null, { dueDate: column.dataset.date });
+        });
+
+        const taskList = document.createElement("div");
+        taskList.className = "task-list";
+        if (!tasks.length) {
+          const empty = document.createElement("button");
+          empty.type = "button";
+          empty.className = "empty-drop";
+          empty.textContent = t.emptyDay;
+          empty.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openTaskDialog(null, { dueDate: column.dataset.date });
+          });
+          taskList.appendChild(empty);
+        } else {
+          tasks.forEach((item) => taskList.appendChild(createTaskCard(item)));
+        }
+        column.appendChild(taskList);
+      } else {
+        const taskIcons = tasks.slice(0, 3).map((item) => item.icon).join(" ");
+        column.innerHTML = `
+          <div class="day-strip">
+            <div class="day-strip-day">${t.weekdayLong[weekdayKeys[index]].slice(0, 1)}</div>
+            <div class="day-strip-symbols">${taskIcons || "○"}</div>
+            ${openCount ? `<div class="day-strip-count">${openCount}</div>` : ""}
+            ${overdueCount ? `<div class="day-strip-alert">!</div>` : ""}
+          </div>
+        `;
+      }
+
       refs.weekGrid.appendChild(column);
     }
   }
