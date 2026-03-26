@@ -125,6 +125,8 @@
       repeatBiweekly: "Every 2 weeks",
       repeatMonthly: "Monthly",
       repeatInterval: "Custom interval",
+      repeatLinneaWeeks: "Linnea Weeks",
+      repeatNotLinneaWeeks: "Not Linnea Weeks",
       light: "Quick",
       steady: "Regular",
       big: "Big",
@@ -231,6 +233,8 @@
       repeatBiweekly: "2 viikon välein",
       repeatMonthly: "Kuukausittain",
       repeatInterval: "Mukautettu väli",
+      repeatLinneaWeeks: "Linnea-viikot",
+      repeatNotLinneaWeeks: "Ei Linnea-viikot",
       light: "Nopea",
       steady: "Tavallinen",
       big: "Iso",
@@ -337,6 +341,8 @@
       repeatBiweekly: "Alle 2 Wochen",
       repeatMonthly: "Monatlich",
       repeatInterval: "Eigener Rhythmus",
+      repeatLinneaWeeks: "Linnea-Wochen",
+      repeatNotLinneaWeeks: "Nicht-Linnea-Wochen",
       light: "Kurz",
       steady: "Normal",
       big: "Groß",
@@ -1124,6 +1130,8 @@
       { value: "weekdays", label: currentMessages().repeatWeekdays },
       { value: "weekly", label: currentMessages().repeatWeekly },
       { value: "biweekly", label: currentMessages().repeatBiweekly },
+      { value: "linneaWeeks", label: currentMessages().repeatLinneaWeeks },
+      { value: "notLinneaWeeks", label: currentMessages().repeatNotLinneaWeeks },
       { value: "monthly", label: currentMessages().repeatMonthly },
       { value: "interval", label: currentMessages().repeatInterval },
     ]);
@@ -1883,6 +1891,10 @@
         return diffDays % 7 === 0 && weekdayMatches(task, current);
       case "biweekly":
         return diffDays % 14 === 0 && weekdayMatches(task, current);
+      case "linneaWeeks":
+        return isLinneaWeek(current);
+      case "notLinneaWeeks":
+        return !isLinneaWeek(current);
       case "monthly":
         return current.getDate() === anchor.getDate();
       case "interval":
@@ -1978,6 +1990,8 @@
       weekdays: t.repeatWeekdays,
       weekly: t.repeatWeekly,
       biweekly: t.repeatBiweekly,
+      linneaWeeks: t.repeatLinneaWeeks,
+      notLinneaWeeks: t.repeatNotLinneaWeeks,
       monthly: t.repeatMonthly,
       interval: t.repeatInterval,
     };
@@ -2066,6 +2080,12 @@
 
   function isWeekend(date) {
     return date.getDay() === 0 || date.getDay() === 6;
+  }
+
+  function isLinneaWeek(date) {
+    const weekNumber = getWeekNumber(date);
+    const patternOffset = ((weekNumber - 10) % 4 + 4) % 4;
+    return patternOffset < 2;
   }
 
   function formatNumericDate(date) {
