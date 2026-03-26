@@ -58,7 +58,6 @@
         </section>
 
         <section class="board-layout">
-          <button class="tool-drawer-toggle" id="toolDrawerToggle" type="button" aria-label="Open tools">☰</button>
           <div class="board-stack">
             <section class="panel board-panel">
               <div class="board-panel-header">
@@ -69,6 +68,7 @@
                 <div class="board-tools">
                   <button class="ghost-button" id="prevWeekButton" type="button"></button>
                   <button class="ghost-button" id="nextWeekButton" type="button"></button>
+                  <button class="tool-drawer-toggle" id="toolDrawerToggle" type="button" aria-label="Open tools">☰</button>
                 </div>
               </div>
               <div class="week-grid" id="weekGrid"></div>
@@ -145,6 +145,11 @@
           <label class="field">
             <span id="fieldDayLabel"></span>
             <input id="taskDayInput" name="dueDate" type="date" required />
+          </label>
+
+          <label class="field">
+            <span id="fieldTimeLabel"></span>
+            <input id="taskTimeInput" name="dueTime" type="time" />
           </label>
 
           <label class="field">

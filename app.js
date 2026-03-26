@@ -96,6 +96,7 @@
       taskOwner: "Owner",
       taskResponsible: "Responsible",
       taskDay: "Day",
+      taskTime: "Time",
       taskRepeat: "Repeat",
       taskInterval: "Every how many days?",
       taskWeekday: "Preferred weekday",
@@ -197,6 +198,7 @@
       taskOwner: "Omistaja",
       taskResponsible: "Vastuuhenkilö",
       taskDay: "Päivä",
+      taskTime: "Aika",
       taskRepeat: "Toistuvuus",
       taskInterval: "Kuinka monen päivän välein?",
       taskWeekday: "Suosittu viikonpäivä",
@@ -298,6 +300,7 @@
       taskOwner: "Besitzer",
       taskResponsible: "Verantwortlich",
       taskDay: "Tag",
+      taskTime: "Uhrzeit",
       taskRepeat: "Wiederholung",
       taskInterval: "Alle wie viele Tage?",
       taskWeekday: "Bevorzugter Wochentag",
@@ -398,6 +401,7 @@
       ownerId: config.owner,
       responsibleId: config.responsible,
       dueDate: formatDateKey(config.dueDate),
+      dueTime: typeof config.dueTime === "string" ? config.dueTime : "",
       recurrence: config.recurrence || "none",
       interval: config.interval || 1,
       weekday: typeof config.weekday === "number" ? config.weekday : null,
@@ -512,6 +516,7 @@
     fieldOwnerLabel: document.getElementById("fieldOwnerLabel"),
     fieldResponsibleLabel: document.getElementById("fieldResponsibleLabel"),
     fieldDayLabel: document.getElementById("fieldDayLabel"),
+    fieldTimeLabel: document.getElementById("fieldTimeLabel"),
     fieldRepeatLabel: document.getElementById("fieldRepeatLabel"),
     fieldIntervalLabel: document.getElementById("fieldIntervalLabel"),
     fieldWeekdayLabel: document.getElementById("fieldWeekdayLabel"),
@@ -524,6 +529,7 @@
     taskOwnerInput: document.getElementById("taskOwnerInput"),
     taskResponsibleInput: document.getElementById("taskResponsibleInput"),
     taskDayInput: document.getElementById("taskDayInput"),
+    taskTimeInput: document.getElementById("taskTimeInput"),
     taskRecurrenceInput: document.getElementById("taskRecurrenceInput"),
     taskIntervalInput: document.getElementById("taskIntervalInput"),
     taskWeekdayInput: document.getElementById("taskWeekdayInput"),
@@ -1032,6 +1038,7 @@
           category: entry.category,
           ownerId: state.settings.currentUserId,
           responsibleId: state.settings.currentUserId,
+          dueTime: entry.dueTime || "",
           effort: entry.effort,
           notes: resolveLibraryNotes(entry),
         });
@@ -1174,6 +1181,7 @@
     refs.fieldOwnerLabel.textContent = t.taskOwner;
     refs.fieldResponsibleLabel.textContent = t.taskResponsible;
     refs.fieldDayLabel.textContent = t.taskDay;
+    refs.fieldTimeLabel.textContent = t.taskTime;
     refs.fieldRepeatLabel.textContent = t.taskRepeat;
     refs.fieldIntervalLabel.textContent = t.taskInterval;
     refs.fieldWeekdayLabel.textContent = t.taskWeekday;
@@ -1268,6 +1276,7 @@
     refs.taskOwnerInput.value = task?.ownerId || defaults?.ownerId || state.settings.currentUserId;
     refs.taskResponsibleInput.value = task?.responsibleId || defaults?.responsibleId || state.settings.currentUserId;
     refs.taskDayInput.value = task?.dueDate || defaults?.dueDate || today;
+    refs.taskTimeInput.value = task?.dueTime || defaults?.dueTime || "";
     refs.taskRecurrenceInput.value = task?.recurrence || "none";
     refs.taskIntervalInput.value = String(task?.interval || 1);
     refs.taskWeekdayInput.value = String(task?.weekday ?? getWeekdayIndex(startOfDay(new Date())));
@@ -1328,6 +1337,7 @@
       owner: selectedUserId,
       responsible: selectedUserId,
       dueDate: dateKey,
+      dueTime: entry.dueTime || "",
       recurrence: entry.recurrence,
       interval: entry.interval,
       weekday: entry.weekday,
@@ -1358,6 +1368,7 @@
       ownerId: refs.taskOwnerInput.value,
       responsibleId: refs.taskResponsibleInput.value,
       dueDate: refs.taskDayInput.value,
+      dueTime: refs.taskTimeInput.value,
       recurrence: refs.taskRecurrenceInput.value,
       interval: Number(refs.taskIntervalInput.value) || 1,
       weekday: Number(refs.taskWeekdayInput.value),
@@ -1394,6 +1405,7 @@
         owner: payload.ownerId,
         responsible: payload.responsibleId,
         dueDate: payload.dueDate,
+        dueTime: payload.dueTime,
         recurrence: payload.recurrence,
         interval: payload.interval,
         weekday: payload.weekday,
@@ -1459,6 +1471,7 @@
       category: task.category,
       ownerId: task.ownerId,
       responsibleId: task.responsibleId,
+      dueTime: task.dueTime || "",
       recurrence: task.recurrence || "none",
       interval: task.interval || 1,
       weekday: typeof task.weekday === "number" ? task.weekday : null,
@@ -1562,6 +1575,7 @@
       ownerId: task.ownerId,
       responsibleId: changes.responsibleId || task.responsibleId,
       dueDate: changes.dueDate || item.dateKey,
+      dueTime: task.dueTime || "",
       recurrence: "none",
       interval: 1,
       weekday: null,
@@ -1742,6 +1756,11 @@
     if (left.done !== right.done) {
       return left.done ? 1 : -1;
     }
+    const leftTime = left.task.dueTime || "99:99";
+    const rightTime = right.task.dueTime || "99:99";
+    if (leftTime !== rightTime) {
+      return leftTime.localeCompare(rightTime);
+    }
     if (left.task.responsibleId === state.settings.currentUserId && right.task.responsibleId !== state.settings.currentUserId) {
       return -1;
     }
@@ -1778,7 +1797,8 @@
     } else if (isSameDay(dueDate, addDays(startOfDay(new Date()), 1))) {
       dueLabel = t.dueTomorrow;
     }
-    return `${messageForCategory(task.category)} • ${displayUser(task.responsibleId)} • ${dueLabel}`;
+    const timeLabel = task.dueTime ? `${task.dueTime} • ` : "";
+    return `${messageForCategory(task.category)} • ${displayUser(task.responsibleId)} • ${timeLabel}${dueLabel}`;
   }
 
   function resolveTaskTitle(task) {

@@ -2021,3 +2021,18 @@ details[open] > .accordion-summary::after {
 .hero-actions {
   display: none;
 }
+
+.tool-drawer-toggle {
+  position: static;
+  z-index: auto;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(68, 95, 118, 0.14);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--ink);
+  box-shadow: none;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
