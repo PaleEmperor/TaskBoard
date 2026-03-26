@@ -652,6 +652,8 @@
     celebrationLayer: document.getElementById("celebrationLayer"),
     deleteDropZone: document.getElementById("deleteDropZone"),
     deleteDropZoneLabel: document.getElementById("deleteDropZoneLabel"),
+    claimDropZone: document.getElementById("claimDropZone"),
+    claimDropZoneLabel: document.getElementById("claimDropZoneLabel"),
     taskDialog: document.getElementById("taskDialog"),
     participantDialog: document.getElementById("participantDialog"),
     participantForm: document.getElementById("participantForm"),
@@ -770,11 +772,23 @@
     refs.deleteDropZone.addEventListener("dragleave", handleDragLeave);
     refs.deleteDropZone.addEventListener("drop", (event) => {
       handleDragLeave(event);
-      if (!ui.dragTaskId || !shouldShowDeleteDropZone()) {
+      if (!ui.dragTaskId) {
         return;
       }
-      deleteBoardItemFromPlan(ui.dragTaskId);
+      deleteDraggedItem(ui.dragTaskId);
       hideDeleteDropZone();
+      hideClaimDropZone();
+    });
+    refs.claimDropZone.addEventListener("dragover", handleDragOver);
+    refs.claimDropZone.addEventListener("dragleave", handleDragLeave);
+    refs.claimDropZone.addEventListener("drop", (event) => {
+      handleDragLeave(event);
+      if (!ui.dragTaskId) {
+        return;
+      }
+      handleClaimBellDrop(event);
+      hideDeleteDropZone();
+      hideClaimDropZone();
     });
     [
       refs.taskTitleInput,
@@ -876,6 +890,8 @@
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.deleteDropZoneLabel.textContent = t.deleteFromPlan;
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
+    refs.claimDropZoneLabel.textContent = t.claimPoolHeading;
+    refs.claimDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
     refs.claimBellCount.textContent = state.claimPool.length ? String(state.claimPool.length) : "";
     refs.claimBellButton.classList.toggle("has-items", state.claimPool.length > 0);
     refs.claimBellButton.classList.toggle("ringing", state.claimPool.length > 0);
@@ -1753,6 +1769,7 @@
       card.classList.remove("dragging");
       clearDropTargets();
       hideDeleteDropZone();
+      hideClaimDropZone();
     });
 
     icon.textContent = task.icon;
@@ -2256,6 +2273,24 @@
     ui.selectedTaskId = null;
     saveState();
     renderApp();
+  }
+
+  function deleteDraggedItem(itemId) {
+    const value = String(itemId);
+    if (value.startsWith("saved:")) {
+      const libraryId = value.replace("saved:", "");
+      state.taskLibrary = state.taskLibrary.filter((item) => item.id !== libraryId);
+      ui.dragTaskId = null;
+      saveState();
+      renderApp();
+      return;
+    }
+    if (value.startsWith("quick:")) {
+      ui.dragTaskId = null;
+      clearDropTargets();
+      return;
+    }
+    deleteBoardItemFromPlan(itemId);
   }
 
   function moveBoardItemToClaimPool(itemId) {
@@ -2978,7 +3013,7 @@
   }
 
   function shouldShowDeleteDropZone() {
-    return Boolean(ui.dragTaskId) && !String(ui.dragTaskId).startsWith("saved:") && !String(ui.dragTaskId).startsWith("quick:");
+    return Boolean(ui.dragTaskId);
   }
 
   function handleClaimBellDrop(event) {
@@ -3000,10 +3035,15 @@
       return;
     }
     refs.deleteDropZone.classList.add("visible");
+    refs.claimDropZone.classList.add("visible");
   }
 
   function hideDeleteDropZone() {
     refs.deleteDropZone.classList.remove("visible", "drop-target");
+  }
+
+  function hideClaimDropZone() {
+    refs.claimDropZone.classList.remove("visible", "drop-target");
   }
 
   function closeToolDrawerForDrag() {
