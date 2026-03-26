@@ -786,6 +786,7 @@
 
   function renderApp() {
     const t = currentMessages();
+    const effectiveDarkMode = shouldUseDarkMode();
     renderWeatherBanner();
     if (refs.heroEyebrow) {
       refs.heroEyebrow.textContent = t.heroEyebrow;
@@ -824,7 +825,7 @@
     refs.toolDrawer.classList.toggle("open", ui.drawerOpen);
     refs.deleteDropZoneLabel.textContent = t.deleteFromPlan;
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
-    document.body.dataset.theme = state.settings.darkMode ? "dark" : "light";
+    document.body.dataset.theme = effectiveDarkMode ? "dark" : "light";
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.nextWeekButton.textContent = t.nextWeek;
     refs.todayButton.textContent = t.everyone;
@@ -2862,5 +2863,14 @@
 
   function getWeekdayIndex(date) {
     return (date.getDay() + 6) % 7;
+  }
+
+  function shouldUseDarkMode(now = new Date()) {
+    if (state.settings.darkMode) {
+      return true;
+    }
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    return hours > 18 || (hours === 18 && minutes >= 30);
   }
 })();
