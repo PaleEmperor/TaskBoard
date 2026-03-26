@@ -1513,6 +1513,35 @@ details[open] > .accordion-summary::after {
   border-radius: 28px;
 }
 
+.dialog-preview {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(68, 95, 118, 0.1);
+}
+
+.dialog-preview-label {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.dialog-preview-card .task-card {
+  margin: 0;
+}
+
+.dialog-preview-card .task-card.preview-card {
+  pointer-events: none;
+}
+
+.dialog-preview-card .task-details-shell {
+  gap: 8px;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1538,6 +1567,11 @@ details[open] > .accordion-summary::after {
 
 .field-wide {
   grid-column: 1 / -1;
+}
+
+#taskTitleInput {
+  min-height: 42px;
+  padding: 8px 12px;
 }
 
 .icon-grid {
@@ -1906,6 +1940,16 @@ details[open] > .accordion-summary::after {
   width: 18px;
   height: 18px;
   margin: 0;
+}
+
+.tool-transfer-panel {
+  margin-top: auto;
+}
+
+.tool-transfer-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
 .icon-grid {

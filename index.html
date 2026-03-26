@@ -100,6 +100,14 @@
               <h3 id="quickTasksHeading"></h3>
               <div class="quick-tasks-strip" id="quickTasksStrip"></div>
             </section>
+            <section class="panel mini-section tool-panel tool-transfer-panel">
+              <h3 id="backupHeading"></h3>
+              <div class="tool-transfer-actions">
+                <button class="ghost-button" id="exportDataButton" type="button"></button>
+                <button class="ghost-button" id="importDataButton" type="button"></button>
+                <input id="importDataInput" type="file" accept="application/json,.json" hidden />
+              </div>
+            </section>
           </aside>
         </section>
       </main>
@@ -115,10 +123,15 @@
           <button class="icon-button" id="closeDialogButton" type="button" aria-label="Close">✕</button>
         </div>
 
+        <div class="dialog-preview">
+          <div class="dialog-preview-label" id="dialogPreviewLabel"></div>
+          <div class="dialog-preview-card" id="taskPreviewCard"></div>
+        </div>
+
         <div class="form-grid">
           <label class="field">
             <span id="fieldTitleLabel"></span>
-            <input id="taskTitleInput" name="title" maxlength="60" required />
+            <input id="taskTitleInput" name="title" maxlength="60" required enterkeyhint="done" autocomplete="off" />
           </label>
 
           <div class="field">

@@ -102,6 +102,10 @@
       taskWeekday: "Preferred weekday",
       taskEffort: "Effort",
       taskNotes: "Notes",
+      previewLabel: "Preview",
+      backupHeading: "Backup",
+      exportData: "Export data",
+      importData: "Import data",
       save: "Save task",
       cancel: "Cancel",
       delete: "Delete",
@@ -204,6 +208,10 @@
       taskWeekday: "Suosittu viikonpäivä",
       taskEffort: "Työmäärä",
       taskNotes: "Muistiinpanot",
+      previewLabel: "Esikatselu",
+      backupHeading: "Varmuuskopio",
+      exportData: "Vie tiedot",
+      importData: "Tuo tiedot",
       save: "Tallenna tehtävä",
       cancel: "Peruuta",
       delete: "Poista",
@@ -306,6 +314,10 @@
       taskWeekday: "Bevorzugter Wochentag",
       taskEffort: "Aufwand",
       taskNotes: "Notizen",
+      previewLabel: "Vorschau",
+      backupHeading: "Sicherung",
+      exportData: "Daten exportieren",
+      importData: "Daten importieren",
       save: "Aufgabe speichern",
       cancel: "Abbrechen",
       delete: "Löschen",
@@ -426,17 +438,7 @@
       if (!raw) {
         return createSeedData();
       }
-      const parsed = JSON.parse(raw);
-      if (!parsed?.tasks || !parsed?.settings) {
-        return createSeedData();
-      }
-      if (!Array.isArray(parsed.taskLibrary)) {
-        parsed.taskLibrary = [];
-      }
-      if (typeof parsed.settings.showCompleted !== "boolean") {
-        parsed.settings.showCompleted = false;
-      }
-      return parsed;
+      return normalizeState(JSON.parse(raw));
     } catch (error) {
       return createSeedData();
     }
@@ -444,6 +446,20 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function normalizeState(data) {
+    if (!data?.tasks || !data?.settings) {
+      return createSeedData();
+    }
+    const normalized = typeof structuredClone === "function" ? structuredClone(data) : JSON.parse(JSON.stringify(data));
+    if (!Array.isArray(normalized.taskLibrary)) {
+      normalized.taskLibrary = [];
+    }
+    if (typeof normalized.settings.showCompleted !== "boolean") {
+      normalized.settings.showCompleted = false;
+    }
+    return normalized;
   }
 
   const state = loadState();
@@ -505,11 +521,17 @@
     savedTasksStrip: document.getElementById("savedTasksStrip"),
     quickTasksHeading: document.getElementById("quickTasksHeading"),
     quickTasksStrip: document.getElementById("quickTasksStrip"),
+    backupHeading: document.getElementById("backupHeading"),
+    exportDataButton: document.getElementById("exportDataButton"),
+    importDataButton: document.getElementById("importDataButton"),
+    importDataInput: document.getElementById("importDataInput"),
     taskDialog: document.getElementById("taskDialog"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
     dialogEyebrow: document.getElementById("dialogEyebrow"),
     dialogTitle: document.getElementById("dialogTitle"),
+    dialogPreviewLabel: document.getElementById("dialogPreviewLabel"),
+    taskPreviewCard: document.getElementById("taskPreviewCard"),
     fieldTitleLabel: document.getElementById("fieldTitleLabel"),
     fieldIconLabel: document.getElementById("fieldIconLabel"),
     fieldCategoryLabel: document.getElementById("fieldCategoryLabel"),
@@ -568,6 +590,37 @@
       saveState();
       renderApp();
     });
+    refs.exportDataButton.addEventListener("click", exportBoardData);
+    refs.importDataButton.addEventListener("click", () => refs.importDataInput.click());
+    refs.importDataInput.addEventListener("change", importBoardData);
+    [
+      refs.taskTitleInput,
+      refs.taskCategoryInput,
+      refs.taskOwnerInput,
+      refs.taskResponsibleInput,
+      refs.taskDayInput,
+      refs.taskTimeInput,
+      refs.taskRecurrenceInput,
+      refs.taskIntervalInput,
+      refs.taskWeekdayInput,
+      refs.taskEffortInput,
+    ].forEach((element) => {
+      element.addEventListener("input", renderTaskPreview);
+      element.addEventListener("change", renderTaskPreview);
+    });
+    refs.saveTaskButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (!refs.taskForm.reportValidity()) {
+        return;
+      }
+      handleTaskSubmit(event);
+    });
+    refs.taskTitleInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        refs.taskTitleInput.blur();
+      }
+    });
     refs.closeDialogButton.addEventListener("click", closeDialog);
     refs.cancelTaskButton.addEventListener("click", closeDialog);
     refs.prevWeekButton.addEventListener("click", () => {
@@ -622,6 +675,9 @@
     refs.familyHeading.textContent = t.familyHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
+    refs.backupHeading.textContent = t.backupHeading;
+    refs.exportDataButton.textContent = t.exportData;
+    refs.importDataButton.textContent = t.importData;
     refs.toolDrawerTitle.textContent = "Tools";
     refs.showCompletedLabel.textContent = "Show completed";
     refs.showCompletedToggle.checked = Boolean(state.settings.showCompleted);
@@ -1166,6 +1222,7 @@
         event.stopPropagation();
         refs.taskIconInput.value = icon;
         renderIconGrid(icon);
+        renderTaskPreview();
       });
       refs.iconGrid.appendChild(button);
     });
@@ -1187,10 +1244,67 @@
     refs.fieldWeekdayLabel.textContent = t.taskWeekday;
     refs.fieldEffortLabel.textContent = t.taskEffort;
     refs.fieldNotesLabel.textContent = t.taskNotes;
+    refs.dialogPreviewLabel.textContent = t.previewLabel;
     refs.deleteTaskButton.textContent = t.delete;
     refs.deleteSeriesButton.textContent = "Delete series";
     refs.cancelTaskButton.textContent = t.cancel;
     refs.saveTaskButton.textContent = t.save;
+  }
+
+  function renderTaskPreview() {
+    const title = refs.taskTitleInput.value.trim() || "Task title";
+    const icon = refs.taskIconInput.value || iconChoices[0];
+    const ownerId = refs.taskOwnerInput.value || state.settings.currentUserId;
+    const responsibleId = refs.taskResponsibleInput.value || state.settings.currentUserId;
+    const dueDate = refs.taskDayInput.value || formatDateKey(startOfDay(new Date()));
+    const dueTime = refs.taskTimeInput.value || "";
+    const recurrence = refs.taskRecurrenceInput.value || "none";
+    const effort = refs.taskEffortInput.value || "steady";
+    const category = refs.taskCategoryInput.value || "home";
+    const t = currentMessages();
+    const fragment = refs.taskCardTemplate.content.cloneNode(true);
+    const card = fragment.querySelector(".task-card");
+    const detailsShell = fragment.querySelector(".task-details-shell");
+    const complete = fragment.querySelector(".complete-chip");
+    const iconNode = fragment.querySelector(".task-icon");
+    const titleNode = fragment.querySelector(".task-title");
+    const metaNode = fragment.querySelector(".task-meta");
+    const badges = fragment.querySelector(".task-badges");
+    const editButton = fragment.querySelector(".edit-task-button");
+
+    card.classList.add("preview-card");
+    card.style.setProperty("--responsible-color", colorForUser(responsibleId));
+    card.draggable = false;
+    detailsShell.open = true;
+    iconNode.textContent = icon;
+    titleNode.textContent = title;
+    metaNode.textContent = buildPreviewMetaLine({ category, responsibleId, dueDate, dueTime });
+    complete.textContent = t.complete;
+    complete.disabled = true;
+    editButton.remove();
+
+    badges.appendChild(createBadge(`${t.owner}: ${displayUser(ownerId)}`));
+    badges.appendChild(createBadge(`${t.responsible}: ${displayUser(responsibleId)}`));
+    badges.appendChild(createBadge(`${t.statusEffort}: ${t[effort]}`));
+    if (recurrence !== "none") {
+      badges.appendChild(createBadge(`${t.statusRecurring}: ${recurrenceLabel(recurrence)}`));
+    }
+
+    refs.taskPreviewCard.innerHTML = "";
+    refs.taskPreviewCard.appendChild(fragment);
+  }
+
+  function buildPreviewMetaLine({ category, responsibleId, dueDate, dueTime }) {
+    const due = parseDateKey(dueDate);
+    const t = currentMessages();
+    let dueLabel = formatNumericDate(due);
+    if (isSameDay(due, new Date())) {
+      dueLabel = t.dueToday;
+    } else if (isSameDay(due, addDays(startOfDay(new Date()), 1))) {
+      dueLabel = t.dueTomorrow;
+    }
+    const timeLabel = dueTime ? `${dueTime} • ` : "";
+    return `${messageForCategory(category)} • ${displayUser(responsibleId)} • ${timeLabel}${dueLabel}`;
   }
 
   function createTaskCard(item) {
@@ -1287,6 +1401,7 @@
     refs.deleteSeriesButton.classList.toggle("hidden", !(task && task.recurrence !== "none"));
     renderIconGrid(task?.icon || defaults?.icon || iconChoices[0]);
     syncDialogFields();
+    renderTaskPreview();
     refs.taskDialog.showModal();
   }
 
@@ -1357,6 +1472,51 @@
 
   function closeDialog() {
     refs.taskDialog.close();
+  }
+
+  function exportBoardData() {
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      app: "HomeFlow Board",
+      version: APP_VERSION,
+      data: state,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `homeflow-board-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+
+  function importBoardData(event) {
+    const [file] = event.target.files || [];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || "{}"));
+        const imported = normalizeState(parsed.data || parsed);
+        Object.keys(state).forEach((key) => delete state[key]);
+        Object.assign(state, imported);
+        ui.drawerOpen = false;
+        ui.selectedTaskId = null;
+        ui.dragTaskId = null;
+        saveState();
+        hydrateRecurringTasks();
+        renderApp();
+      } catch (error) {
+        window.alert("Import failed. Please select a valid board backup JSON file.");
+      } finally {
+        refs.importDataInput.value = "";
+      }
+    });
+    reader.readAsText(file);
   }
 
   function handleTaskSubmit(event) {
@@ -1455,6 +1615,7 @@
     const recurrence = refs.taskRecurrenceInput.value;
     refs.intervalField.classList.toggle("hidden", recurrence !== "interval");
     refs.weekdayField.classList.toggle("hidden", !["weekly", "biweekly"].includes(recurrence));
+    renderTaskPreview();
   }
 
   function upsertTaskLibraryFromTask(task) {
