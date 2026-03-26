@@ -1874,13 +1874,15 @@
   function occursOnDate(task, date) {
     const anchor = parseDateKey(task.dueDate);
     const current = startOfDay(date);
-    if (current < anchor) {
+    const specialWeekRecurrence = task.recurrence === "linneaWeeks" || task.recurrence === "notLinneaWeeks";
+    const effectiveAnchor = specialWeekRecurrence ? startOfWeek(anchor) : anchor;
+    if (current < effectiveAnchor) {
       return false;
     }
     if (Array.isArray(task.exceptionDates) && task.exceptionDates.includes(formatDateKey(current))) {
       return false;
     }
-    const diffDays = daysBetween(anchor, current);
+    const diffDays = daysBetween(effectiveAnchor, current);
 
     switch (task.recurrence) {
       case "daily":
