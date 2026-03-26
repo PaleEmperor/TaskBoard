@@ -56,28 +56,10 @@
     { id: "bath", icon: "🛁", category: "family", effort: "steady", title: { en: "Bath time", fi: "Kylpy", de: "Badezeit" } }
   ];
 
-  const celebrationPhrases = {
-    en: [
-      "Good job", "Well done", "Nice work", "Great work", "Awesome", "Brilliant", "Excellent", "Super", "Fantastic", "Amazing",
-      "You did it", "So good", "Strong work", "Clean win", "Beautiful", "Solid work", "Great effort", "Keep going", "Shiny work", "Lovely job",
-      "Top work", "That helped", "Huge help", "So tidy", "What a win", "Big success", "Gold star", "Champion", "Nailed it", "Perfect",
-      "Smart move", "Wonderful", "Excellent job", "That was fast", "So smooth", "Legend", "Power move", "House hero", "Family hero", "Great energy",
-      "Fantastic job", "Sharp work", "Mission done", "Beautiful work", "Nice one", "Strong finish", "Helpful", "Treasure", "Sweet", "Yes"
-    ],
-    fi: [
-      "Hyvä", "Hienoa", "Mahtavaa", "Loistavaa", "Upeaa", "Todella hyvä", "Hyvin tehty", "Jes", "Super", "Huippua",
-      "Nyt onnistui", "Tosi hyvä", "Komeaa", "Kaunista työtä", "Mainiota", "Tämä auttoi", "Iso apu", "Hyvä veto", "Loistotyö", "Täydellistä",
-      "Tosi siistiä", "Aivan mahtavaa", "Vau", "Tarkkaa työtä", "Hyvä meininki", "Huikeaa", "Kultatähti", "Mestari", "Nappiin meni", "Tästä tuli hyvä",
-      "Tyylikästä", "Helposti hoidettu", "Nyt sujuu", "Perhesankari", "Kotisankari", "Mahtava veto", "Todella hienoa", "Ihanaa", "Upea homma", "Taitavaa",
-      "Vahva suoritus", "Tämä onnistui", "Hyvä loppu", "Reipasta", "Huipputyö", "Juuri näin", "Siisti homma", "Toimii", "Hyvin meni", "Jes taas"
-    ],
-    de: [
-      "Gut gemacht", "Sehr gut", "Klasse", "Super", "Stark", "Wunderbar", "Prima", "Großartig", "Fantastisch", "Ausgezeichnet",
-      "Sauber", "Top", "Richtig gut", "Schön gemacht", "Bravo", "Das hilft", "Große Hilfe", "Starke Arbeit", "Perfekt", "Toll",
-      "Genau so", "Sehr schön", "Läuft", "Gold wert", "Richtig stark", "Hausheld", "Familienheld", "Spitze", "Erledigt", "Voll gut",
-      "Meisterhaft", "Elegant", "Saubere Arbeit", "Was für ein Erfolg", "Klug gelöst", "Wirklich toll", "Top Arbeit", "Starker Abschluss", "Wunderbar gemacht", "Yes",
-      "Mega", "Fein", "Sehr hilfreich", "Richtig sauber", "Beste Arbeit", "Schöner Treffer", "Stark gemacht", "Gute Energie", "Richtig klasse", "Gewonnen"
-    ],
+  const celebrationWords = {
+    en: ["Nice", "Good", "Great", "Super", "Yes", "Done"],
+    fi: ["Hyvä", "Jes", "Hieno", "Loisto", "Super", "Valmis"],
+    de: ["Gut", "Klasse", "Super", "Prima", "Top", "Erledigt"],
   };
 
   const messages = {
@@ -141,8 +123,14 @@
       reopen: "Reopen",
       didItFor: "I did it for {user}",
       countedFor: "Counted for {user}",
+      claimTask: "Claim for me",
+      claimedTask: "Claimed by me",
       dayCleared: "Day complete",
       dayClearedSub: "Everything for today is done",
+      participantEyebrow: "Completion",
+      participantTitle: "Who participated?",
+      participantCopy: "Choose one or more people for the leaderboard.",
+      confirmParticipants: "Complete task",
       edit: "Edit",
       emptyDay: "Drop tasks here or use a quick routine",
       owner: "Owner",
@@ -259,8 +247,14 @@
       reopen: "Avaa uudelleen",
       didItFor: "Minä tein tämän: {user}",
       countedFor: "Laskettu käyttäjälle {user}",
+      claimTask: "Merkitse minulle",
+      claimedTask: "Merkitty minulle",
       dayCleared: "Päivä valmis",
       dayClearedSub: "Kaikki tämän päivän tehtävät on tehty",
+      participantEyebrow: "Valmis",
+      participantTitle: "Ketkä osallistuivat?",
+      participantCopy: "Valitse yksi tai useampi henkilö pistelistaa varten.",
+      confirmParticipants: "Merkitse valmiiksi",
       edit: "Muokkaa",
       emptyDay: "Pudota tehtäviä tähän tai käytä pikanappia",
       owner: "Omistaja",
@@ -377,8 +371,14 @@
       reopen: "Wieder öffnen",
       didItFor: "Ich habe das für {user} gemacht",
       countedFor: "Gezählt für {user}",
+      claimTask: "Für mich beanspruchen",
+      claimedTask: "Für mich beansprucht",
       dayCleared: "Tag geschafft",
       dayClearedSub: "Alles für diesen Tag ist erledigt",
+      participantEyebrow: "Erledigt",
+      participantTitle: "Wer hat mitgemacht?",
+      participantCopy: "Wähle eine oder mehrere Personen für die Rangliste.",
+      confirmParticipants: "Aufgabe erledigen",
       edit: "Bearbeiten",
       emptyDay: "Aufgaben hier ablegen oder eine Routine benutzen",
       owner: "Besitzer",
@@ -490,8 +490,10 @@
       status: "open",
       completedAt: null,
       completedById: null,
+      completedByIds: [],
       completionDates: [],
       completionByDate: {},
+      completionParticipantsByDate: {},
       exceptionDates: [],
       libraryId: config.libraryId || null,
       seriesId: config.seriesId || null,
@@ -536,7 +538,9 @@
     normalized.tasks.forEach((task) => {
       task.endTime = typeof task.endTime === "string" ? task.endTime : "";
       task.completedById = normalizeCompletionUserId(task.completedById, task);
+      task.completedByIds = normalizeCompletionUserIds(task.completedByIds, task, task.completedById);
       task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      task.completionParticipantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
     });
     normalized.taskLibrary.forEach((entry) => {
       entry.endTime = typeof entry.endTime === "string" ? entry.endTime : "";
@@ -548,6 +552,7 @@
   const ui = {
     dialogMode: "create",
     editingTaskId: null,
+    pendingCompletionItemId: null,
     dragTaskId: null,
     selectedTaskId: null,
     expandedCards: {},
@@ -615,6 +620,15 @@
     deleteDropZone: document.getElementById("deleteDropZone"),
     deleteDropZoneLabel: document.getElementById("deleteDropZoneLabel"),
     taskDialog: document.getElementById("taskDialog"),
+    participantDialog: document.getElementById("participantDialog"),
+    participantForm: document.getElementById("participantForm"),
+    participantEyebrow: document.getElementById("participantEyebrow"),
+    participantTitle: document.getElementById("participantTitle"),
+    participantCopy: document.getElementById("participantCopy"),
+    participantPicker: document.getElementById("participantPicker"),
+    closeParticipantDialogButton: document.getElementById("closeParticipantDialogButton"),
+    cancelParticipantButton: document.getElementById("cancelParticipantButton"),
+    confirmParticipantButton: document.getElementById("confirmParticipantButton"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
     dialogEyebrow: document.getElementById("dialogEyebrow"),
@@ -765,6 +779,9 @@
     refs.taskForm.addEventListener("submit", handleTaskSubmit);
     refs.deleteTaskButton.addEventListener("click", deleteEditingTask);
     refs.deleteSeriesButton.addEventListener("click", deleteEditingSeries);
+    refs.closeParticipantDialogButton.addEventListener("click", closeParticipantDialog);
+    refs.cancelParticipantButton.addEventListener("click", closeParticipantDialog);
+    refs.participantForm.addEventListener("submit", handleParticipantSubmit);
   }
 
   function renderApp() {
@@ -1498,7 +1515,9 @@
       button.type = "button";
       button.className = `responsible-chip${activeIds.includes(entry.id) ? " active" : ""}`;
       button.textContent = entry.label;
-      button.addEventListener("click", () => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         let nextIds;
         if (entry.id === "everyone") {
           nextIds = ["everyone"];
@@ -1611,6 +1630,7 @@
     const detailsShell = fragment.querySelector(".task-details-shell");
     const summary = fragment.querySelector(".task-summary");
     const complete = fragment.querySelector(".complete-chip");
+    const claimButton = fragment.querySelector(".claim-chip");
     const icon = fragment.querySelector(".task-icon");
     const title = fragment.querySelector(".task-title");
     const meta = fragment.querySelector(".task-meta");
@@ -1653,17 +1673,16 @@
     title.textContent = resolveTaskTitle(task);
     meta.textContent = describeBoardItemLine(item);
     complete.textContent = item.done ? t.reopen : t.complete;
-    complete.addEventListener("click", () => toggleTaskCompletion(item, !item.done));
+    complete.addEventListener("click", () => handleCompleteAction(item));
     editButton.textContent = t.edit;
     editButton.addEventListener("click", () => openTaskDialog(task.id));
-    if (item.done) {
+    if (item.done && getResponsibleIds(task).filter((id) => id !== "everyone").length <= 1) {
       const currentCreditId = getCompletionUserIdForItem(item);
       const targetUserId = state.settings.currentUserId;
-      const targetUserLabel = displayUser(targetUserId);
-      creditButton.classList.remove("hidden");
-      creditButton.disabled = currentCreditId === targetUserId;
-      creditButton.textContent = (currentCreditId === targetUserId ? t.countedFor : t.didItFor).replace("{user}", targetUserLabel);
-      creditButton.addEventListener("click", () => creditTaskCompletion(item, targetUserId));
+      claimButton.classList.remove("hidden");
+      claimButton.disabled = currentCreditId === targetUserId;
+      claimButton.textContent = currentCreditId === targetUserId ? t.claimedTask : t.claimTask;
+      claimButton.addEventListener("click", () => creditTaskCompletion(item, targetUserId));
     }
 
     badges.appendChild(createBadge(`${t.owner}: ${displayUser(task.ownerId)}`));
@@ -1742,8 +1761,10 @@
       status: "open",
       completedAt: null,
       completedById: null,
+      completedByIds: [],
       completionDates: [],
       completionByDate: {},
+      completionParticipantsByDate: {},
       exceptionDates: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -2098,8 +2119,10 @@
       status: "open",
       completedAt: null,
       completedById: null,
+      completedByIds: [],
       completionDates: [],
       completionByDate: {},
+      completionParticipantsByDate: {},
       exceptionDates: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -2117,7 +2140,21 @@
     return state.tasks.flatMap((task) => getBoardItemsForTask(task, weekStart, weekEnd)).find((item) => item.id === itemId) || null;
   }
 
+  function handleCompleteAction(boardItem) {
+    if (boardItem.done) {
+      toggleTaskCompletion(boardItem, false);
+      return;
+    }
+    const participantIds = getResponsibleIds(boardItem.task).filter((id) => id !== "everyone");
+    if (participantIds.length > 1) {
+      openParticipantDialog(boardItem);
+      return;
+    }
+    toggleTaskCompletion(boardItem, true);
+  }
+
   function toggleTaskCompletion(boardItem, shouldComplete) {
+    const explicitParticipants = arguments[2];
     const task = state.tasks.find((item) => item.id === boardItem.task.id);
     if (!task) {
       return;
@@ -2126,19 +2163,26 @@
     if (task.recurrence !== "none") {
       task.completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
       task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      task.completionParticipantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
       if (shouldComplete) {
         if (!task.completionDates.includes(boardItem.dateKey)) {
           task.completionDates.push(boardItem.dateKey);
         }
-        task.completionByDate[boardItem.dateKey] = getDefaultCompletionUserId(task);
+        const participantIds = normalizeCompletionUserIds(explicitParticipants, task, getDefaultCompletionUserId(task));
+        task.completionParticipantsByDate[boardItem.dateKey] = participantIds;
+        task.completionByDate[boardItem.dateKey] = participantIds[0] || getDefaultCompletionUserId(task);
       } else {
         task.completionDates = task.completionDates.filter((dateKey) => dateKey !== boardItem.dateKey);
         delete task.completionByDate[boardItem.dateKey];
+        delete task.completionParticipantsByDate[boardItem.dateKey];
       }
     } else {
       task.status = shouldComplete ? "done" : "open";
       task.completedAt = shouldComplete ? new Date().toISOString() : null;
-      task.completedById = shouldComplete ? getDefaultCompletionUserId(task) : null;
+      task.completedByIds = shouldComplete
+        ? normalizeCompletionUserIds(explicitParticipants, task, getDefaultCompletionUserId(task))
+        : [];
+      task.completedById = shouldComplete ? (task.completedByIds[0] || getDefaultCompletionUserId(task)) : null;
     }
     task.updatedAt = new Date().toISOString();
     ui.selectedTaskId = null;
@@ -2157,20 +2201,17 @@
     if (!refs.celebrationLayer) {
       return;
     }
-    const phrases = celebrationPhrases[state.settings.language] || celebrationPhrases.en;
-    const burstCount = Math.min(18, phrases.length);
-    for (let index = 0; index < burstCount; index += 1) {
-      const chip = document.createElement("div");
-      chip.className = "celebration-chip";
-      chip.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-      chip.style.setProperty("--x", `${8 + Math.random() * 84}%`);
-      chip.style.setProperty("--delay", `${Math.random() * 0.35}s`);
-      chip.style.setProperty("--duration", `${2.2 + Math.random() * 1.3}s`);
-      chip.style.setProperty("--drift", `${(Math.random() - 0.5) * 120}px`);
-      chip.style.setProperty("--rotate", `${(Math.random() - 0.5) * 18}deg`);
-      refs.celebrationLayer.appendChild(chip);
-      window.setTimeout(() => chip.remove(), 4200);
-    }
+    const words = celebrationWords[state.settings.language] || celebrationWords.en;
+    const chip = document.createElement("div");
+    chip.className = "celebration-chip";
+    chip.textContent = words[Math.floor(Math.random() * words.length)];
+    chip.style.setProperty("--x", "50%");
+    chip.style.setProperty("--delay", "0s");
+    chip.style.setProperty("--duration", "1.4s");
+    chip.style.setProperty("--drift", "0px");
+    chip.style.setProperty("--rotate", "0deg");
+    refs.celebrationLayer.appendChild(chip);
+    window.setTimeout(() => chip.remove(), 1800);
   }
 
   function launchDayCompletionCelebration() {
@@ -2184,7 +2225,7 @@
     refs.celebrationLayer.appendChild(banner);
     window.setTimeout(() => banner.remove(), 3600);
 
-    for (let index = 0; index < 28; index += 1) {
+    for (let index = 0; index < 46; index += 1) {
       const piece = document.createElement("div");
       piece.className = "confetti-piece";
       piece.style.setProperty("--x", `${4 + Math.random() * 92}%`);
@@ -2198,6 +2239,70 @@
     }
   }
 
+  function openParticipantDialog(boardItem) {
+    const t = currentMessages();
+    ui.pendingCompletionItemId = boardItem.id;
+    refs.participantEyebrow.textContent = t.participantEyebrow;
+    refs.participantTitle.textContent = t.participantTitle;
+    refs.participantCopy.textContent = `${resolveTaskTitle(boardItem.task)}. ${t.participantCopy}`;
+    refs.cancelParticipantButton.textContent = t.cancel;
+    refs.confirmParticipantButton.textContent = t.confirmParticipants;
+    renderParticipantPicker(
+      getResponsibleIds(boardItem.task).filter((id) => id !== "everyone"),
+      [state.settings.currentUserId].filter((id) => getResponsibleIds(boardItem.task).includes(id))
+    );
+    refs.participantDialog.showModal();
+  }
+
+  function closeParticipantDialog() {
+    ui.pendingCompletionItemId = null;
+    refs.participantDialog.close();
+  }
+
+  function renderParticipantPicker(allowedIds, selectedIds) {
+    const activeIds = normalizeCompletionUserIds(selectedIds, null, allowedIds[0]).filter((id) => allowedIds.includes(id));
+    refs.participantPicker.dataset.value = activeIds.join(",");
+    refs.participantPicker.innerHTML = "";
+    allowedIds.forEach((userId) => {
+      const user = users.find((entry) => entry.id === userId);
+      if (!user) {
+        return;
+      }
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `responsible-chip${activeIds.includes(userId) ? " active" : ""}`;
+      button.textContent = `${user.emoji} ${user.name}`;
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const currentIds = normalizeCompletionUserIds(refs.participantPicker.dataset.value?.split(","), null, allowedIds[0]).filter((id) => allowedIds.includes(id));
+        let nextIds = currentIds.includes(userId)
+          ? currentIds.filter((id) => id !== userId)
+          : currentIds.concat(userId);
+        if (!nextIds.length) {
+          nextIds = [userId];
+        }
+        renderParticipantPicker(allowedIds, nextIds);
+      });
+      refs.participantPicker.appendChild(button);
+    });
+  }
+
+  function handleParticipantSubmit(event) {
+    event.preventDefault();
+    const boardItem = findBoardItemById(ui.pendingCompletionItemId);
+    if (!boardItem) {
+      closeParticipantDialog();
+      return;
+    }
+    const allowedIds = getResponsibleIds(boardItem.task).filter((id) => id !== "everyone");
+    const selectedIds = normalizeCompletionUserIds(refs.participantPicker.dataset.value?.split(","), null, allowedIds[0]).filter((id) => allowedIds.includes(id));
+    if (!selectedIds.length) {
+      return;
+    }
+    closeParticipantDialog();
+    toggleTaskCompletion(boardItem, true, selectedIds);
+  }
+
   function creditTaskCompletion(boardItem, userId) {
     const task = state.tasks.find((item) => item.id === boardItem.task.id);
     if (!task || !users.some((user) => user.id === userId)) {
@@ -2209,9 +2314,12 @@
         return;
       }
       task.completionByDate = normalizeCompletionByDate(task.completionByDate, task);
+      task.completionParticipantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
       task.completionByDate[boardItem.dateKey] = userId;
+      task.completionParticipantsByDate[boardItem.dateKey] = [userId];
     } else if (task.status === "done") {
       task.completedById = userId;
+      task.completedByIds = [userId];
     } else {
       return;
     }
@@ -2434,6 +2542,20 @@
     return users.some((user) => user.id === userId) ? userId : getDefaultCompletionUserId(task);
   }
 
+  function normalizeCompletionUserIds(userIds, task, fallbackUserId) {
+    const raw = Array.isArray(userIds) ? userIds : [userIds];
+    const cleaned = Array.from(
+      new Set(
+        raw.filter((entry) => users.some((user) => user.id === entry))
+      )
+    );
+    if (cleaned.length) {
+      return cleaned;
+    }
+    const fallback = fallbackUserId || normalizeCompletionUserId(null, task) || getDefaultCompletionUserId(task);
+    return fallback ? [fallback] : [];
+  }
+
   function normalizeCompletionByDate(map, task) {
     if (!map || typeof map !== "object" || Array.isArray(map)) {
       return {};
@@ -2443,6 +2565,20 @@
         ([dateKey, userId]) => /^\d{4}-\d{2}-\d{2}$/.test(dateKey) && normalizeCompletionUserId(userId, task) === userId
       )
     );
+  }
+
+  function normalizeCompletionParticipantsByDate(map, task, fallbackMap) {
+    const source = map && typeof map === "object" && !Array.isArray(map) ? map : {};
+    const fallbackSource = fallbackMap && typeof fallbackMap === "object" && !Array.isArray(fallbackMap) ? fallbackMap : {};
+    const normalized = {};
+    const keys = new Set([...Object.keys(source), ...Object.keys(fallbackSource)]);
+    keys.forEach((dateKey) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+        return;
+      }
+      normalized[dateKey] = normalizeCompletionUserIds(source[dateKey], task, fallbackSource[dateKey]);
+    });
+    return normalized;
   }
 
   function getResponsibleIds(task) {
@@ -2459,6 +2595,18 @@
       return completionByDate[item.dateKey] || getDefaultCompletionUserId(task);
     }
     return normalizeCompletionUserId(task.completedById, task) || getDefaultCompletionUserId(task);
+  }
+
+  function getCompletionUserIdsForItem(item) {
+    const task = item?.task;
+    if (!task) {
+      return [];
+    }
+    if (task.recurrence !== "none") {
+      const participantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
+      return participantsByDate[item.dateKey] || [getCompletionUserIdForItem(item)];
+    }
+    return normalizeCompletionUserIds(task.completedByIds, task, task.completedById);
   }
 
   function displayUsers(userIds) {
@@ -2637,10 +2785,10 @@
         count: state.tasks.reduce((total, task) => {
           if (task.recurrence !== "none") {
             const completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
-            const completionByDate = normalizeCompletionByDate(task.completionByDate, task);
-            return total + completionDates.filter((dateKey) => (completionByDate[dateKey] || getDefaultCompletionUserId(task)) === user.id).length;
+            const participantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
+            return total + completionDates.filter((dateKey) => (participantsByDate[dateKey] || [getDefaultCompletionUserId(task)]).includes(user.id)).length;
           }
-          return total + (task.completedAt && (normalizeCompletionUserId(task.completedById, task) || getDefaultCompletionUserId(task)) === user.id ? 1 : 0);
+          return total + (task.completedAt && normalizeCompletionUserIds(task.completedByIds, task, task.completedById).includes(user.id) ? 1 : 0);
         }, 0),
       }))
       .sort((left, right) => right.count - left.count || left.user.name.localeCompare(right.user.name));

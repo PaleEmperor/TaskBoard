@@ -160,10 +160,10 @@
             <select id="taskOwnerInput" name="owner"></select>
           </label>
 
-          <label class="field">
+          <div class="field">
             <span id="fieldResponsibleLabel"></span>
             <div class="responsible-picker" id="taskResponsibleInput"></div>
-          </label>
+          </div>
 
           <label class="field">
             <span id="fieldDayLabel"></span>
@@ -216,6 +216,27 @@
       </form>
     </dialog>
 
+    <dialog class="task-dialog participant-dialog" id="participantDialog">
+      <form class="task-form participant-form" id="participantForm">
+        <div class="dialog-header">
+          <div>
+            <div class="panel-label" id="participantEyebrow"></div>
+            <h2 id="participantTitle"></h2>
+          </div>
+          <button class="icon-button" id="closeParticipantDialogButton" type="button" aria-label="Close">✕</button>
+        </div>
+
+        <div class="participant-copy" id="participantCopy"></div>
+        <div class="responsible-picker participant-picker" id="participantPicker"></div>
+
+        <div class="dialog-actions">
+          <div class="spacer"></div>
+          <button class="ghost-button" id="cancelParticipantButton" type="button"></button>
+          <button class="primary-button" id="confirmParticipantButton" type="submit"></button>
+        </div>
+      </form>
+    </dialog>
+
     <template id="taskCardTemplate">
       <article class="task-card" draggable="true">
         <details class="task-details-shell">
@@ -237,6 +258,7 @@
             </div>
           </div>
         </details>
+        <button class="ghost-button claim-chip hidden" type="button"></button>
         <button class="complete-chip" type="button"></button>
       </article>
     </template>

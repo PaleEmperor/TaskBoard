@@ -186,18 +186,19 @@ button {
 .celebration-chip {
   position: absolute;
   left: var(--x, 50%);
-  bottom: 16vh;
+  bottom: 18vh;
   transform: translateX(-50%);
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(68, 95, 118, 0.12);
-  box-shadow: 0 10px 24px rgba(32, 48, 61, 0.12);
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(68, 95, 118, 0.08);
+  box-shadow: 0 8px 20px rgba(32, 48, 61, 0.08);
+  backdrop-filter: blur(4px);
   color: var(--ink);
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   font-weight: 700;
   white-space: nowrap;
-  animation: celebration-float var(--duration, 3s) ease-out forwards;
+  animation: celebration-float var(--duration, 1.4s) ease-out forwards;
   animation-delay: var(--delay, 0s);
 }
 
@@ -244,19 +245,19 @@ button {
 @keyframes celebration-float {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(18px) scale(0.82) rotate(0deg);
+    transform: translateX(-50%) translateY(8px) scale(0.92) rotate(0deg);
   }
-  12% {
+  18% {
     opacity: 1;
-    transform: translateX(calc(-50% + var(--drift, 0px) * 0.12)) translateY(-8px) scale(1) rotate(calc(var(--rotate, 0deg) * 0.35));
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(0) scale(1) rotate(var(--rotate, 0deg));
   }
   80% {
-    opacity: 1;
-    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-180px) scale(1) rotate(var(--rotate, 0deg));
+    opacity: 0.9;
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-24px) scale(1) rotate(var(--rotate, 0deg));
   }
   100% {
     opacity: 0;
-    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-240px) scale(0.96) rotate(var(--rotate, 0deg));
+    transform: translateX(calc(-50% + var(--drift, 0px))) translateY(-34px) scale(0.98) rotate(var(--rotate, 0deg));
   }
 }
 
@@ -1780,6 +1781,21 @@ h1 {
   background: #c84f68;
 }
 
+.claim-chip {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(66, 119, 207, 0.08);
+  color: var(--ink);
+  border: 1px solid rgba(66, 119, 207, 0.16);
+}
+
+.claim-chip:disabled {
+  opacity: 0.62;
+  cursor: default;
+}
+
 .credit-task-button {
   min-height: 40px;
 }
@@ -1897,6 +1913,21 @@ details[open] > .accordion-summary::after {
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid rgba(68, 95, 118, 0.1);
+}
+
+.participant-form {
+  display: grid;
+  gap: 14px;
+}
+
+.participant-copy {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.participant-picker {
+  margin-top: 10px;
 }
 
 .dialog-preview-label {
