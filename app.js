@@ -2,6 +2,7 @@
   const STORAGE_KEY = "homeflow-board-v2";
   const AUTO_REFRESH_MS = 60000;
   const WEATHER_REFRESH_MS = 300000;
+  const IDLE_SCROLL_TOP_MS = 300000;
   const APP_VERSION = "v1";
   const BOARD_DENSITY = {
     everyone: "everyone",
@@ -731,12 +732,14 @@
     saveTaskButton: document.getElementById("saveTaskButton"),
     taskCardTemplate: document.getElementById("taskCardTemplate"),
   };
+  let idleScrollTimer = null;
 
   hydrateRecurringTasks();
   registerServiceWorker();
   hydrateWeather();
   bindEvents();
   renderApp();
+  resetIdleScrollTimer();
   setInterval(() => {
     renderApp();
   }, AUTO_REFRESH_MS);
@@ -745,6 +748,12 @@
   }, WEATHER_REFRESH_MS);
 
   function bindEvents() {
+    const activityOptions = { passive: true, capture: true };
+    document.addEventListener("pointerdown", resetIdleScrollTimer, activityOptions);
+    document.addEventListener("keydown", resetIdleScrollTimer, true);
+    document.addEventListener("scroll", resetIdleScrollTimer, activityOptions);
+    document.addEventListener("touchstart", resetIdleScrollTimer, activityOptions);
+
     refs.quickAddButton.addEventListener("click", () => openTaskDialog());
     refs.toolDrawerToggle.addEventListener("click", () => {
       ui.drawerOpen = true;
@@ -863,6 +872,15 @@
     refs.participantForm.addEventListener("submit", handleParticipantSubmit);
     refs.closeClaimDialogButton.addEventListener("click", closeClaimDialog);
     refs.closeClaimDialogFooterButton.addEventListener("click", closeClaimDialog);
+  }
+
+  function resetIdleScrollTimer() {
+    if (idleScrollTimer) {
+      clearTimeout(idleScrollTimer);
+    }
+    idleScrollTimer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, IDLE_SCROLL_TOP_MS);
   }
 
   function renderApp() {
