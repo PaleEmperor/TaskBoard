@@ -115,19 +115,26 @@
       taskWeekday: "Preferred weekday",
       taskEffort: "Effort",
       taskClaimable: "Send to claim area",
+      taskSomeday: "Save for someday",
       taskNotes: "Notes",
       previewLabel: "Preview",
       backupHeading: "Backup",
       claimPoolHeading: "Claim tasks",
+      somedayHeading: "Someday tasks",
       claimNow: "Claim",
+      somedayPlanNow: "Schedule now",
       removeClaimTask: "Remove",
       claimEmpty: "Drop tasks here or create them as claimable.",
       sendToClaimInbox: "Send to claim inbox",
+      sendToSomeday: "Save for someday",
       requestedBy: "Requested by {user}",
-    claimInbox: "Claim inbox",
-    openClaimTasks: "Open claim tasks: {count}",
+      claimInbox: "Claim inbox",
+      somedayInbox: "Someday tasks",
+      openClaimTasks: "Open claim tasks: {count}",
+      openSomedayTasks: "Someday: {count}",
       claimWho: "Who are you?",
       claimInboxCopy: "Claim a task and it will be added to today with no time.",
+      somedayInboxCopy: "Keep tasks here until you want to schedule them.",
       exportData: "Export data",
       importData: "Import data",
       save: "Save task",
@@ -188,10 +195,18 @@
       weatherLoading: "Loading weather",
       weatherUnavailable: "Weather unavailable",
       weatherFallback: "Helsinki",
-      rankingTitle: "Task podium",
+      tasksDoneToday: "Tasks done today",
+      doneThisWeek: "Done this week",
+      bestWeek: "Best week",
+      noBestWeek: "No record yet",
+      overdueTasks: "Overdue tasks",
+      noOverdueTasks: "Nothing overdue",
+      goToTask: "Go to",
+      rankingTitle: "Family progress",
       rankingGold: "Gold",
       rankingSilver: "Silver",
       rankingBronze: "Bronze",
+      teamworkDone: "{count} tasks together",
       weekdayLong: {
         monday: "Monday",
         tuesday: "Tuesday",
@@ -252,19 +267,26 @@
       taskWeekday: "Suosittu viikonpäivä",
       taskEffort: "Työmäärä",
       taskClaimable: "Lähetä claim-alueelle",
+      taskSomeday: "Tallenna myöhemmäksi",
       taskNotes: "Muistiinpanot",
       previewLabel: "Esikatselu",
       backupHeading: "Varmuuskopio",
       claimPoolHeading: "Claim-tehtävät",
+      somedayHeading: "Emme tiedä vielä milloin",
       claimNow: "Claim",
+      somedayPlanNow: "Joskus on tänään",
       removeClaimTask: "Poista",
       claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
       sendToClaimInbox: "Lähetä claim-tehtäviin",
+      sendToSomeday: "Tallenna myöhemmäksi",
       requestedBy: "Pyytänyt: {user}",
-    claimInbox: "Claim-tehtävät",
-    openClaimTasks: "Avaa claim-tehtävät: {count}",
+      claimInbox: "Claim-tehtävät",
+      somedayInbox: "Joskus on tänään",
+      openClaimTasks: "Avaa claim-tehtävät: {count}",
+      openSomedayTasks: "Joskus on tänään: {count}",
       claimWho: "Kuka olet?",
       claimInboxCopy: "Claimattu tehtävä lisätään tälle päivälle ilman aikaa.",
+      somedayInboxCopy: "Tehtävät odottavat täällä siihen asti, kunnes päätät että nyt on oikea hetki.",
       exportData: "Vie tiedot",
       importData: "Tuo tiedot",
       save: "Tallenna tehtävä",
@@ -325,10 +347,18 @@
       weatherLoading: "Ladataan säätä",
       weatherUnavailable: "Sää ei saatavilla",
       weatherFallback: "Helsinki",
-      rankingTitle: "Tehtäväpalkinnot",
+      tasksDoneToday: "Tehty tänään",
+      doneThisWeek: "Tehty tällä viikolla",
+      bestWeek: "Paras viikko",
+      noBestWeek: "Ei vielä ennätystä",
+      overdueTasks: "Myöhässä olevat",
+      noOverdueTasks: "Ei myöhässä olevia",
+      goToTask: "Siirry",
+      rankingTitle: "Perheen eteneminen",
       rankingGold: "Kulta",
       rankingSilver: "Hopea",
       rankingBronze: "Pronssi",
+      teamworkDone: "{count} tehtävää yhdessä",
       weekdayLong: {
         monday: "Maanantai",
         tuesday: "Tiistai",
@@ -389,19 +419,26 @@
       taskWeekday: "Bevorzugter Wochentag",
       taskEffort: "Aufwand",
       taskClaimable: "In den Claim-Bereich legen",
+      taskSomeday: "Für irgendwann speichern",
       taskNotes: "Notizen",
       previewLabel: "Vorschau",
       backupHeading: "Sicherung",
       claimPoolHeading: "Claim-Aufgaben",
+      somedayHeading: "Irgendwann-Aufgaben",
       claimNow: "Claim",
+      somedayPlanNow: "Jetzt einplanen",
       removeClaimTask: "Entfernen",
       claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
       sendToClaimInbox: "In Claim-Aufgaben legen",
+      sendToSomeday: "Für irgendwann speichern",
       requestedBy: "Angefragt von {user}",
-    claimInbox: "Claim-Aufgaben",
-    openClaimTasks: "Claim-Aufgaben öffnen: {count}",
+      claimInbox: "Claim-Aufgaben",
+      somedayInbox: "Irgendwann-Aufgaben",
+      openClaimTasks: "Claim-Aufgaben öffnen: {count}",
+      openSomedayTasks: "Irgendwann: {count}",
       claimWho: "Wer bist du?",
       claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefügt.",
+      somedayInboxCopy: "Aufgaben bleiben hier, bis du sie einplanen willst.",
       exportData: "Daten exportieren",
       importData: "Daten importieren",
       save: "Aufgabe speichern",
@@ -462,10 +499,18 @@
       weatherLoading: "Wetter lädt",
       weatherUnavailable: "Kein Wetter verfügbar",
       weatherFallback: "Helsinki",
-      rankingTitle: "Aufgaben-Podest",
+      tasksDoneToday: "Heute geschafft",
+      doneThisWeek: "Diese Woche geschafft",
+      bestWeek: "Beste Woche",
+      noBestWeek: "Noch kein Rekord",
+      overdueTasks: "Überfällige Aufgaben",
+      noOverdueTasks: "Nichts überfällig",
+      goToTask: "Öffnen",
+      rankingTitle: "Familienfortschritt",
       rankingGold: "Gold",
       rankingSilver: "Silber",
       rankingBronze: "Bronze",
+      teamworkDone: "{count} Aufgaben zusammen",
       weekdayLong: {
         monday: "Montag",
         tuesday: "Dienstag",
@@ -503,6 +548,7 @@
         darkMode: false,
       },
       claimPool: [],
+      somedayPool: [],
       taskLibrary: [],
       tasks: [],
     };
@@ -569,6 +615,9 @@
     if (!Array.isArray(normalized.claimPool)) {
       normalized.claimPool = [];
     }
+    if (!Array.isArray(normalized.somedayPool)) {
+      normalized.somedayPool = [];
+    }
     if (!Array.isArray(normalized.taskLibrary)) {
       normalized.taskLibrary = [];
     }
@@ -581,6 +630,7 @@
     normalized.tasks = normalized.tasks.map((task) => normalizeResponsibleRecord(task));
     normalized.taskLibrary = normalized.taskLibrary.map((entry) => normalizeResponsibleRecord(entry));
     normalized.claimPool = normalized.claimPool.map((entry) => normalizeClaimRecord(entry));
+    normalized.somedayPool = normalized.somedayPool.map((entry) => normalizeSomedayRecord(entry));
     normalized.tasks.forEach((task) => {
       task.endTime = typeof task.endTime === "string" ? task.endTime : "";
       task.completedById = normalizeCompletionUserId(task.completedById, task);
@@ -595,6 +645,10 @@
       entry.dueTime = "";
       entry.endTime = "";
     });
+    normalized.somedayPool.forEach((entry) => {
+      entry.dueTime = "";
+      entry.endTime = "";
+    });
     return normalized;
   }
 
@@ -602,6 +656,7 @@
   const ui = {
     dialogMode: "create",
     editingTaskId: null,
+    pendingSomedayEntryId: null,
     pendingCompletionItemId: null,
     claimDialogUserId: null,
     dragTaskId: null,
@@ -618,6 +673,8 @@
       condition: "",
       theme: "clear",
     },
+    progressGardenFrame: null,
+    headerClockTimer: null,
   };
 
   const refs = {
@@ -629,6 +686,8 @@
     weatherCondition: document.getElementById("weatherCondition"),
     weatherPlace: document.getElementById("weatherPlace"),
     weatherDetails: document.getElementById("weatherDetails"),
+    weatherMidCard: document.getElementById("weatherMidCard"),
+    weatherOverdueCard: document.getElementById("weatherOverdueCard"),
     weatherRanking: document.getElementById("weatherRanking"),
     appTitle: document.getElementById("appTitle"),
     appSubtitle: document.getElementById("appSubtitle"),
@@ -658,6 +717,9 @@
     claimBellButton: document.getElementById("claimBellButton"),
     claimBellText: document.getElementById("claimBellText"),
     claimBellCount: document.getElementById("claimBellCount"),
+    somedayButton: document.getElementById("somedayButton"),
+    somedayText: document.getElementById("somedayText"),
+    somedayCount: document.getElementById("somedayCount"),
     weekGrid: document.getElementById("weekGrid"),
     quickAssignLabel: document.getElementById("quickAssignLabel"),
     familyHeading: document.getElementById("familyHeading"),
@@ -676,6 +738,8 @@
     deleteDropZoneLabel: document.getElementById("deleteDropZoneLabel"),
     claimDropZone: document.getElementById("claimDropZone"),
     claimDropZoneLabel: document.getElementById("claimDropZoneLabel"),
+    somedayDropZone: document.getElementById("somedayDropZone"),
+    somedayDropZoneLabel: document.getElementById("somedayDropZoneLabel"),
     taskDialog: document.getElementById("taskDialog"),
     participantDialog: document.getElementById("participantDialog"),
     participantForm: document.getElementById("participantForm"),
@@ -696,6 +760,14 @@
     claimDialogList: document.getElementById("claimDialogList"),
     closeClaimDialogButton: document.getElementById("closeClaimDialogButton"),
     closeClaimDialogFooterButton: document.getElementById("closeClaimDialogFooterButton"),
+    somedayDialog: document.getElementById("somedayDialog"),
+    somedayDialogForm: document.getElementById("somedayDialogForm"),
+    somedayDialogEyebrow: document.getElementById("somedayDialogEyebrow"),
+    somedayDialogTitle: document.getElementById("somedayDialogTitle"),
+    somedayDialogCopy: document.getElementById("somedayDialogCopy"),
+    somedayDialogList: document.getElementById("somedayDialogList"),
+    closeSomedayDialogButton: document.getElementById("closeSomedayDialogButton"),
+    closeSomedayDialogFooterButton: document.getElementById("closeSomedayDialogFooterButton"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
     dialogEyebrow: document.getElementById("dialogEyebrow"),
@@ -715,6 +787,7 @@
     fieldWeekdayLabel: document.getElementById("fieldWeekdayLabel"),
     fieldEffortLabel: document.getElementById("fieldEffortLabel"),
     fieldClaimableLabel: document.getElementById("fieldClaimableLabel"),
+    fieldSomedayLabel: document.getElementById("fieldSomedayLabel"),
     fieldNotesLabel: document.getElementById("fieldNotesLabel"),
     iconGrid: document.getElementById("iconGrid"),
     taskTitleInput: document.getElementById("taskTitleInput"),
@@ -730,6 +803,7 @@
     taskWeekdayInput: document.getElementById("taskWeekdayInput"),
     taskEffortInput: document.getElementById("taskEffortInput"),
     taskClaimableInput: document.getElementById("taskClaimableInput"),
+    taskSomedayInput: document.getElementById("taskSomedayInput"),
     taskNotesInput: document.getElementById("taskNotesInput"),
     intervalField: document.getElementById("intervalField"),
     weekdayField: document.getElementById("weekdayField"),
@@ -753,6 +827,11 @@
   setInterval(() => {
     hydrateWeather();
   }, WEATHER_REFRESH_MS);
+  if (!ui.headerClockTimer) {
+    ui.headerClockTimer = window.setInterval(() => {
+      updateHeaderClock();
+    }, 1000);
+  }
 
   function bindEvents() {
     const activityOptions = { passive: true, capture: true };
@@ -774,6 +853,10 @@
     refs.claimBellButton.addEventListener("dragover", handleDragOver);
     refs.claimBellButton.addEventListener("dragleave", handleDragLeave);
     refs.claimBellButton.addEventListener("drop", handleClaimBellDrop);
+    refs.somedayButton.addEventListener("click", () => openSomedayDialog());
+    refs.somedayButton.addEventListener("dragover", handleDragOver);
+    refs.somedayButton.addEventListener("dragleave", handleDragLeave);
+    refs.somedayButton.addEventListener("drop", handleSomedayDrop);
     document.addEventListener("pointerdown", (event) => {
       if (!ui.drawerOpen) {
         return;
@@ -811,6 +894,7 @@
       deleteDraggedItem(ui.dragTaskId);
       hideDeleteDropZone();
       hideClaimDropZone();
+      hideSomedayDropZone();
     });
     refs.claimDropZone.addEventListener("dragover", handleDragOver);
     refs.claimDropZone.addEventListener("dragleave", handleDragLeave);
@@ -822,6 +906,19 @@
       handleClaimBellDrop(event);
       hideDeleteDropZone();
       hideClaimDropZone();
+      hideSomedayDropZone();
+    });
+    refs.somedayDropZone.addEventListener("dragover", handleDragOver);
+    refs.somedayDropZone.addEventListener("dragleave", handleDragLeave);
+    refs.somedayDropZone.addEventListener("drop", (event) => {
+      handleDragLeave(event);
+      if (!ui.dragTaskId) {
+        return;
+      }
+      handleSomedayDrop(event);
+      hideDeleteDropZone();
+      hideClaimDropZone();
+      hideSomedayDropZone();
     });
     [
       refs.taskTitleInput,
@@ -870,9 +967,28 @@
       saveState();
       renderApp();
     });
+    refs.weatherOverdueCard.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-jump-date]");
+      if (!button) {
+        return;
+      }
+      jumpToDate(button.dataset.jumpDate);
+    });
     refs.fullscreenButton.addEventListener("click", toggleFullscreenMode);
     document.addEventListener("fullscreenchange", renderApp);
     refs.taskRecurrenceInput.addEventListener("change", syncDialogFields);
+    refs.taskClaimableInput.addEventListener("change", () => {
+      if (refs.taskClaimableInput.checked) {
+        refs.taskSomedayInput.checked = false;
+      }
+      syncDialogFields();
+    });
+    refs.taskSomedayInput.addEventListener("change", () => {
+      if (refs.taskSomedayInput.checked) {
+        refs.taskClaimableInput.checked = false;
+      }
+      syncDialogFields();
+    });
     refs.taskForm.addEventListener("submit", handleTaskSubmit);
     refs.deleteTaskButton.addEventListener("click", deleteEditingTask);
     refs.deleteSeriesButton.addEventListener("click", deleteEditingSeries);
@@ -881,6 +997,8 @@
     refs.participantForm.addEventListener("submit", handleParticipantSubmit);
     refs.closeClaimDialogButton.addEventListener("click", closeClaimDialog);
     refs.closeClaimDialogFooterButton.addEventListener("click", closeClaimDialog);
+    refs.closeSomedayDialogButton.addEventListener("click", closeSomedayDialog);
+    refs.closeSomedayDialogFooterButton.addEventListener("click", closeSomedayDialog);
   }
 
   function resetIdleScrollTimer() {
@@ -953,11 +1071,18 @@
     refs.deleteDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
     refs.claimDropZoneLabel.textContent = t.sendToClaimInbox;
     refs.claimDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
+    refs.somedayDropZoneLabel.textContent = t.sendToSomeday;
+    refs.somedayDropZone.classList.toggle("visible", shouldShowDeleteDropZone());
     refs.claimBellText.textContent = t.openClaimTasks.replace("{count}", String(state.claimPool.length));
     refs.claimBellButton.setAttribute("aria-label", t.openClaimTasks.replace("{count}", String(state.claimPool.length)));
     refs.claimBellCount.textContent = state.claimPool.length ? String(state.claimPool.length) : "";
     refs.claimBellButton.classList.toggle("has-items", state.claimPool.length > 0);
     refs.claimBellButton.classList.toggle("ringing", state.claimPool.length > 0);
+    refs.somedayText.textContent = t.openSomedayTasks.replace("{count}", String(state.somedayPool.length));
+    refs.somedayButton.setAttribute("aria-label", t.openSomedayTasks.replace("{count}", String(state.somedayPool.length)));
+    refs.somedayButton.title = t.openSomedayTasks.replace("{count}", String(state.somedayPool.length));
+    refs.somedayCount.textContent = state.somedayPool.length ? String(state.somedayPool.length) : "";
+    refs.somedayButton.classList.toggle("has-items", state.somedayPool.length > 0);
     document.body.dataset.theme = effectiveDarkMode ? "dark" : "light";
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.todayButton.textContent = t.today;
@@ -1057,62 +1182,715 @@
 
   function renderWeatherRanking() {
     const t = currentMessages();
-    const rankedEntries = getCompletionLeaderboard()
-      .map((entry, index, list) => ({
-        ...entry,
-        place: index > 0 && entry.count === list[index - 1].count ? list[index - 1].place : index + 1,
-      }))
-      .filter((entry) => entry.place <= 3);
-    if (!rankedEntries.length) {
-      refs.weatherRanking.innerHTML = "";
-      return;
-    }
-    const leaderboard = [];
-    rankedEntries.forEach((entry) => {
-      const existing = leaderboard.find((item) => item.place === entry.place);
-      if (existing) {
-        existing.users.push(entry.user);
-        existing.count = entry.count;
-        return;
-      }
-      leaderboard.push({
-        place: entry.place,
-        count: entry.count,
-        users: [entry.user],
-      });
-    });
-    const medals = {
-      1: t.rankingGold,
-      2: t.rankingSilver,
-      3: t.rankingBronze,
+    const now = new Date();
+    const localeMap = {
+      en: "en-GB",
+      fi: "fi-FI",
+      de: "de-DE",
     };
-    const positionOrder = { 2: 0, 1: 1, 3: 2 };
-    const podiumOrder = leaderboard
-      .slice()
-      .sort((left, right) => {
-        const leftOrder = positionOrder[left.place] ?? 3;
-        const rightOrder = positionOrder[right.place] ?? 3;
-        if (leftOrder !== rightOrder) {
-          return leftOrder - rightOrder;
-        }
-        return left.user.name.localeCompare(right.user.name);
-      });
-    refs.weatherRanking.innerHTML = `
-      <div class="weather-ranking-title">${t.rankingTitle}</div>
-      <div class="weather-ranking-podium">
-        ${podiumOrder
-          .map(
-            (entry) => `
-              <div class="weather-ranking-item place-${entry.place}" style="--podium-color: ${colorForUser(entry.users[0].id)}">
-                <div class="weather-ranking-medal">${medals[entry.place]}</div>
-                <div class="weather-ranking-name">${entry.users.map((user) => user.name).join(" & ")}</div>
-                <div class="weather-ranking-count">${entry.count}</div>
-              </div>
-            `
-          )
-          .join("")}
+    const locale = localeMap[state.settings.language] || "en-GB";
+    const timeLabel = new Intl.DateTimeFormat(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(now);
+    const dateLabel = new Intl.DateTimeFormat(locale, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    }).format(now);
+    const weekLabel = t.currentWeek.replace("{weekNumber}", String(getWeekNumber(startOfDay(now))));
+    const completedToday = countCompletedToday();
+    const totalToday = countTasksForDate(formatDateKey(startOfDay(now)));
+    const todayRatio = totalToday > 0 ? completedToday / totalToday : 0;
+    const todayProgressColor = getCompletionProgressColor(todayRatio);
+    const completedThisWeek = countCompletedThisWeek(now);
+    const bestWeek = getBestCompletedWeek();
+    const overdueItems = getHeaderOverdueItems().slice(0, 2);
+    if (ui.progressGardenFrame) {
+      cancelAnimationFrame(ui.progressGardenFrame);
+      ui.progressGardenFrame = null;
+    }
+    refs.weatherMidCard.innerHTML = `
+      <div class="weather-mid-label">${t.tasksDoneToday}</div>
+      <div class="weather-mid-value" style="--progress-color: ${todayProgressColor}">${completedToday}<span class="weather-mid-total">/${totalToday}</span></div>
+      <div class="weather-mid-weekline">${t.doneThisWeek}: <strong>${completedThisWeek}</strong></div>
+      <div class="weather-mid-record">${t.bestWeek}: <strong>${bestWeek ? `${bestWeek.label} · ${bestWeek.count}` : t.noBestWeek}</strong></div>
+    `;
+    refs.weatherOverdueCard.innerHTML = `
+      <div class="weather-overdue-title">${t.overdueTasks}</div>
+      <div class="weather-overdue-list">
+        ${overdueItems.length
+          ? overdueItems
+              .map(
+                (item) => `
+                  <div class="weather-overdue-item">
+                    <div class="weather-overdue-copy">
+                      <span class="weather-overdue-icon">${item.task.icon || "•"}</span>
+                      <span class="weather-overdue-name">${escapeHtml(item.task.title)}</span>
+                    </div>
+                    <button class="ghost-button weather-overdue-go" type="button" data-jump-date="${item.dateKey}">
+                      ${t.goToTask}
+                    </button>
+                  </div>
+                `
+              )
+              .join("")
+          : `<div class="weather-overdue-empty">${t.noOverdueTasks}</div>`}
       </div>
     `;
+    refs.weatherOverdueCard.classList.toggle("is-empty", overdueItems.length === 0);
+    refs.weatherRanking.innerHTML = `
+      <div class="weather-info-card">
+        <div class="weather-clock-row">
+          ${buildOrbitClockMarkup()}
+          <div class="weather-clock-copy">
+            <div class="weather-clock-date">${dateLabel}</div>
+            <div class="weather-clock-week">${weekLabel}</div>
+          </div>
+        </div>
+      </div>
+    `;
+    updateHeaderClock(now);
+  }
+
+  function buildOrbitClockMarkup() {
+    return `
+      <div class="orbit-clock" aria-hidden="true">
+        <div class="orbit-hour-value">00</div>
+        <div class="orbit-minute-value">00</div>
+      </div>
+    `;
+  }
+
+  function updateHeaderClock(now = new Date()) {
+    const root = refs.weatherRanking?.querySelector(".orbit-clock");
+    if (!root) {
+      return;
+    }
+    const minuteValue = root.querySelector(".orbit-minute-value");
+    const hourValue = root.querySelector(".orbit-hour-value");
+    if (!(minuteValue && hourValue)) {
+      return;
+    }
+    const minutes = now.getMinutes();
+    const hours = now.getHours();
+    hourValue.textContent = String(hours).padStart(2, "0");
+    minuteValue.textContent = String(minutes).padStart(2, "0");
+  }
+
+  function getHeaderOverdueItems() {
+    const today = startOfDay(new Date());
+    const lookbackStart = addDays(today, -120);
+    return state.tasks
+      .flatMap((task) => {
+        if (task.recurrence === "none") {
+          return [buildBoardItem(task, task.dueDate)];
+        }
+        const taskStart = parseDateKey(task.dueDate);
+        const rangeStart = taskStart > lookbackStart ? taskStart : lookbackStart;
+        return getBoardItemsForTask(task, rangeStart, today);
+      })
+      .filter(isItemOverdue)
+      .sort((left, right) => parseDateKey(left.dateKey) - parseDateKey(right.dateKey) || left.task.title.localeCompare(right.task.title));
+  }
+
+  function jumpToDate(dateKey) {
+    const targetDate = parseDateKey(dateKey);
+    if (Number.isNaN(targetDate.getTime())) {
+      return;
+    }
+    const currentWeekStart = startOfWeek(new Date());
+    const targetWeekStart = startOfWeek(targetDate);
+    const diffDays = Math.round((targetWeekStart - currentWeekStart) / 86400000);
+    state.settings.weekOffset = Math.round(diffDays / 7);
+    ui.focusDateKey = formatDateKey(targetDate);
+    saveState();
+    renderApp();
+  }
+
+  function createSeededRandom(seed) {
+    let value = seed >>> 0;
+    return function nextRandom() {
+      value = (value * 1664525 + 1013904223) >>> 0;
+      return value / 4294967296;
+    };
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function buildBouquetMarkup(progress, totalDone, allDoneToday) {
+      const userIds = progress.flatMap((entry) => Array.from({ length: entry.count }, () => entry.user.id));
+      const visible = buildBouquetFieldLayout(userIds, allDoneToday);
+      const defs = visible
+        .map((flower) => buildBouquetFlowerDefs(flower))
+        .join("");
+    const blooms = visible
+      .slice()
+      .sort((left, right) => left.layer - right.layer)
+      .map((flower) => buildBouquetFlower(flower))
+      .join("");
+    const sparkleMarkup = allDoneToday
+      ? Array.from({ length: 8 }, (_, index) => {
+          const x = 74 + (index * 29) % 220;
+          const y = 22 + (index * 13) % 42;
+          return `<circle class="bouquet-sparkle" style="--delay:${index * 0.18}s" cx="${x}" cy="${y}" r="${index % 2 === 0 ? 2.2 : 1.6}" />`;
+        }).join("")
+      : "";
+      return `
+        <svg class="bouquet-scene" viewBox="0 0 360 180" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="bouquetBg" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fff8fb" />
+              <stop offset="38%" stop-color="#f7eff7" />
+              <stop offset="72%" stop-color="#edf5f1" />
+              <stop offset="100%" stop-color="#e6f0e8" />
+            </linearGradient>
+            <radialGradient id="bouquetSunwash" cx="50%" cy="10%" r="82%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#ffffff", 0.88)}" />
+              <stop offset="48%" stop-color="${colorWithAlpha("#fff7df", 0.34)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#ffffff", 0)}" />
+            </radialGradient>
+            <radialGradient id="bouquetGlowLeft" cx="18%" cy="18%" r="60%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#f2cfe7", 0.92)}" />
+              <stop offset="56%" stop-color="${colorWithAlpha("#f2cfe7", 0.16)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#f2cfe7", 0)}" />
+            </radialGradient>
+            <radialGradient id="bouquetGlowRight" cx="82%" cy="20%" r="58%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#d5ecf6", 0.9)}" />
+              <stop offset="56%" stop-color="${colorWithAlpha("#d5ecf6", 0.16)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#d5ecf6", 0)}" />
+            </radialGradient>
+            <linearGradient id="bouquetMist" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#ffffff", 0.12)}" />
+              <stop offset="50%" stop-color="${colorWithAlpha("#ffffff", 0.22)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#ffffff", 0.1)}" />
+            </linearGradient>
+            <linearGradient id="bouquetHillBack" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#d2e3d2", 0.72)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#aec6ab", 0.7)}" />
+            </linearGradient>
+            <linearGradient id="bouquetHillFront" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#c1d8bf", 0.82)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#8fb28d", 0.88)}" />
+            </linearGradient>
+            <radialGradient id="bouquetGlow" cx="50%" cy="42%" r="58%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#ffffff", 0.82)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#ffffff", 0)}" />
+            </radialGradient>
+            <linearGradient id="bouquetVeil" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${colorWithAlpha("#ffffff", 0.26)}" />
+              <stop offset="100%" stop-color="${colorWithAlpha("#ffffff", 0)}" />
+            </linearGradient>
+            <filter id="bouquetBlur" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="14" />
+            </filter>
+            <filter id="bouquetSoftBlur" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+            <filter id="bouquetShadow" x="-30%" y="-30%" width="160%" height="170%">
+              <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="rgba(79, 101, 83, 0.18)" />
+            </filter>
+            ${defs}
+          </defs>
+          <rect width="360" height="180" fill="url(#bouquetBg)" />
+          <rect width="360" height="180" fill="url(#bouquetSunwash)" />
+          <rect width="360" height="180" fill="url(#bouquetGlowLeft)" />
+          <rect width="360" height="180" fill="url(#bouquetGlowRight)" />
+          <ellipse cx="180" cy="30" rx="164" ry="36" fill="${colorWithAlpha("#ffffff", 0.54)}" filter="url(#bouquetBlur)" />
+          <ellipse cx="86" cy="46" rx="74" ry="28" fill="${colorWithAlpha("#f0f6e9", 0.38)}" filter="url(#bouquetBlur)" />
+          <ellipse cx="282" cy="56" rx="70" ry="30" fill="${colorWithAlpha("#efe3f6", 0.34)}" filter="url(#bouquetBlur)" />
+          <path d="M0 142 C54 110 104 104 154 114 C212 126 272 118 360 92 L360 180 L0 180 Z" fill="url(#bouquetHillBack)" />
+          <path d="M0 158 C70 132 118 126 178 132 C240 138 294 126 360 108 L360 180 L0 180 Z" fill="url(#bouquetHillFront)" />
+          <path d="M0 128 C62 118 126 122 182 114 C244 106 298 92 360 98" fill="none" stroke="${colorWithAlpha("#f7fbf3", 0.46)}" stroke-width="2.8" stroke-linecap="round" />
+          <ellipse cx="182" cy="84" rx="110" ry="52" fill="url(#bouquetGlow)" />
+          <g class="bouquet-wallpaper" opacity="0.34">
+            <path d="M24 118 C64 84 110 66 152 50" />
+            <path d="M54 144 C94 110 136 84 182 62" />
+            <path d="M118 154 C150 120 184 96 220 72" />
+            <path d="M338 114 C296 82 252 64 206 48" />
+            <path d="M308 142 C268 108 226 84 180 62" />
+            <path d="M244 154 C214 120 182 96 144 70" />
+          </g>
+          <g class="bouquet-bokeh">
+            <circle cx="54" cy="34" r="8" fill="${colorWithAlpha("#ffffff", 0.34)}" />
+            <circle cx="104" cy="24" r="5" fill="${colorWithAlpha("#fff4d6", 0.24)}" />
+            <circle cx="250" cy="34" r="7" fill="${colorWithAlpha("#f7dff0", 0.26)}" />
+            <circle cx="318" cy="28" r="5" fill="${colorWithAlpha("#dff0f7", 0.26)}" />
+          </g>
+          <rect y="114" width="360" height="26" fill="url(#bouquetMist)" opacity="0.5" />
+          <rect width="360" height="180" fill="url(#bouquetVeil)" />
+          ${blooms || buildBouquetSprout()}
+          ${sparkleMarkup}
+        </svg>
+      `;
+    }
+
+    function buildBouquetFieldLayout(userIds, allDoneToday) {
+      const sourceIds = userIds.length ? userIds.slice() : [];
+      const targetCount = allDoneToday ? Math.max(18, sourceIds.length + 8) : Math.min(Math.max(sourceIds.length, 1), 12);
+      const flowerIds = [];
+      for (let index = 0; index < targetCount; index += 1) {
+        if (sourceIds.length) {
+          flowerIds.push(sourceIds[index % sourceIds.length]);
+        } else {
+          flowerIds.push(null);
+        }
+      }
+      const seeded = createSeededRandom(907 + sourceIds.join("").length * 17 + flowerIds.length * 13 + (allDoneToday ? 401 : 0));
+      const rows = allDoneToday
+        ? [
+            { count: 7, yMin: 134, yMax: 146, scaleMin: 0.98, scaleMax: 1.2, rootYOffset: 26, spread: 320, types: ["rosette", "rosette", "daisy", "tulip"] },
+            { count: 6, yMin: 106, yMax: 126, scaleMin: 0.78, scaleMax: 0.98, rootYOffset: 34, spread: 292, types: ["daisy", "star", "tulip", "rosette"] },
+            { count: 5, yMin: 78, yMax: 104, scaleMin: 0.58, scaleMax: 0.76, rootYOffset: 42, spread: 262, types: ["star", "tulip", "daisy"] },
+          ]
+        : [
+            { count: Math.min(4, flowerIds.length), yMin: 128, yMax: 142, scaleMin: 0.96, scaleMax: 1.16, rootYOffset: 26, spread: 280, types: ["rosette", "daisy", "tulip"] },
+            { count: Math.min(4, Math.max(flowerIds.length - 4, 0)), yMin: 100, yMax: 122, scaleMin: 0.74, scaleMax: 0.94, rootYOffset: 34, spread: 246, types: ["daisy", "star", "tulip"] },
+            { count: Math.min(4, Math.max(flowerIds.length - 8, 0)), yMin: 72, yMax: 98, scaleMin: 0.54, scaleMax: 0.72, rootYOffset: 42, spread: 218, types: ["star", "tulip"] },
+          ];
+      const layout = [];
+      let flowerIndex = 0;
+      rows.forEach((row, rowIndex) => {
+        for (let rowSlot = 0; rowSlot < row.count && flowerIndex < flowerIds.length; rowSlot += 1) {
+          const t = row.count === 1 ? 0.5 : rowSlot / (row.count - 1);
+          const baseX = 180 - (row.spread / 2) + (row.spread * t);
+          const x = clamp(baseX + (seeded() - 0.5) * 28, 34, 326);
+          const y = row.yMin + (row.yMax - row.yMin) * seeded();
+          const scale = row.scaleMin + (row.scaleMax - row.scaleMin) * seeded();
+          const rootX = clamp(x + (seeded() - 0.5) * 36, 26, 334);
+          const rootY = Math.min(178, y + row.rootYOffset + seeded() * 6);
+          const stemCurve = (rootX - x) * (0.92 + seeded() * 0.45);
+          layout.push({
+            userId: flowerIds[flowerIndex],
+            index: flowerIndex,
+            x,
+            y,
+            scale,
+            rootX,
+            rootY,
+            stemCurve,
+            type: row.types[(flowerIndex + rowIndex) % row.types.length],
+            layer: rowIndex + 1,
+          });
+          flowerIndex += 1;
+        }
+      });
+      return layout
+        .sort((left, right) => left.layer - right.layer || left.y - right.y)
+        .map((flower, index) => ({ ...flower, index }));
+    }
+
+  function buildBouquetFlowerDefs(flower) {
+    const base = colorForUser(flower.userId);
+    const light = shadeHexColor(base, 0.42);
+    const dark = shadeHexColor(base, -0.26);
+    return `
+      <radialGradient id="flowerGrad-${flower.index}" cx="34%" cy="28%" r="80%">
+        <stop offset="0%" stop-color="${light}" />
+        <stop offset="48%" stop-color="${base}" />
+        <stop offset="100%" stop-color="${dark}" />
+      </radialGradient>
+      <radialGradient id="flowerGlow-${flower.index}" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="${colorWithAlpha(light, 0.42)}" />
+        <stop offset="100%" stop-color="${colorWithAlpha(base, 0)}" />
+      </radialGradient>
+    `;
+  }
+
+    function buildBouquetFlower(flower) {
+      const stemStartX = flower.rootX ?? (180 + flower.stemCurve * 0.1);
+      const stemStartY = flower.rootY ?? 182;
+      const stemPath = `M ${stemStartX} ${stemStartY} C ${stemStartX + flower.stemCurve * 0.18} ${stemStartY - 24}, ${flower.x + flower.stemCurve * 0.34} ${flower.y + 42}, ${flower.x} ${flower.y + 10}`;
+      const petalFill = `url(#flowerGrad-${flower.index})`;
+      const glowFill = `url(#flowerGlow-${flower.index})`;
+      const rotation = (flower.index % 2 === 0 ? -4 : 4);
+      const leafLeft = `<ellipse class="bouquet-leaf" cx="${flower.x - 12}" cy="${flower.y + 34}" rx="12" ry="5" transform="rotate(-28 ${flower.x - 12} ${flower.y + 34})" />`;
+      const leafRight = `<ellipse class="bouquet-leaf" cx="${flower.x + 10}" cy="${flower.y + 42}" rx="10" ry="4.5" transform="rotate(28 ${flower.x + 10} ${flower.y + 42})" />`;
+    return `
+      <g class="bouquet-flower type-${flower.type}" style="--delay:${flower.index * 0.18}s">
+        <path class="bouquet-stem" d="${stemPath}" />
+        ${leafLeft}
+        ${leafRight}
+        <g transform="translate(${flower.x} ${flower.y})">
+          <g class="bouquet-bloom" transform="rotate(${rotation}) scale(${flower.scale})" filter="url(#bouquetShadow)">
+            <circle class="bouquet-halo" r="30" fill="${glowFill}" />
+            ${buildBouquetBloomShape(flower.type, petalFill)}
+          </g>
+        </g>
+      </g>
+    `;
+  }
+
+  function buildBouquetBloomShape(type, fill) {
+    if (type === "tulip") {
+      return `
+        <g class="bouquet-bloom-shape">
+          <path d="M -14 12 C -16 -8 -8 -22 0 -26 C 8 -22 16 -8 14 12 C 10 6 6 2 0 0 C -6 2 -10 6 -14 12 Z" fill="${fill}" />
+          <path d="M -2 0 C -2 -12 4 -24 12 -28 C 12 -10 12 2 8 12 Z" fill="${colorWithAlpha("#ffffff", 0.18)}" />
+          <circle class="bouquet-core" r="5.6" cy="1" />
+        </g>
+      `;
+    }
+    if (type === "daisy") {
+      return `
+        <g class="bouquet-bloom-shape">
+          ${Array.from({ length: 12 }, (_, index) => {
+            const angle = (360 / 12) * index;
+            return `<ellipse rx="5.2" ry="13.8" fill="${fill}" transform="rotate(${angle}) translate(0 -16)" />`;
+          }).join("")}
+          <circle class="bouquet-core" r="8.4" />
+        </g>
+      `;
+    }
+    if (type === "star") {
+      return `
+        <g class="bouquet-bloom-shape">
+          ${Array.from({ length: 7 }, (_, index) => {
+            const angle = (360 / 7) * index;
+            return `<ellipse rx="6.2" ry="16" fill="${fill}" transform="rotate(${angle}) translate(0 -15)" />`;
+          }).join("")}
+          <circle class="bouquet-core" r="7.2" />
+        </g>
+      `;
+    }
+    return `
+      <g class="bouquet-bloom-shape">
+        ${Array.from({ length: 10 }, (_, index) => {
+          const angle = (360 / 10) * index;
+          return `<ellipse rx="8" ry="18" fill="${fill}" transform="rotate(${angle}) translate(0 -15)" />`;
+        }).join("")}
+        ${Array.from({ length: 7 }, (_, index) => {
+          const angle = (360 / 7) * index + 10;
+          return `<ellipse rx="6" ry="12" fill="${fill}" transform="rotate(${angle}) translate(0 -9)" opacity="0.86" />`;
+        }).join("")}
+        <circle class="bouquet-core" r="7" />
+      </g>
+    `;
+  }
+
+    function buildBouquetSprout() {
+    return `
+      <g class="bouquet-sprout">
+        <path class="bouquet-stem" d="M 180 182 C 176 154, 178 132, 180 114" />
+        <ellipse class="bouquet-leaf" cx="170" cy="118" rx="12" ry="5" transform="rotate(-28 170 118)" />
+        <ellipse class="bouquet-leaf" cx="190" cy="116" rx="12" ry="5" transform="rotate(28 190 116)" />
+        <circle class="bouquet-core" cx="180" cy="108" r="8" />
+      </g>
+    `;
+  }
+
+  function startFlowerFieldScene(canvas, progress, totalDone, allDoneToday) {
+    if (ui.progressGardenFrame) {
+      cancelAnimationFrame(ui.progressGardenFrame);
+      ui.progressGardenFrame = null;
+    }
+
+    if (!canvas) {
+      return;
+    }
+    const context = canvas.getContext("2d");
+    if (!context) {
+      return;
+    }
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let width = 0;
+    let height = 0;
+    let flowers = [];
+    const darkMode = document.body.dataset.theme === "dark";
+    const palette = darkMode
+      ? {
+          skyTop: "#243039",
+          skyBottom: "#1d262d",
+          haze: "rgba(212, 228, 236, 0.08)",
+          glow: "rgba(255,255,255,0.1)",
+          stem: "rgba(124, 182, 120, 0.96)",
+          leaf: "rgba(100, 148, 95, 0.96)",
+          center: "#f0cf72",
+          sprout: "#9cd38e",
+          soil: "rgba(28, 35, 30, 0.62)",
+        }
+      : {
+          skyTop: "#eef4f7",
+          skyBottom: "#e9f1eb",
+          haze: "rgba(145, 176, 154, 0.09)",
+          glow: "rgba(255,255,255,0.22)",
+          stem: "rgba(88, 141, 86, 0.96)",
+          leaf: "rgba(104, 154, 89, 0.95)",
+          center: "#f7d45a",
+          sprout: "#7fc874",
+          soil: "rgba(96, 118, 89, 0.12)",
+        };
+
+    const resize = () => {
+      const nextWidth = Math.max(220, Math.round(canvas.clientWidth || 360));
+      const nextHeight = Math.max(92, Math.round(canvas.clientHeight || 118));
+      if (nextWidth === width && nextHeight === height) {
+        return;
+      }
+      width = nextWidth;
+      height = nextHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      flowers = buildFlowerFieldLayout(progress, totalDone, width, height, allDoneToday);
+    };
+
+    const drawFlower = (flower, timeSeconds) => {
+      const sway = Math.sin(timeSeconds * 1.8 + flower.phase) * flower.sway;
+      const bloomX = flower.x + sway;
+      const bloomY = flower.y;
+      const stemBaseX = flower.baseX ?? flower.x;
+      const stemBaseY = flower.baseY ?? (height + 6);
+      context.strokeStyle = palette.stem;
+      context.lineWidth = flower.size <= 11 ? 2 : 2.6;
+      context.lineCap = "round";
+      context.beginPath();
+      context.moveTo(stemBaseX, stemBaseY);
+      context.quadraticCurveTo(stemBaseX + sway * 0.8, bloomY + 18, bloomX, bloomY + 5);
+      context.stroke();
+
+      context.fillStyle = palette.leaf;
+      context.beginPath();
+      context.ellipse(flower.x - 5, bloomY + 18, 6, 3, -0.6, 0, Math.PI * 2);
+      context.ellipse(flower.x + 5, bloomY + 20, 6, 3, 0.6, 0, Math.PI * 2);
+      context.fill();
+
+      const glow = context.createRadialGradient(bloomX, bloomY, 0, bloomX, bloomY, flower.size * 1.6);
+      glow.addColorStop(0, colorWithAlpha(flower.color, 0.18));
+      glow.addColorStop(1, colorWithAlpha(flower.color, 0));
+      context.fillStyle = glow;
+      context.beginPath();
+      context.arc(bloomX, bloomY, flower.size * 1.6, 0, Math.PI * 2);
+      context.fill();
+
+      const petalLayers = [
+        { petals: 8, radius: flower.size * 0.82, size: flower.size * 0.34, alpha: 0.96 },
+        { petals: 7, radius: flower.size * 0.46, size: flower.size * 0.24, alpha: 0.74 },
+      ];
+      petalLayers.forEach((layer, layerIndex) => {
+        for (let index = 0; index < layer.petals; index += 1) {
+          const angle = (Math.PI * 2 * index) / layer.petals + timeSeconds * (0.1 + layerIndex * 0.02) + flower.phase * (1 + layerIndex * 0.16);
+          const petalX = bloomX + Math.cos(angle) * layer.radius;
+          const petalY = bloomY + Math.sin(angle) * layer.radius;
+          const petal = context.createRadialGradient(
+            petalX - layer.size * 0.2,
+            petalY - layer.size * 0.2,
+            0,
+            petalX,
+            petalY,
+            layer.size * 1.35
+          );
+          petal.addColorStop(0, colorWithAlpha("#ffffff", 0.6 * layer.alpha));
+          petal.addColorStop(0.28, colorWithAlpha(flower.color, layer.alpha));
+          petal.addColorStop(1, colorWithAlpha(shadeHexColor(flower.color, -0.18), layer.alpha));
+          context.fillStyle = petal;
+          context.beginPath();
+          context.ellipse(
+            petalX,
+            petalY,
+            layer.size * 0.92,
+            layer.size * 0.62,
+            angle,
+            0,
+            Math.PI * 2
+          );
+          context.fill();
+        }
+      });
+
+      const crown = context.createRadialGradient(bloomX, bloomY, 0, bloomX, bloomY, flower.size * 0.85);
+      crown.addColorStop(0, "#fff7cf");
+      crown.addColorStop(0.46, palette.center);
+      crown.addColorStop(1, "#d9a941");
+      context.fillStyle = crown;
+      context.beginPath();
+      context.arc(bloomX, bloomY, flower.size * 0.38, 0, Math.PI * 2);
+      context.fill();
+
+      context.fillStyle = colorWithAlpha("#fffbe2", 0.8);
+      context.beginPath();
+      context.arc(bloomX - flower.size * 0.1, bloomY - flower.size * 0.12, flower.size * 0.12, 0, Math.PI * 2);
+      context.fill();
+    };
+
+    const draw = (timestamp) => {
+      if (!document.body.contains(canvas)) {
+        ui.progressGardenFrame = null;
+        return;
+      }
+      resize();
+      const timeSeconds = timestamp / 1000;
+      context.clearRect(0, 0, width, height);
+
+      const sky = context.createLinearGradient(0, 0, 0, height);
+      sky.addColorStop(0, palette.skyTop);
+      sky.addColorStop(1, palette.skyBottom);
+      context.fillStyle = sky;
+      context.fillRect(0, 0, width, height);
+
+      for (let index = 0; index < 5; index += 1) {
+        const x = width * (0.16 + index * 0.18);
+        const y = height * (0.22 + (index % 2) * 0.08);
+        const r = 16 + (index % 3) * 8;
+        context.fillStyle = palette.haze;
+        context.beginPath();
+        context.arc(x, y, r, 0, Math.PI * 2);
+        context.fill();
+      }
+
+      if (!flowers.length) {
+        const sproutX = width / 2;
+        const sproutY = height * 0.78;
+        context.strokeStyle = palette.stem;
+        context.lineWidth = 3;
+        context.beginPath();
+        context.moveTo(sproutX, sproutY + 12);
+        context.quadraticCurveTo(sproutX - 4, sproutY - 10, sproutX, sproutY - 22);
+        context.stroke();
+        context.fillStyle = palette.sprout;
+        context.beginPath();
+        context.ellipse(sproutX - 7, sproutY - 23, 8, 4, -0.7, 0, Math.PI * 2);
+        context.ellipse(sproutX + 7, sproutY - 23, 8, 4, 0.7, 0, Math.PI * 2);
+        context.fill();
+      } else {
+        flowers
+          .slice()
+          .sort((left, right) => left.y - right.y)
+          .forEach((flower) => drawFlower(flower, timeSeconds));
+      }
+
+      const foregroundShade = context.createLinearGradient(0, height * 0.72, 0, height);
+      foregroundShade.addColorStop(0, colorWithAlpha(palette.soil, 0));
+      foregroundShade.addColorStop(1, palette.soil);
+      context.fillStyle = foregroundShade;
+      context.fillRect(0, height * 0.72, width, height * 0.28);
+
+      ui.progressGardenFrame = requestAnimationFrame(draw);
+    };
+
+    ui.progressGardenFrame = requestAnimationFrame(draw);
+  }
+
+  function buildFlowerFieldLayout(progress, totalDone, width, height, allDoneToday) {
+    const flowerOwners = [];
+    progress.forEach((entry) => {
+      for (let index = 0; index < entry.count; index += 1) {
+        flowerOwners.push(entry.user.id);
+      }
+    });
+    if (!flowerOwners.length) {
+      return [];
+    }
+    const visibleOwners = flowerOwners.slice(0, 18);
+    if (!allDoneToday && visibleOwners.length === 1) {
+      return [
+        {
+          x: width * 0.5,
+          y: height * 0.44,
+          size: Math.min(width, height) * 0.24,
+          sway: 1.1,
+          phase: 0.4,
+          color: colorForUser(visibleOwners[0]),
+          baseX: width * 0.5,
+          baseY: height * 0.96,
+        },
+      ];
+    }
+    if (!allDoneToday && visibleOwners.length === 2) {
+      return visibleOwners.map((userId, index) => ({
+        x: width * (index === 0 ? 0.4 : 0.63),
+        y: height * (index === 0 ? 0.5 : 0.46),
+        size: Math.min(width, height) * (index === 0 ? 0.2 : 0.17),
+        sway: 1.2 + index * 0.18,
+        phase: 0.9 + index,
+        color: colorForUser(userId),
+        baseX: width * (index === 0 ? 0.43 : 0.6),
+        baseY: height * 0.98,
+      }));
+    }
+    if (!allDoneToday && visibleOwners.length <= 4) {
+      return visibleOwners.map((userId, index) => {
+        const spread = [0.24, 0.46, 0.63, 0.81];
+        return {
+          x: width * spread[index],
+          y: height * (0.6 - (index % 2) * 0.08 - Math.floor(index / 2) * 0.04),
+          size: Math.min(width, height) * (0.16 - index * 0.008),
+          sway: 1.2 + index * 0.16,
+          phase: 0.5 + index * 0.9,
+          color: colorForUser(userId),
+          baseX: width * (0.3 + index * 0.14),
+          baseY: height * 0.99,
+        };
+      });
+    }
+    if (!allDoneToday && visibleOwners.length <= 7) {
+      return visibleOwners.map((userId, index) => {
+        const row = Math.floor(index / 3);
+        const col = index % 3;
+        const xSlots = [0.22, 0.5, 0.78];
+        return {
+          x: width * xSlots[col] + (row % 2 === 1 ? 8 : 0),
+          y: height * (0.66 - row * 0.14 - (col === 1 ? 0.05 : 0)),
+          size: Math.min(width, height) * (0.12 - row * 0.012),
+          sway: 1.2 + index * 0.12,
+          phase: 0.3 + index * 0.8,
+          color: colorForUser(userId),
+          baseX: width * (0.26 + col * 0.18 + row * 0.06),
+          baseY: height * 0.99,
+        };
+      });
+    }
+    const depthRows = allDoneToday ? 4 : 3;
+    return visibleOwners.map((userId, index) => {
+      const hash = seededUnit(index + userId.length * 17);
+      const row = index % depthRows;
+      const depth = row / Math.max(1, depthRows - 1);
+      const xBandStart = 30 + depth * 24;
+      const xBandEnd = width - 30 - depth * 24;
+      const clusterWidth = Math.max(40, xBandEnd - xBandStart);
+      const clusterCenter = xBandStart + clusterWidth * seededUnit(index * 3.17 + 9);
+      const swayOffset = (hash - 0.5) * (18 - depth * 6);
+      const rowWave = Math.sin(index * 0.9) * 7;
+      const x = Math.min(width - 24, Math.max(24, clusterCenter + swayOffset + rowWave));
+      const yBase = height * (0.7 - depth * 0.18);
+      const y = Math.max(20, yBase - hash * (12 - depth * 5));
+      const size = Math.max(9, 16 - depth * 4 + (hash - 0.5) * 1.6);
+      return {
+        x,
+        y,
+        size,
+        sway: 1.1 + (1 - depth) * 1.2 + hash * 0.5,
+        phase: hash * Math.PI * 2,
+        color: colorForUser(userId),
+        baseX: width * (0.18 + seededUnit(index * 2.71 + 4) * 0.64),
+        baseY: height * (0.99 - depth * 0.03),
+      };
+    });
+  }
+
+  function seededUnit(seed) {
+    const value = Math.sin(seed * 127.1) * 43758.5453123;
+    return value - Math.floor(value);
+  }
+
+  function colorWithAlpha(hex, alpha) {
+    const value = hex.replace("#", "");
+    const normalized = value.length === 3 ? value.split("").map((char) => char + char).join("") : value;
+    const channel = (index) => Number.parseInt(normalized.slice(index, index + 2), 16);
+    return `rgba(${channel(0)}, ${channel(2)}, ${channel(4)}, ${alpha})`;
+  }
+
+  function shadeHexColor(hex, amount) {
+    const value = hex.replace("#", "");
+    const normalized = value.length === 3 ? value.split("").map((char) => char + char).join("") : value;
+    const apply = (index) => {
+      const base = Number.parseInt(normalized.slice(index, index + 2), 16);
+      const next = amount >= 0 ? base + (255 - base) * amount : base * (1 + amount);
+      return Math.max(0, Math.min(255, Math.round(next)));
+    };
+    return `#${[0, 2, 4].map((index) => apply(index).toString(16).padStart(2, "0")).join("")}`;
   }
 
   function symbolForWeatherTheme(theme) {
@@ -1491,6 +2269,45 @@
     });
   }
 
+  function renderSomedayPool(container = refs.somedayDialogList) {
+    const t = currentMessages();
+    container.innerHTML = "";
+    if (!state.somedayPool.length) {
+      const empty = document.createElement("div");
+      empty.className = "claim-pool-empty";
+      empty.textContent = t.somedayInboxCopy;
+      container.appendChild(empty);
+      return;
+    }
+    state.somedayPool.forEach((entry) => {
+      const card = document.createElement("article");
+      card.className = "claim-pool-card";
+      card.innerHTML = `
+        <div class="claim-pool-top">
+          <span class="quick-task-icon">${entry.icon}</span>
+          <strong>${resolveLibraryTitle(entry)}</strong>
+        </div>
+        <div class="claim-pool-meta">${messageForCategory(entry.category)}</div>
+        <div class="claim-pool-requested">${t.requestedBy.replace("{user}", displayUser(entry.ownerId))}</div>
+      `;
+      const planButton = document.createElement("button");
+      planButton.type = "button";
+      planButton.className = "ghost-button small-button";
+      planButton.textContent = t.somedayPlanNow;
+      planButton.addEventListener("click", () => promoteSomedayTask(entry.id));
+      const removeButton = document.createElement("button");
+      removeButton.type = "button";
+      removeButton.className = "ghost-button small-button";
+      removeButton.textContent = t.removeClaimTask;
+      removeButton.addEventListener("click", () => removeSomedayPoolTask(entry.id));
+      const actions = document.createElement("div");
+      actions.className = "claim-pool-actions";
+      actions.append(planButton, removeButton);
+      card.appendChild(actions);
+      container.appendChild(card);
+    });
+  }
+
   function renderQuickTasks() {
     refs.quickTasksStrip.innerHTML = "";
     quickTaskTemplates.forEach((template) => {
@@ -1513,6 +2330,7 @@
         clearDropTargets();
         hideDeleteDropZone();
         hideClaimDropZone();
+        hideSomedayDropZone();
         reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
@@ -1550,6 +2368,7 @@
         clearDropTargets();
         hideDeleteDropZone();
         hideClaimDropZone();
+        hideSomedayDropZone();
         reopenToolDrawerAfterDrag();
       });
       button.addEventListener("click", () => {
@@ -1746,6 +2565,7 @@
     refs.fieldWeekdayLabel.textContent = t.taskWeekday;
     refs.fieldEffortLabel.textContent = t.taskEffort;
     refs.fieldClaimableLabel.textContent = t.taskClaimable;
+    refs.fieldSomedayLabel.textContent = t.taskSomeday;
     refs.fieldNotesLabel.textContent = t.taskNotes;
     refs.dialogPreviewLabel.textContent = t.previewLabel;
     refs.deleteTaskButton.textContent = t.delete;
@@ -1858,6 +2678,7 @@
       clearDropTargets();
       hideDeleteDropZone();
       hideClaimDropZone();
+      hideSomedayDropZone();
     });
 
     icon.textContent = task.icon;
@@ -1917,8 +2738,10 @@
     refs.taskWeekdayInput.value = String(task?.weekday ?? getWeekdayIndex(startOfDay(new Date())));
     refs.taskEffortInput.value = task?.effort || defaults?.effort || "steady";
     refs.taskClaimableInput.checked = Boolean(defaults?.claimable);
+    refs.taskSomedayInput.checked = Boolean(defaults?.someday);
     refs.taskNotesInput.value = task ? resolveTaskNotes(task) : defaults?.notes || "";
     refs.taskTitleInput.value = task ? resolveTaskTitle(task) : defaults?.title || "";
+    ui.pendingSomedayEntryId = defaults?.somedayEntryId || null;
     refs.deleteTaskButton.classList.toggle("hidden", !task);
     refs.deleteSeriesButton.classList.toggle("hidden", !(task && task.recurrence !== "none"));
     renderIconGrid(task?.icon || defaults?.icon || iconChoices[0]);
@@ -2090,7 +2913,92 @@
     renderApp();
   }
 
+  function addSomedayEntryFromLibrary(libraryId) {
+    const entry = state.taskLibrary.find((item) => item.id === libraryId);
+    if (!entry) {
+      return;
+    }
+    state.somedayPool.unshift(
+      normalizeSomedayRecord({
+        ...entry,
+        id: crypto.randomUUID(),
+        dueTime: "",
+        endTime: "",
+        recurrence: "none",
+        interval: 1,
+        weekday: null,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    ui.dragTaskId = null;
+    saveState();
+    renderApp();
+  }
+
+  function addSomedayEntryFromQuickTemplate(templateId) {
+    const template = quickTaskTemplates.find((item) => item.id === templateId);
+    if (!template) {
+      return;
+    }
+    state.somedayPool.unshift(
+      normalizeSomedayRecord({
+        id: crypto.randomUUID(),
+        title: template.title.en,
+        titleTranslations: template.title,
+        icon: template.icon,
+        category: template.category,
+        ownerId: state.settings.currentUserId,
+        responsibleId: state.settings.currentUserId,
+        responsibleIds: [state.settings.currentUserId],
+        dueTime: "",
+        endTime: "",
+        effort: template.effort,
+        notes: "",
+        notesTranslations: null,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    ui.dragTaskId = null;
+    saveState();
+    renderApp();
+  }
+
+  function promoteSomedayTask(entryId) {
+    const entry = state.somedayPool.find((item) => item.id === entryId);
+    if (!entry) {
+      return;
+    }
+    if (refs.somedayDialog.open) {
+      closeSomedayDialog();
+    }
+    openTaskDialog(null, {
+      somedayEntryId: entry.id,
+      title: resolveLibraryTitle(entry),
+      icon: entry.icon,
+      category: entry.category,
+      ownerId: entry.ownerId,
+      responsibleIds: getResponsibleIds(entry),
+      effort: entry.effort,
+      notes: resolveLibraryNotes(entry),
+      dueDate: formatDateKey(startOfDay(new Date())),
+    });
+  }
+
+  function removeSomedayPoolTask(entryId) {
+    state.somedayPool = state.somedayPool.filter((item) => item.id !== entryId);
+    saveState();
+    renderApp();
+    if (refs.somedayDialog.open) {
+      if (!state.somedayPool.length) {
+        closeSomedayDialog();
+      } else {
+        renderSomedayDialog();
+      }
+    }
+  }
+
   function closeDialog() {
+    ui.pendingSomedayEntryId = null;
     refs.taskDialog.close();
   }
 
@@ -2155,10 +3063,11 @@
       weekday: Number(refs.taskWeekdayInput.value),
       effort: refs.taskEffortInput.value,
       claimable: refs.taskClaimableInput.checked,
+      someday: refs.taskSomedayInput.checked,
       notes: refs.taskNotesInput.value.trim(),
     };
 
-    if (!payload.title || !payload.dueDate) {
+    if (!payload.title || (!payload.claimable && !payload.someday && !payload.dueDate)) {
       return;
     }
 
@@ -2170,6 +3079,18 @@
         state.tasks = state.tasks.filter((task) => task.id !== ui.editingTaskId);
       }
       state.claimPool.unshift(claimEntry);
+      saveState();
+      closeDialog();
+      renderApp();
+      return;
+    }
+
+    if (payload.someday) {
+      const somedayEntry = buildSomedayRecordFromPayload(payload);
+      if (ui.dialogMode === "edit" && ui.editingTaskId) {
+        state.tasks = state.tasks.filter((task) => task.id !== ui.editingTaskId);
+      }
+      state.somedayPool.unshift(somedayEntry);
       saveState();
       closeDialog();
       renderApp();
@@ -2217,6 +3138,10 @@
     }
 
     upsertTaskLibraryFromTask(taskToPersist);
+    if (ui.pendingSomedayEntryId) {
+      state.somedayPool = state.somedayPool.filter((entry) => entry.id !== ui.pendingSomedayEntryId);
+      ui.pendingSomedayEntryId = null;
+    }
 
     saveState();
     closeDialog();
@@ -2251,8 +3176,18 @@
 
   function syncDialogFields() {
     const recurrence = refs.taskRecurrenceInput.value;
+    const somedayMode = refs.taskSomedayInput.checked;
+    const claimMode = refs.taskClaimableInput.checked;
+    const unscheduledMode = somedayMode || claimMode;
+    [refs.taskDayInput, refs.taskTimeInput, refs.taskEndTimeInput, refs.taskRecurrenceInput]
+      .map((element) => element.closest(".field"))
+      .forEach((field) => field?.classList.toggle("hidden", unscheduledMode));
     refs.intervalField.classList.toggle("hidden", recurrence !== "interval");
     refs.weekdayField.classList.toggle("hidden", !["weekly", "biweekly", "linneaWeeks", "notLinneaWeeks"].includes(recurrence));
+    if (unscheduledMode) {
+      refs.intervalField.classList.add("hidden");
+      refs.weekdayField.classList.add("hidden");
+    }
     renderTaskPreview();
   }
 
@@ -2291,6 +3226,25 @@
 
   function buildClaimRecordFromPayload(payload) {
     return normalizeClaimRecord({
+      id: crypto.randomUUID(),
+      title: payload.title,
+      titleTranslations: null,
+      icon: payload.icon,
+      category: payload.category,
+      ownerId: payload.ownerId,
+      responsibleId: payload.responsibleIds[0] || "everyone",
+      responsibleIds: payload.responsibleIds,
+      dueTime: "",
+      endTime: "",
+      effort: payload.effort || "steady",
+      notes: payload.notes || "",
+      notesTranslations: null,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  function buildSomedayRecordFromPayload(payload) {
+    return normalizeSomedayRecord({
       id: crypto.randomUUID(),
       title: payload.title,
       titleTranslations: null,
@@ -2383,6 +3337,7 @@
       clearDropTargets();
       hideDeleteDropZone();
       hideClaimDropZone();
+      hideSomedayDropZone();
       return;
     }
     deleteBoardItemFromPlan(itemId);
@@ -2408,6 +3363,35 @@
         effort: item.task.effort,
         notes: item.task.notes,
         notesTranslations: item.task.notesTranslations,
+        updatedAt: new Date().toISOString(),
+      })
+    );
+    deleteBoardItemFromPlan(itemId);
+  }
+
+  function moveBoardItemToSomedayPool(itemId) {
+    const item = findBoardItemById(itemId);
+    if (!item) {
+      return;
+    }
+    state.somedayPool.unshift(
+      normalizeSomedayRecord({
+        id: crypto.randomUUID(),
+        title: item.task.title,
+        titleTranslations: item.task.titleTranslations,
+        icon: item.task.icon,
+        category: item.task.category,
+        ownerId: item.task.ownerId,
+        responsibleId: item.task.responsibleId,
+        responsibleIds: getResponsibleIds(item.task),
+        dueTime: "",
+        endTime: "",
+        effort: item.task.effort,
+        notes: item.task.notes,
+        notesTranslations: item.task.notesTranslations,
+        recurrence: "none",
+        interval: 1,
+        weekday: null,
         updatedAt: new Date().toISOString(),
       })
     );
@@ -2622,6 +3606,15 @@
     refs.claimDialog.close();
   }
 
+  function openSomedayDialog() {
+    renderSomedayDialog();
+    refs.somedayDialog.showModal();
+  }
+
+  function closeSomedayDialog() {
+    refs.somedayDialog.close();
+  }
+
   function renderClaimDialogUserPicker(selectedUserId) {
     refs.claimDialogUserPicker.innerHTML = "";
     users.forEach((user) => {
@@ -2648,6 +3641,29 @@
     refs.closeClaimDialogFooterButton.textContent = t.cancel;
     renderClaimDialogUserPicker(selectedUserId);
     renderClaimPool(refs.claimDialogList, selectedUserId);
+  }
+
+  function renderSomedayDialog() {
+    const t = currentMessages();
+    refs.somedayDialogEyebrow.textContent = t.somedayHeading;
+    refs.somedayDialogTitle.textContent = t.somedayInbox;
+    refs.somedayDialogCopy.textContent = t.somedayInboxCopy;
+    refs.closeSomedayDialogFooterButton.textContent = t.cancel;
+    renderSomedayPool(refs.somedayDialogList);
+  }
+
+  function handleSomedayDrop(event) {
+    handleDragLeave(event);
+    if (!ui.dragTaskId) {
+      return;
+    }
+    if (String(ui.dragTaskId).startsWith("saved:")) {
+      addSomedayEntryFromLibrary(ui.dragTaskId.replace("saved:", ""));
+    } else if (String(ui.dragTaskId).startsWith("quick:")) {
+      addSomedayEntryFromQuickTemplate(ui.dragTaskId.replace("quick:", ""));
+    } else {
+      moveBoardItemToSomedayPool(ui.dragTaskId);
+    }
   }
 
   function renderParticipantPicker(allowedIds, selectedIds) {
@@ -2926,6 +3942,10 @@
     return normalized;
   }
 
+  function normalizeSomedayRecord(record) {
+    return normalizeClaimRecord(record);
+  }
+
   function getDefaultCompletionUserId(task) {
     const responsibleIds = getResponsibleIds(task).filter((id) => id !== "everyone");
     return responsibleIds[0] || task?.ownerId || state.settings.currentUserId || "bjorn";
@@ -3123,6 +4143,7 @@
     }
     refs.deleteDropZone.classList.add("visible");
     refs.claimDropZone.classList.add("visible");
+    refs.somedayDropZone.classList.add("visible");
   }
 
   function hideDeleteDropZone() {
@@ -3131,6 +4152,10 @@
 
   function hideClaimDropZone() {
     refs.claimDropZone.classList.remove("visible", "drop-target");
+  }
+
+  function hideSomedayDropZone() {
+    refs.somedayDropZone.classList.remove("visible", "drop-target");
   }
 
   function closeToolDrawerForDrag() {
@@ -3191,6 +4216,140 @@
       }
       return count + (task.completedAt ? (isSameDay(new Date(task.completedAt), new Date()) ? 1 : 0) : 0);
     }, 0);
+  }
+
+  function countTasksForDate(dateKey) {
+    return getAllBoardItemsForDate(dateKey).length;
+  }
+
+  function countCompletedThisWeek(referenceDate = new Date()) {
+    const weekStart = startOfWeek(referenceDate);
+    let total = 0;
+    for (let offset = 0; offset < 7; offset += 1) {
+      const dateKey = formatDateKey(addDays(weekStart, offset));
+      total += state.tasks.reduce((count, task) => {
+        if (task.recurrence !== "none") {
+          return count + (Array.isArray(task.completionDates) && task.completionDates.includes(dateKey) ? 1 : 0);
+        }
+        return count + (task.completedAt && isSameDay(new Date(task.completedAt), parseDateKey(dateKey)) ? 1 : 0);
+      }, 0);
+    }
+    return total;
+  }
+
+  function getBestCompletedWeek() {
+    const completionMap = new Map();
+    state.tasks.forEach((task) => {
+      if (task.recurrence !== "none") {
+        const completionDates = Array.isArray(task.completionDates) ? task.completionDates : [];
+        completionDates.forEach((dateKey) => {
+          const parsed = parseDateKey(dateKey);
+          if (Number.isNaN(parsed.getTime())) {
+            return;
+          }
+          const key = getWeekRecordKey(parsed);
+          completionMap.set(key, (completionMap.get(key) || 0) + 1);
+        });
+        return;
+      }
+      if (!task.completedAt) {
+        return;
+      }
+      const completedDate = new Date(task.completedAt);
+      if (Number.isNaN(completedDate.getTime())) {
+        return;
+      }
+      const key = getWeekRecordKey(completedDate);
+      completionMap.set(key, (completionMap.get(key) || 0) + 1);
+    });
+    let best = null;
+    completionMap.forEach((count, key) => {
+      if (!best || count > best.count) {
+        best = { key, count };
+      }
+    });
+    if (!best) {
+      return null;
+    }
+    const [year, weekNumber] = best.key.split("-W");
+    return {
+      count: best.count,
+      label: `${year} · KW ${weekNumber}`,
+    };
+  }
+
+  function getWeekRecordKey(date) {
+    const weekStartDate = startOfWeek(date);
+    const weekYear = getWeekYear(weekStartDate);
+    return `${weekYear}-W${String(getWeekNumber(weekStartDate)).padStart(2, "0")}`;
+  }
+
+  function getWeekYear(date) {
+    const target = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = target.getUTCDay() || 7;
+    target.setUTCDate(target.getUTCDate() + 4 - dayNum);
+    return target.getUTCFullYear();
+  }
+
+  function getCompletionProgressColor(ratio) {
+    const clamped = clamp(ratio, 0, 1);
+    if (clamped <= 0.5) {
+      return mixHexColors("#d99097", "#e7c56d", clamped / 0.5);
+    }
+    return mixHexColors("#e7c56d", "#81be8e", (clamped - 0.5) / 0.5);
+  }
+
+  function mixHexColors(startHex, endHex, ratio) {
+    const start = hexToRgb(startHex);
+    const end = hexToRgb(endHex);
+    const mix = {
+      r: Math.round(start.r + (end.r - start.r) * ratio),
+      g: Math.round(start.g + (end.g - start.g) * ratio),
+      b: Math.round(start.b + (end.b - start.b) * ratio),
+    };
+    return `rgb(${mix.r}, ${mix.g}, ${mix.b})`;
+  }
+
+  function hexToRgb(hex) {
+    const normalized = hex.replace("#", "");
+    const value = normalized.length === 3
+      ? normalized.split("").map((part) => `${part}${part}`).join("")
+      : normalized;
+    return {
+      r: parseInt(value.slice(0, 2), 16),
+      g: parseInt(value.slice(2, 4), 16),
+      b: parseInt(value.slice(4, 6), 16),
+    };
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function getTodayCompletionLeaderboard() {
+    const today = new Date();
+    const todayKey = formatDateKey(startOfDay(today));
+    return users.map((user) => ({
+      user,
+      count: state.tasks.reduce((total, task) => {
+        if (task.recurrence !== "none") {
+          if (!Array.isArray(task.completionDates) || !task.completionDates.includes(todayKey)) {
+            return total;
+          }
+          const participantsByDate = normalizeCompletionParticipantsByDate(task.completionParticipantsByDate, task, task.completionByDate);
+          return total + ((participantsByDate[todayKey] || [getDefaultCompletionUserId(task)]).includes(user.id) ? 1 : 0);
+        }
+        if (!task.completedAt || !isSameDay(new Date(task.completedAt), today)) {
+          return total;
+        }
+        return total + (normalizeCompletionUserIds(task.completedByIds, task, task.completedById).includes(user.id) ? 1 : 0);
+      }, 0),
+    }));
   }
 
   function getCompletionLeaderboard() {

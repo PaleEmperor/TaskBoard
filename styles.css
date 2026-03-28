@@ -81,6 +81,7 @@ body[data-theme="dark"] .dialog-preview,
 body[data-theme="dark"] .day-strip-symbol,
 body[data-theme="dark"] .delete-drop-zone,
 body[data-theme="dark"] .claim-drop-zone,
+body[data-theme="dark"] .someday-drop-zone,
 body[data-theme="dark"] .toggle-field {
   background: rgba(34, 42, 51, 0.98);
   color: var(--ink);
@@ -166,6 +167,7 @@ body[data-theme="dark"] .claim-bell-button,
 body[data-theme="dark"] .claim-bell-count,
 body[data-theme="dark"] .delete-drop-zone,
 body[data-theme="dark"] .claim-drop-zone,
+body[data-theme="dark"] .someday-drop-zone,
 body[data-theme="dark"] .day-strip-alert,
 body[data-theme="dark"] .toggle-row,
 body[data-theme="dark"] .task-dialog::backdrop,
@@ -363,6 +365,75 @@ body[data-theme="dark"] .weather-ranking-count {
   color: #eef5fb;
 }
 
+body[data-theme="dark"] .weather-growth-card {
+  background: linear-gradient(180deg, rgba(44, 55, 60, 0.96), rgba(35, 43, 49, 0.98));
+  border-color: rgba(118, 151, 128, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body[data-theme="dark"] .weather-progress-panel {
+  border-left-color: rgba(143, 162, 175, 0.1);
+  background: linear-gradient(180deg, rgba(38, 47, 53, 0.88), rgba(33, 40, 46, 0.96));
+}
+
+body[data-theme="dark"] .weather-info-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+}
+
+body[data-theme="dark"] .orbit-clock {
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 52%, rgba(255, 255, 255, 0) 54%),
+    radial-gradient(circle at 50% 50%, rgba(53, 66, 77, 0.98), rgba(35, 45, 53, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.16);
+}
+
+body[data-theme="dark"] .orbit-spike {
+  background: rgba(217, 229, 238, 0.24);
+}
+
+body[data-theme="dark"] .orbit-spike.major {
+  background: rgba(217, 229, 238, 0.46);
+}
+
+body[data-theme="dark"] .orbit-minutes .orbit-spike {
+  background: rgba(217, 229, 238, 0.12);
+}
+
+body[data-theme="dark"] .orbit-hour-value,
+body[data-theme="dark"] .orbit-minute-value {
+  color: #eef5fb;
+}
+
+body[data-theme="dark"] .orbit-minute-value::after {
+  border-color: rgba(227, 236, 244, 0.6);
+}
+
+body[data-theme="dark"] .weather-garden-shell {
+  background: rgba(31, 41, 46, 0.58);
+  border-color: rgba(122, 145, 138, 0.16);
+}
+
+body[data-theme="dark"] .weather-team-total {
+  color: #eef5fb;
+}
+
+body[data-theme="dark"] .weather-tree-scene {
+  background: linear-gradient(180deg, rgba(53, 66, 80, 0.98) 0%, rgba(49, 63, 70, 0.96) 56%, rgba(47, 68, 49, 0.98) 100%);
+  border-color: rgba(122, 145, 138, 0.16);
+}
+
+body[data-theme="dark"] .weather-tree-scene::before {
+  background: linear-gradient(180deg, rgba(96, 138, 84, 0.22), rgba(69, 104, 63, 0.38));
+}
+
+body[data-theme="dark"] .weather-tree-goal {
+  background: rgba(57, 68, 76, 0.92);
+  border-color: rgba(161, 181, 190, 0.14);
+  color: #eef5fb;
+}
+
 body[data-theme="dark"] .claim-bell-button,
 body[data-theme="dark"] .tool-drawer-toggle,
 body[data-theme="dark"] .fullscreen-fab {
@@ -374,6 +445,28 @@ body[data-theme="dark"] .fullscreen-fab {
 body[data-theme="dark"] .claim-bell-count {
   background: #d15f79;
   color: #fff;
+}
+
+body[data-theme="dark"] .someday-button {
+  background: rgba(90, 78, 42, 0.96);
+  color: #fff4d4;
+  border-color: rgba(216, 183, 88, 0.24);
+}
+
+body[data-theme="dark"] .someday-button .claim-bell-count {
+  background: #caa34a;
+  color: #20190b;
+}
+
+body[data-theme="dark"] .someday-drop-zone {
+  background: rgba(74, 66, 40, 0.96);
+  color: #fff4d4;
+  border-color: rgba(216, 183, 88, 0.24);
+}
+
+body[data-theme="dark"] .someday-drop-zone.drop-target {
+  background: rgba(92, 79, 44, 0.98);
+  box-shadow: 0 20px 42px rgba(181, 147, 54, 0.22);
 }
 
 body[data-theme="dark"] .delete-drop-zone {
@@ -606,6 +699,39 @@ button {
   transform: translateX(calc(-50% + 92px)) translateY(-2px) scale(1.03);
 }
 
+.someday-drop-zone {
+  position: fixed;
+  left: 50%;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  transform: translateX(calc(-50% + 276px)) translateY(110%);
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 150px;
+  padding: 10px 14px 12px;
+  border-radius: 22px;
+  background: rgba(255, 250, 238, 0.96);
+  border: 1px solid rgba(196, 155, 55, 0.18);
+  box-shadow: 0 16px 36px rgba(32, 48, 61, 0.14);
+  color: #8d6a14;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  z-index: 32;
+}
+
+.someday-drop-zone.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(calc(-50% + 276px)) translateY(0);
+}
+
+.someday-drop-zone.drop-target {
+  background: rgba(255, 246, 221, 0.98);
+  box-shadow: 0 20px 42px rgba(196, 155, 55, 0.18);
+  transform: translateX(calc(-50% + 276px)) translateY(-2px) scale(1.03);
+}
+
 .celebration-chip {
   position: absolute;
   left: var(--x, 50%);
@@ -741,7 +867,7 @@ button {
   --weather-haze: rgba(255, 255, 255, 0.14);
   min-height: 124px;
   display: grid;
-  grid-template-columns: minmax(320px, 42%) 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
   align-items: stretch;
   overflow: hidden;
   border: 1px solid rgba(68, 95, 118, 0.14);
@@ -749,6 +875,12 @@ button {
   background: linear-gradient(180deg, rgba(252, 253, 254, 0.96), rgba(243, 247, 250, 0.98));
   box-shadow: 0 10px 24px rgba(32, 48, 61, 0.06);
   isolation: isolate;
+}
+
+.weather-overview {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 1fr);
+  min-width: 0;
 }
 
 .weather-scene {
@@ -788,6 +920,15 @@ button {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(250, 252, 253, 0.84) 22%, rgba(248, 250, 252, 0.98));
 }
 
+.weather-progress-panel {
+  display: grid;
+  align-content: stretch;
+  padding: 0;
+  border-left: 1px solid rgba(68, 95, 118, 0.08);
+  background: transparent;
+  overflow: hidden;
+}
+
 .weather-kicker {
   font-size: 0.78rem;
   letter-spacing: 0.14em;
@@ -820,8 +961,14 @@ button {
 }
 
 .weather-ranking {
-  display: grid;
-  gap: 4px;
+  display: block;
+  height: 100%;
+}
+
+.weather-team-total {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .weather-ranking-title {
@@ -831,58 +978,453 @@ button {
   color: rgba(32, 48, 61, 0.56);
 }
 
+.weather-growth-card {
+  display: grid;
+  gap: 6px;
+  padding: 8px 8px 10px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(242, 247, 243, 0.92));
+  border: 1px solid rgba(76, 114, 92, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.weather-info-card {
+  height: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+}
+
+.weather-clock-value {
+  line-height: 1;
+  color: var(--ink);
+}
+
+.orbit-clock {
+  --clock-size: 160px;
+  position: relative;
+  width: var(--clock-size);
+  height: var(--clock-size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.06) 52%, rgba(255, 255, 255, 0) 54%),
+    radial-gradient(circle at 50% 50%, rgba(243, 248, 252, 0.88), rgba(223, 232, 239, 0.78));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -10px 24px rgba(109, 137, 158, 0.08);
+  overflow: hidden;
+}
+
+.orbit-seconds,
+.orbit-minutes {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transform: rotate(calc(-1 * var(--dRotate, 0deg)));
+  transition: transform 1s linear;
+}
+
+.orbit-seconds {
+  --dail-size: calc((var(--clock-size) / 2) - 11px);
+}
+
+.orbit-minutes {
+  --dail-size: calc((var(--clock-size) / 2) - 32px);
+}
+
+.orbit-spike {
+  position: absolute;
+  width: 5px;
+  height: 1px;
+  background: rgba(59, 78, 96, 0.26);
+  transform-origin: 50%;
+  inset: 0;
+  margin: auto;
+  font-style: normal;
+  transform: rotate(var(--rotate)) translateX(var(--dail-size));
+}
+
+.orbit-spike.major {
+  width: 8px;
+  background: rgba(59, 78, 96, 0.5);
+}
+
+.orbit-minutes .orbit-spike {
+  background: rgba(59, 78, 96, 0.14);
+}
+
+.orbit-seconds.stop-anim,
+.orbit-minutes.stop-anim {
+  transition: none;
+}
+
+.orbit-hour-value {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -58%);
+  font-family: "Comfortaa", "Segoe UI", sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  color: rgba(22, 36, 48, 0.92);
+}
+
+.orbit-minute-value {
+  position: absolute;
+  right: calc(var(--clock-size) / 4.7);
+  top: 50%;
+  transform: translateY(-44%);
+  font-family: "Comfortaa", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(34, 51, 65, 0.74);
+  background: transparent;
+  z-index: 2;
+}
+
+.orbit-minute-value::after {
+  content: "";
+  position: absolute;
+  border: 1.5px solid rgba(32, 48, 61, 0.62);
+  border-right: none;
+  height: 24px;
+  left: -7px;
+  top: 50%;
+  border-radius: 24px 0 0 24px;
+  width: calc(var(--clock-size) / 3.1);
+  transform: translateY(-50%);
+}
+
+.weather-clock-date {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(32, 48, 61, 0.78);
+  text-transform: capitalize;
+}
+
+.weather-clock-week {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(32, 48, 61, 0.56);
+}
+
+.weather-garden-shell {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(76, 114, 92, 0.08);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.weather-garden-canvas {
+  display: block;
+  width: 100%;
+  height: 118px;
+}
+
+.flower-art-card {
+  display: none;
+}
+
+.flower-art-shell {
+  display: none;
+}
+
+.flower-art-shell::before {
+  content: none;
+}
+
+.flower-art-shell::after {
+  content: none;
+}
+
+.bouquet-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 132px;
+}
+
+.bouquet-wallpaper path {
+  fill: none;
+  stroke: rgba(145, 175, 141, 0.22);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+}
+
+.bouquet-bokeh circle {
+  filter: blur(1px);
+}
+
+.bouquet-flower {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.bouquet-bloom {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: bouquetBloomFloat 7.2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+.bouquet-stem {
+  fill: none;
+  stroke: #78a46f;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.88;
+}
+
+.bouquet-leaf {
+  fill: #85b77b;
+  opacity: 0.9;
+}
+
+.bouquet-core {
+  fill: #f3d260;
+  stroke: rgba(215, 160, 72, 0.6);
+  stroke-width: 1.2;
+}
+
+.bouquet-halo {
+  opacity: 0.85;
+  mix-blend-mode: screen;
+}
+
+.bouquet-sparkle {
+  fill: rgba(255, 255, 255, 0.88);
+  animation: bouquetSparkle 3.8s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+body[data-theme="dark"] .flower-art-card {
+  display: none;
+}
+
+body[data-theme="dark"] .flower-art-shell {
+  display: none;
+}
+
+body[data-theme="dark"] .flower-art-shell::before {
+  content: none;
+}
+
+body[data-theme="dark"] .flower-art-shell::after {
+  content: none;
+}
+
+body[data-theme="dark"] .bouquet-wallpaper path {
+  stroke: rgba(134, 167, 129, 0.18);
+}
+
+body[data-theme="dark"] .bouquet-stem {
+  stroke: #8db886;
+}
+
+body[data-theme="dark"] .bouquet-leaf {
+  fill: #7aa06f;
+}
+
+body[data-theme="dark"] .bouquet-core {
+  fill: #efcf74;
+  stroke: rgba(233, 194, 104, 0.5);
+}
+
+@keyframes bouquetBloomFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-0.8deg);
+  }
+  50% {
+    transform: translateY(-1.5px) rotate(0.8deg);
+  }
+}
+
+@keyframes bouquetSparkle {
+  0%, 100% {
+    opacity: 0.22;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.08);
+  }
+}
+
+.weather-tree-scene {
+  position: relative;
+  height: 94px;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(225, 236, 243, 0.96) 0%, rgba(238, 246, 241, 0.94) 56%, rgba(214, 232, 211, 0.98) 100%);
+  border: 1px solid rgba(76, 114, 92, 0.12);
+  image-rendering: pixelated;
+}
+
+.weather-tree-scene::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 20px;
+  background:
+    linear-gradient(180deg, rgba(109, 144, 90, 0.3), rgba(76, 115, 62, 0.5));
+}
+
+.weather-tree-canopy {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 68px;
+  height: 44px;
+  transform: translateX(-50%);
+  transform-origin: center bottom;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(102, 158, 93, 0.96), rgba(68, 123, 76, 0.98));
+  box-shadow:
+    -24px 8px 0 -4px rgba(94, 147, 90, 0.95),
+    24px 8px 0 -4px rgba(94, 147, 90, 0.95),
+    -10px -6px 0 -2px rgba(136, 184, 114, 0.9),
+    10px -6px 0 -2px rgba(136, 184, 114, 0.9);
+  --tree-scale: 1;
+  animation: treeSway 4.4s ease-in-out infinite;
+}
+
+.weather-tree-scene.stage-1 .weather-tree-canopy { --tree-scale: 0.58; }
+.weather-tree-scene.stage-2 .weather-tree-canopy { --tree-scale: 0.72; }
+.weather-tree-scene.stage-3 .weather-tree-canopy { --tree-scale: 0.84; }
+.weather-tree-scene.stage-4 .weather-tree-canopy { --tree-scale: 0.96; }
+.weather-tree-scene.stage-5 .weather-tree-canopy { --tree-scale: 1.08; }
+.weather-tree-scene.stage-6 .weather-tree-canopy { --tree-scale: 1.18; }
+
+.weather-tree-leaf {
+  position: absolute;
+  left: var(--leaf-x, 50%);
+  top: var(--leaf-y, 50%);
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  margin-top: -4px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: leafTwinkle 3.1s ease-in-out infinite;
+  animation-delay: var(--leaf-delay, 0s);
+}
+
+.weather-tree-leaf.leaf-1 { background: #f7d86d; }
+.weather-tree-leaf.leaf-2 { background: #f6a8bf; }
+.weather-tree-leaf.leaf-3 { background: #cab0ff; }
+.weather-tree-leaf.leaf-4 { background: #9be39b; }
+
+.weather-tree-trunk {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 16px;
+  height: 34px;
+  transform: translateX(-50%);
+  border-radius: 4px 4px 2px 2px;
+  background:
+    linear-gradient(180deg, rgba(127, 88, 55, 0.98), rgba(94, 58, 37, 1));
+  box-shadow:
+    -10px 20px 0 -6px rgba(94, 58, 37, 0.98),
+    10px 20px 0 -6px rgba(94, 58, 37, 0.98);
+}
+
+.weather-tree-ground {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  width: 84px;
+  height: 10px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(88, 132, 73, 0.48);
+  box-shadow: 0 0 0 6px rgba(143, 190, 116, 0.12);
+}
+
+.weather-tree-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.weather-tree-sparkle {
+  position: absolute;
+  left: var(--sparkle-x, 50%);
+  top: var(--sparkle-y, 50%);
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  margin-top: -2px;
+  border-radius: 1px;
+  opacity: 0;
+  animation: sparklePulse 2.8s ease-in-out infinite;
+  animation-delay: var(--sparkle-delay, 0s);
+}
+
+.weather-tree-sparkle.sparkle-1 { background: rgba(255, 244, 190, 0.95); }
+.weather-tree-sparkle.sparkle-2 { background: rgba(255, 213, 164, 0.95); }
+.weather-tree-sparkle.sparkle-3 { background: rgba(207, 236, 164, 0.95); }
+.weather-tree-sparkle.sparkle-4 { background: rgba(214, 196, 255, 0.95); }
+
+.weather-tree-goal {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  min-width: 30px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(76, 114, 92, 0.12);
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: rgba(39, 61, 48, 0.9);
+  text-align: center;
+}
+
 .weather-ranking-podium {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
-  align-items: end;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  align-items: stretch;
 }
 
 .weather-ranking-item {
   display: grid;
-  gap: 1px;
-  padding: 5px 7px 7px;
-  border-radius: 10px 10px 0 0;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border-radius: 14px;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--podium-color, #8aa0b6) 8%, rgba(255, 255, 255, 0.94)),
-    color-mix(in srgb, var(--podium-color, #8aa0b6) 16%, rgba(236, 242, 246, 0.96))
+    color-mix(in srgb, var(--podium-color, #8aa0b6) 8%, rgba(255, 255, 255, 0.95)),
+    color-mix(in srgb, var(--podium-color, #8aa0b6) 18%, rgba(236, 242, 246, 0.98))
   );
   border: 1px solid color-mix(in srgb, var(--podium-color, #8aa0b6) 18%, rgba(68, 95, 118, 0.1));
-  border-bottom: none;
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.3);
-  align-content: end;
-  position: relative;
 }
 
-.weather-ranking-item::after {
-  content: "";
-  position: absolute;
-  left: -1px;
-  right: -1px;
-  bottom: -5px;
-  height: 5px;
-  background: color-mix(in srgb, var(--podium-color, #8aa0b6) 18%, rgba(214, 224, 231, 0.95));
-  border-radius: 0 0 6px 6px;
+.weather-ranking-item.is-empty {
+  opacity: 0.58;
 }
 
-.weather-ranking-item.place-1 {
-  min-height: 66px;
-}
-
-.weather-ranking-item.place-2 {
-  min-height: 52px;
-}
-
-.weather-ranking-item.place-3 {
-  min-height: 44px;
-}
-
-.weather-ranking-medal {
-  font-size: 0.54rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(32, 48, 61, 0.5);
+.weather-team-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--podium-color, #8aa0b6);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--podium-color, #8aa0b6) 22%, rgba(255, 255, 255, 0.9));
 }
 
 .weather-ranking-name {
@@ -891,14 +1433,28 @@ button {
   color: var(--ink);
   white-space: normal;
   overflow-wrap: anywhere;
-  text-align: center;
   line-height: 1.15;
 }
 
 .weather-ranking-count {
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.86rem;
+  font-weight: 800;
   color: color-mix(in srgb, var(--podium-color, #8aa0b6) 52%, var(--ink));
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: translateX(-50%) scale(var(--tree-scale, 1)) rotate(-1.3deg); }
+  50% { transform: translateX(-50%) scale(var(--tree-scale, 1)) rotate(1.3deg); }
+}
+
+@keyframes leafTwinkle {
+  0%, 100% { transform: scale(1); filter: brightness(0.96); }
+  50% { transform: scale(1.08); filter: brightness(1.08); }
+}
+
+@keyframes sparklePulse {
+  0%, 100% { opacity: 0; transform: scale(0.7); }
+  35%, 65% { opacity: 1; transform: scale(1); }
 }
 
 .weather-art,
@@ -1675,6 +2231,17 @@ h1 {
   place-items: center;
 }
 
+.someday-button {
+  background: rgba(255, 249, 235, 0.98);
+  border-color: rgba(196, 155, 55, 0.2);
+  color: #8d6a14;
+}
+
+.someday-button .claim-bell-count {
+  background: #c49b37;
+  color: #fffdf7;
+}
+
 .claim-bell-button.ringing .claim-bell-icon {
   animation: bell-ring 1.8s ease-in-out infinite;
 }
@@ -1949,7 +2516,9 @@ h1 {
 }
 
 .fullscreen-fab {
-  position: static;
+  position: absolute;
+  right: 0;
+  top: 50%;
   width: auto;
   min-width: 0;
   height: auto;
@@ -1965,8 +2534,8 @@ h1 {
   background: transparent;
   box-shadow: none;
   opacity: 0.72;
-  margin-left: auto;
-  transform: none;
+  margin-left: 0;
+  transform: translateY(-50%);
 }
 
 .week-grid {
@@ -3051,6 +3620,7 @@ details[open] > .accordion-summary::after {
   gap: 8px;
   padding-top: 2px;
   width: 100%;
+  position: relative;
 }
 
 .hero-brand-title {
@@ -3077,6 +3647,7 @@ details[open] > .accordion-summary::after {
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
+  width: 100%;
 }
 
 .top-controls .language-toggle {
@@ -3118,6 +3689,162 @@ details[open] > .accordion-summary::after {
   display: none;
 }
 
+/* Final header layout fix */
+.weather-banner {
+  min-height: 132px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(112px, 0.34fr) minmax(250px, 0.78fr);
+}
+
+.weather-overview {
+  grid-template-columns: 84px minmax(0, 1fr);
+  min-width: 0;
+}
+
+.weather-scene {
+  min-height: 132px;
+}
+
+.weather-copy {
+  gap: 6px;
+  padding: 12px 14px 12px 10px;
+  background: transparent;
+}
+
+.weather-progress-panel {
+  min-width: 0;
+  padding: 0;
+  border-left: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.weather-mid-panel {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.weather-mid-card {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+}
+
+.weather-mid-value {
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.weather-mid-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(32, 48, 61, 0.56);
+  text-align: center;
+}
+
+.weather-ranking {
+  height: 100%;
+  align-content: stretch;
+}
+
+.weather-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+}
+
+.weather-mainline {
+  gap: 8px;
+}
+
+.weather-mainline strong {
+  font-size: clamp(1.3rem, 2vw, 2rem);
+}
+
+.weather-mainline span {
+  font-size: clamp(0.82rem, 1vw, 0.98rem);
+}
+
+.weather-subline {
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.weather-symbol {
+  font-size: 1.5rem;
+}
+
+.weather-info-card {
+  gap: 2px;
+  padding: 10px 14px;
+}
+
+.weather-clock-display {
+  gap: 5px;
+}
+
+.weather-clock-digit {
+  border-radius: 10px;
+  padding: 0.12em 0.08em 0.09em;
+  font-size: clamp(1.45rem, 2.6vw, 2.15rem);
+}
+
+.weather-clock-separator {
+  width: 0.32em;
+  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+}
+
+.weather-clock-date {
+  font-size: 0.82rem;
+}
+
+.weather-clock-week {
+  font-size: 0.68rem;
+}
+
+.weather-garden-shell {
+  min-height: 118px;
+}
+
+.weather-garden-canvas {
+  height: 118px;
+}
+
+@media (max-width: 1024px) {
+  .weather-banner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(120px, 0.42fr) minmax(220px, 0.8fr);
+  }
+
+  .weather-overview {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .weather-scene {
+    min-height: 112px;
+  }
+}
+
+@media (max-width: 760px) {
+  .weather-banner {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-overview {
+    grid-template-columns: 68px minmax(0, 1fr);
+  }
+
+  .weather-progress-panel {
+    border-left: 0;
+    border-top: 1px solid rgba(68, 95, 118, 0.08);
+  }
+}
+
 .hero-copy,
 .hero-actions {
   display: none;
@@ -3136,4 +3863,603 @@ details[open] > .accordion-summary::after {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
+}
+
+/* Final clean watch override */
+.orbit-clock {
+  --clock-size: 148px;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.04) 56%, rgba(255, 255, 255, 0) 58%),
+    radial-gradient(circle at 50% 50%, rgba(245, 249, 252, 0.92), rgba(227, 235, 241, 0.82));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -8px 18px rgba(109, 137, 158, 0.05);
+}
+
+.orbit-minutes {
+  --dail-size: calc((var(--clock-size) / 2) - 14px);
+  transition: transform 0.8s linear;
+}
+
+.orbit-spike {
+  width: 4px;
+  background: rgba(59, 78, 96, 0.18);
+}
+
+.orbit-spike.major {
+  width: 8px;
+  background: rgba(59, 78, 96, 0.42);
+}
+
+.orbit-hour-value {
+  top: 44%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.orbit-minute-value {
+  left: 50%;
+  right: auto;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(55, 75, 90, 0.68);
+  background: transparent;
+}
+
+.orbit-minute-value::after {
+  content: none;
+}
+
+body[data-theme="dark"] .orbit-clock {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01) 56%, rgba(255, 255, 255, 0) 58%),
+    radial-gradient(circle at 50% 50%, rgba(53, 66, 77, 0.98), rgba(38, 47, 56, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.12);
+}
+
+body[data-theme="dark"] .weather-mid-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+}
+
+body[data-theme="dark"] .weather-mid-value {
+  color: #eef5fb;
+}
+
+body[data-theme="dark"] .weather-mid-label {
+  color: rgba(203, 214, 223, 0.62);
+}
+
+body[data-theme="dark"] .orbit-spike {
+  background: rgba(217, 229, 238, 0.16);
+}
+
+body[data-theme="dark"] .orbit-spike.major {
+  background: rgba(217, 229, 238, 0.38);
+}
+
+body[data-theme="dark"] .orbit-minute-value {
+  color: rgba(227, 236, 244, 0.62);
+}
+
+/* Final soft accents */
+.weather-banner {
+  background:
+    linear-gradient(135deg, rgba(66, 119, 207, 0.06), transparent 28%),
+    linear-gradient(225deg, rgba(27, 143, 138, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(252, 253, 254, 0.96), rgba(243, 247, 250, 0.98));
+}
+
+.weather-mid-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+    radial-gradient(circle at 50% 18%, rgba(210, 148, 52, 0.1), transparent 58%);
+}
+
+.top-controls {
+  background:
+    linear-gradient(135deg, rgba(66, 119, 207, 0.03), transparent 24%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 252, 0.98));
+}
+
+.day-column {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(251, 253, 255, 1)),
+    linear-gradient(135deg, rgba(66, 119, 207, 0.025), transparent 26%);
+  position: relative;
+  overflow: hidden;
+}
+
+.day-column::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  margin: 0;
+  border-radius: 24px 24px 10px 10px;
+  background: linear-gradient(90deg, rgba(66, 119, 207, 0.28), rgba(27, 143, 138, 0.22), rgba(210, 148, 52, 0.18));
+  pointer-events: none;
+}
+
+.day-column.collapsed::before {
+  height: 3px;
+}
+
+.task-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 252, 254, 1)),
+    linear-gradient(135deg, color-mix(in srgb, var(--responsible-color, #8aa0b6) 5%, white 95%), transparent 34%);
+}
+
+.tool-drawer {
+  background:
+    linear-gradient(135deg, rgba(66, 119, 207, 0.035), transparent 28%),
+    linear-gradient(180deg, rgba(244, 248, 251, 0.98), rgba(239, 245, 249, 0.98));
+}
+
+.focus-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(249, 252, 254, 1)),
+    linear-gradient(135deg, rgba(27, 143, 138, 0.03), transparent 32%);
+}
+
+.summary-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(249, 252, 254, 1)),
+    linear-gradient(135deg, rgba(210, 148, 52, 0.04), transparent 34%);
+}
+
+body[data-theme="dark"] .weather-banner {
+  background:
+    linear-gradient(135deg, rgba(66, 119, 207, 0.1), transparent 28%),
+    linear-gradient(225deg, rgba(27, 143, 138, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(28, 36, 44, 0.98), rgba(19, 26, 32, 0.99));
+}
+
+body[data-theme="dark"] .weather-mid-card,
+body[data-theme="dark"] .top-controls,
+body[data-theme="dark"] .tool-drawer,
+body[data-theme="dark"] .summary-card,
+body[data-theme="dark"] .focus-card,
+body[data-theme="dark"] .day-column,
+body[data-theme="dark"] .task-card {
+  background-image:
+    linear-gradient(135deg, rgba(119, 158, 214, 0.06), transparent 28%),
+    linear-gradient(180deg, rgba(34, 42, 51, 0.98), rgba(29, 37, 45, 0.99));
+}
+
+body[data-theme="dark"] .day-column::before {
+  background: linear-gradient(90deg, rgba(119, 158, 214, 0.34), rgba(63, 160, 149, 0.24), rgba(210, 148, 52, 0.24));
+}
+
+/* Final plain clock */
+.orbit-clock {
+  --clock-size: 132px;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.18)),
+    radial-gradient(circle at 50% 50%, rgba(245, 249, 252, 0.96), rgba(227, 235, 241, 0.88));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 0 -6px 14px rgba(109, 137, 158, 0.04);
+}
+
+.orbit-minutes,
+.orbit-spike,
+.orbit-spike.major {
+  display: none !important;
+}
+
+.orbit-hour-value {
+  top: 43%;
+  transform: translate(-50%, -50%);
+  font-size: 1.85rem;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+.orbit-minute-value {
+  left: 50%;
+  right: auto;
+  top: 61%;
+  transform: translate(-50%, -50%);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(55, 75, 90, 0.62);
+  background: transparent;
+}
+
+.orbit-minute-value::after {
+  content: none;
+}
+
+body[data-theme="dark"] .orbit-clock {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+    radial-gradient(circle at 50% 50%, rgba(53, 66, 77, 0.98), rgba(38, 47, 56, 0.98));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -6px 14px rgba(0, 0, 0, 0.1);
+}
+
+body[data-theme="dark"] .orbit-minute-value {
+  color: rgba(227, 236, 244, 0.56);
+}
+
+/* Final header info layout */
+.weather-banner {
+  min-height: 116px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  justify-items: stretch;
+  width: 100%;
+  padding: 10px 14px;
+  gap: 12px;
+}
+
+.weather-overview,
+.weather-mid-panel,
+.weather-overdue-panel,
+.weather-progress-panel {
+  min-width: 0;
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+.weather-overview {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 100%;
+  padding: 10px 12px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
+    radial-gradient(circle at 18% 16%, rgba(115, 174, 230, 0.12), transparent 54%);
+}
+
+.weather-scene {
+  width: 108px;
+  height: 108px;
+  min-width: 108px;
+  min-height: 108px;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  align-self: center;
+  justify-self: start;
+}
+
+.weather-symbol {
+  font-size: 2.1rem;
+}
+
+.weather-copy,
+.weather-mainline,
+.weather-subline,
+.weather-mid-card,
+.weather-info-card {
+  justify-items: start;
+  text-align: left;
+}
+
+.weather-copy {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.weather-mainline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: baseline;
+}
+
+.weather-mid-card {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 3px;
+  min-height: 100%;
+  padding: 12px 14px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.14)),
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.34), transparent 50%);
+}
+
+.weather-mid-label {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.weather-mid-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 2.22rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--progress-color, #81be8e);
+}
+
+.weather-mid-total {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.weather-mid-weekline,
+.weather-mid-record {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.weather-mid-weekline strong,
+.weather-mid-record strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.weather-progress-panel {
+  padding: 0;
+  border-left: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.weather-overdue-card {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  min-height: 100%;
+  padding: 10px 12px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.1)),
+    radial-gradient(circle at 18% 16%, rgba(255, 148, 162, 0.12), transparent 52%);
+}
+
+.weather-overdue-card.is-empty {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
+    radial-gradient(circle at 18% 16%, rgba(149, 173, 193, 0.14), transparent 54%);
+}
+
+.weather-overdue-title {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.weather-overdue-list {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.weather-overdue-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.weather-overdue-copy {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.weather-overdue-icon {
+  font-size: 0.96rem;
+  line-height: 1;
+}
+
+.weather-overdue-name {
+  font-size: 0.86rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.weather-overdue-go {
+  min-height: 32px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.weather-overdue-empty {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.weather-info-card {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 10px 12px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
+    radial-gradient(circle at 82% 18%, rgba(148, 170, 192, 0.14), transparent 56%);
+  overflow: hidden;
+}
+
+.weather-clock-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.weather-clock-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  text-align: left;
+}
+
+.orbit-clock {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.orbit-hour-value,
+.orbit-minute-value {
+  position: static;
+  inset: auto;
+  left: auto;
+  right: auto;
+  top: auto;
+  transform: none;
+}
+
+.orbit-hour-value {
+  font-size: 1.92rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.orbit-minute-value {
+  font-size: 1.92rem;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.orbit-minute-value::before {
+  content: ":";
+  margin-right: 2px;
+}
+
+.orbit-minute-value::after {
+  content: none;
+}
+
+.weather-clock-date,
+.weather-clock-week {
+  line-height: 1.15;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.weather-kicker {
+  font-size: 0.74rem;
+  line-height: 1;
+}
+
+.weather-mainline strong {
+  font-size: 1.72rem;
+  line-height: 1;
+}
+
+.weather-mainline span {
+  font-size: 1rem;
+}
+
+.weather-subline {
+  font-size: 0.82rem;
+  gap: 4px 8px;
+}
+
+.hero {
+  gap: 4px;
+}
+
+.top-controls {
+  padding: 6px 10px;
+}
+
+body[data-theme="dark"] .weather-mid-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.08), transparent 52%);
+}
+
+body[data-theme="dark"] .weather-overview,
+body[data-theme="dark"] .weather-info-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 18% 16%, rgba(122, 145, 164, 0.12), transparent 56%);
+}
+
+body[data-theme="dark"] .weather-overdue-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 18% 16%, rgba(194, 91, 116, 0.14), transparent 54%);
+}
+
+body[data-theme="dark"] .weather-overdue-card.is-empty {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 18% 16%, rgba(122, 145, 164, 0.14), transparent 54%);
+}
+
+body[data-theme="dark"] .orbit-clock {
+  background: transparent;
+  box-shadow: none;
+}
+
+body[data-theme="dark"] .orbit-minute-value,
+body[data-theme="dark"] .orbit-hour-value {
+  color: #f3f7fb;
+}
+
+body[data-theme="dark"] .weather-mid-total,
+body[data-theme="dark"] .weather-mid-weekline,
+body[data-theme="dark"] .weather-mid-record,
+body[data-theme="dark"] .weather-overdue-title,
+body[data-theme="dark"] .weather-overdue-empty {
+  color: #c9d3db;
+}
+
+body[data-theme="dark"] .weather-mid-weekline strong,
+body[data-theme="dark"] .weather-mid-record strong {
+  color: #f3f7fb;
+}
+
+@media (max-width: 1024px) {
+  .weather-banner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .weather-progress-panel {
+    justify-self: start;
+  }
 }
