@@ -94,6 +94,8 @@
       prevWeek: "<- Week",
       nextWeek: "Week ->",
       today: "Today",
+      fullscreen: "Fullscreen",
+      exitFullscreen: "Exit fullscreen",
       focusTitle: "Keep the week flowing",
       focusOverdue: "Needs attention",
       focusToday: "Today on deck",
@@ -229,6 +231,8 @@
       prevWeek: "<- Viikko",
       nextWeek: "Viikko ->",
       today: "Tänään",
+      fullscreen: "Koko näyttö",
+      exitFullscreen: "Poistu koko näytöstä",
       focusTitle: "Pidä viikko liikkeessä",
       focusOverdue: "Tarvitsee huomiota",
       focusToday: "Tänään vuorossa",
@@ -364,6 +368,8 @@
       prevWeek: "<- Woche",
       nextWeek: "Woche ->",
       today: "Heute",
+      fullscreen: "Vollbild",
+      exitFullscreen: "Vollbild beenden",
       focusTitle: "Die Woche im Fluss halten",
       focusOverdue: "Braucht Aufmerksamkeit",
       focusToday: "Heute dran",
@@ -648,6 +654,7 @@
     prevWeekButton: document.getElementById("prevWeekButton"),
     todayButton: document.getElementById("todayButton"),
     nextWeekButton: document.getElementById("nextWeekButton"),
+    fullscreenButton: document.getElementById("fullscreenButton"),
     claimBellButton: document.getElementById("claimBellButton"),
     claimBellText: document.getElementById("claimBellText"),
     claimBellCount: document.getElementById("claimBellCount"),
@@ -863,6 +870,8 @@
       saveState();
       renderApp();
     });
+    refs.fullscreenButton.addEventListener("click", toggleFullscreenMode);
+    document.addEventListener("fullscreenchange", renderApp);
     refs.taskRecurrenceInput.addEventListener("change", syncDialogFields);
     refs.taskForm.addEventListener("submit", handleTaskSubmit);
     refs.deleteTaskButton.addEventListener("click", deleteEditingTask);
@@ -881,6 +890,24 @@
     idleScrollTimer = setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, IDLE_SCROLL_TOP_MS);
+  }
+
+  function isFullscreenActive() {
+    return Boolean(document.fullscreenElement);
+  }
+
+  async function toggleFullscreenMode() {
+    try {
+      if (isFullscreenActive()) {
+        await document.exitFullscreen();
+      } else {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (error) {
+      // Ignore unsupported fullscreen requests on restrictive tablet browsers.
+    } finally {
+      renderApp();
+    }
   }
 
   function renderApp() {
@@ -935,6 +962,8 @@
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.todayButton.textContent = t.today;
     refs.nextWeekButton.textContent = t.nextWeek;
+    refs.fullscreenButton.textContent = isFullscreenActive() ? t.exitFullscreen : t.fullscreen;
+    refs.fullscreenButton.setAttribute("aria-label", isFullscreenActive() ? t.exitFullscreen : t.fullscreen);
     fillDialogLabels();
     renderLanguageToggle();
     state.settings.activeFilter = "all";
