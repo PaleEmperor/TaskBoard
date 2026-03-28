@@ -4456,10 +4456,71 @@ body[data-theme="dark"] .weather-mid-record strong {
 
 @media (max-width: 1024px) {
   .weather-banner {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: auto;
+    gap: 8px;
+    padding: 8px 10px;
   }
 
-  .weather-progress-panel {
-    justify-self: start;
+  .weather-overview,
+  .weather-mid-card,
+  .weather-overdue-card,
+  .weather-info-card {
+    min-height: 96px;
+  }
+
+  .weather-overview {
+    grid-template-columns: 84px minmax(0, 1fr);
+    padding: 8px 10px;
+  }
+
+  .weather-scene {
+    width: 84px;
+    height: 84px;
+    min-width: 84px;
+    min-height: 84px;
+  }
+
+  .weather-symbol {
+    font-size: 1.8rem;
+  }
+
+  .weather-mainline strong {
+    font-size: 1.42rem;
+  }
+
+  .weather-mainline span {
+    font-size: 0.9rem;
+  }
+
+  .weather-subline,
+  .weather-clock-date,
+  .weather-clock-week,
+  .weather-mid-weekline,
+  .weather-mid-record,
+  .weather-overdue-name,
+  .weather-overdue-empty {
+    font-size: 0.74rem;
+  }
+
+  .weather-mid-value,
+  .orbit-hour-value,
+  .orbit-minute-value {
+    font-size: 1.7rem;
+  }
+
+  .weather-clock-row {
+    gap: 8px;
+  }
+
+  .weather-overdue-go {
+    min-height: 28px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .weather-banner {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
