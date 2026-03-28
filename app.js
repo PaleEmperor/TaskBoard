@@ -962,8 +962,9 @@
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.todayButton.textContent = t.today;
     refs.nextWeekButton.textContent = t.nextWeek;
-    refs.fullscreenButton.textContent = isFullscreenActive() ? t.exitFullscreen : t.fullscreen;
+    refs.fullscreenButton.textContent = isFullscreenActive() ? "⤡" : "⤢";
     refs.fullscreenButton.setAttribute("aria-label", isFullscreenActive() ? t.exitFullscreen : t.fullscreen);
+    refs.fullscreenButton.title = isFullscreenActive() ? t.exitFullscreen : t.fullscreen;
     fillDialogLabels();
     renderLanguageToggle();
     state.settings.activeFilter = "all";
