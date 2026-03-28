@@ -1,6 +1,7 @@
 (function () {
   const STORAGE_KEY = "homeflow-board-v2";
   const AUTO_REFRESH_MS = 60000;
+  const WEATHER_REFRESH_MS = 300000;
   const APP_VERSION = "v1";
   const BOARD_DENSITY = {
     everyone: "everyone",
@@ -739,6 +740,9 @@
   setInterval(() => {
     renderApp();
   }, AUTO_REFRESH_MS);
+  setInterval(() => {
+    hydrateWeather();
+  }, WEATHER_REFRESH_MS);
 
   function bindEvents() {
     refs.quickAddButton.addEventListener("click", () => openTaskDialog());
@@ -1005,17 +1009,30 @@
 
   function renderWeatherRanking() {
     const t = currentMessages();
-    const leaderboard = getCompletionLeaderboard()
+    const rankedEntries = getCompletionLeaderboard()
       .map((entry, index, list) => ({
         ...entry,
         place: index > 0 && entry.count === list[index - 1].count ? list[index - 1].place : index + 1,
       }))
-      .filter((entry) => entry.place <= 3)
-      .slice(0, 3);
-    if (!leaderboard.length) {
+      .filter((entry) => entry.place <= 3);
+    if (!rankedEntries.length) {
       refs.weatherRanking.innerHTML = "";
       return;
     }
+    const leaderboard = [];
+    rankedEntries.forEach((entry) => {
+      const existing = leaderboard.find((item) => item.place === entry.place);
+      if (existing) {
+        existing.users.push(entry.user);
+        existing.count = entry.count;
+        return;
+      }
+      leaderboard.push({
+        place: entry.place,
+        count: entry.count,
+        users: [entry.user],
+      });
+    });
     const medals = {
       1: t.rankingGold,
       2: t.rankingSilver,
@@ -1038,9 +1055,9 @@
         ${podiumOrder
           .map(
             (entry) => `
-              <div class="weather-ranking-item place-${entry.place}" style="--podium-color: ${colorForUser(entry.user.id)}">
+              <div class="weather-ranking-item place-${entry.place}" style="--podium-color: ${colorForUser(entry.users[0].id)}">
                 <div class="weather-ranking-medal">${medals[entry.place]}</div>
-                <div class="weather-ranking-name">${entry.user.name}</div>
+                <div class="weather-ranking-name">${entry.users.map((user) => user.name).join(" & ")}</div>
                 <div class="weather-ranking-count">${entry.count}</div>
               </div>
             `
