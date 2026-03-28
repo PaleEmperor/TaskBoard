@@ -1949,22 +1949,24 @@ h1 {
 }
 
 .fullscreen-fab {
-  position: fixed;
-  top: max(10px, env(safe-area-inset-top, 0px) + 10px);
-  right: max(10px, env(safe-area-inset-right, 0px) + 10px);
-  z-index: 40;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
+  position: static;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  font-size: 1.05rem;
+  border: 0;
+  border-radius: 0;
+  font-size: 0.96rem;
   line-height: 1;
-  box-shadow: 0 8px 18px rgba(32, 48, 61, 0.14);
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.72;
+  margin-left: auto;
+  transform: none;
 }
 
 .week-grid {
@@ -3048,6 +3050,7 @@ details[open] > .accordion-summary::after {
   justify-content: center;
   gap: 8px;
   padding-top: 2px;
+  width: 100%;
 }
 
 .hero-brand-title {
