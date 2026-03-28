@@ -4099,9 +4099,9 @@ body[data-theme="dark"] .orbit-minute-value {
 /* Final header info layout */
 .weather-banner {
   min-height: 116px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   align-items: stretch;
-  justify-items: stretch;
   width: 100%;
   padding: 10px 14px;
   gap: 12px;
@@ -4112,8 +4112,23 @@ body[data-theme="dark"] .orbit-minute-value {
 .weather-overdue-panel,
 .weather-progress-panel {
   min-width: 0;
-  justify-self: stretch;
   align-self: stretch;
+}
+
+.weather-overview {
+  flex: 1.45 1 310px;
+}
+
+.weather-mid-panel {
+  flex: 1 1 220px;
+}
+
+.weather-overdue-panel {
+  flex: 1.05 1 240px;
+}
+
+.weather-progress-panel {
+  flex: 0.9 1 190px;
 }
 
 .weather-overview {
@@ -4456,10 +4471,19 @@ body[data-theme="dark"] .weather-mid-record strong {
 
 @media (max-width: 1024px) {
   .weather-banner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: auto;
     gap: 8px;
     padding: 8px 10px;
+  }
+
+  .weather-overview {
+    flex-basis: 270px;
+  }
+
+  .weather-mid-panel,
+  .weather-overdue-panel,
+  .weather-progress-panel {
+    flex-basis: 180px;
   }
 
   .weather-overview,
@@ -4521,6 +4545,13 @@ body[data-theme="dark"] .weather-mid-record strong {
 
 @media (max-width: 760px) {
   .weather-banner {
-    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+  }
+
+  .weather-overview,
+  .weather-mid-panel,
+  .weather-overdue-panel,
+  .weather-progress-panel {
+    flex-basis: auto;
   }
 }
