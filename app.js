@@ -3,6 +3,7 @@
   const AUTO_REFRESH_MS = 60000;
   const WEATHER_REFRESH_MS = 300000;
   const IDLE_SCROLL_TOP_MS = 300000;
+  const DAY_RESET_CHECK_MS = 60000;
   const APP_VERSION = "v1";
   const BOARD_DENSITY = {
     everyone: "everyone",
@@ -119,6 +120,11 @@
       taskNotes: "Notes",
       previewLabel: "Preview",
       backupHeading: "Backup",
+      fuelHeading: "95 E10 nearby",
+      fuelUpdated: "Updated {time}",
+      fuelUnavailable: "Fuel prices unavailable",
+      fuelDistance: "{distance} km",
+      fuelAddressHidden: "Address available",
       claimPoolHeading: "Claim tasks",
       somedayHeading: "Someday tasks",
       claimNow: "Claim",
@@ -271,6 +277,11 @@
       taskNotes: "Muistiinpanot",
       previewLabel: "Esikatselu",
       backupHeading: "Varmuuskopio",
+      fuelHeading: "95 E10 lähellä",
+      fuelUpdated: "Päivitetty {time}",
+      fuelUnavailable: "Polttoainehinnat eivät ole saatavilla",
+      fuelDistance: "{distance} km",
+      fuelAddressHidden: "Osoite saatavilla",
       claimPoolHeading: "Claim-tehtävät",
       somedayHeading: "Emme tiedä vielä milloin",
       claimNow: "Claim",
@@ -423,6 +434,11 @@
       taskNotes: "Notizen",
       previewLabel: "Vorschau",
       backupHeading: "Sicherung",
+      fuelHeading: "95 E10 in der Nähe",
+      fuelUpdated: "Aktualisiert {time}",
+      fuelUnavailable: "Spritpreise nicht verfügbar",
+      fuelDistance: "{distance} km",
+      fuelAddressHidden: "Adresse verfügbar",
       claimPoolHeading: "Claim-Aufgaben",
       somedayHeading: "Irgendwann-Aufgaben",
       claimNow: "Claim",
@@ -673,8 +689,14 @@
       condition: "",
       theme: "clear",
     },
+    fuel: {
+      status: "loading",
+      updatedAt: null,
+      types: {},
+    },
     progressGardenFrame: null,
     headerClockTimer: null,
+    lastAutomaticDayResetKey: null,
   };
 
   const refs = {
@@ -729,6 +751,9 @@
     savedTasksStrip: document.getElementById("savedTasksStrip"),
     quickTasksHeading: document.getElementById("quickTasksHeading"),
     quickTasksStrip: document.getElementById("quickTasksStrip"),
+    fuelHeading: document.getElementById("fuelHeading"),
+    fuelMeta: document.getElementById("fuelMeta"),
+    fuelList: document.getElementById("fuelList"),
     backupHeading: document.getElementById("backupHeading"),
     exportDataButton: document.getElementById("exportDataButton"),
     importDataButton: document.getElementById("importDataButton"),
@@ -818,6 +843,7 @@
   hydrateRecurringTasks();
   registerServiceWorker();
   hydrateWeather();
+  hydrateFuelPrices();
   bindEvents();
   renderApp();
   resetIdleScrollTimer();
@@ -827,6 +853,12 @@
   setInterval(() => {
     hydrateWeather();
   }, WEATHER_REFRESH_MS);
+  setInterval(() => {
+    hydrateFuelPrices();
+  }, WEATHER_REFRESH_MS);
+  setInterval(() => {
+    maybeResetToTodayAtMidnight();
+  }, DAY_RESET_CHECK_MS);
   if (!ui.headerClockTimer) {
     ui.headerClockTimer = window.setInterval(() => {
       updateHeaderClock();
@@ -1006,8 +1038,32 @@
       clearTimeout(idleScrollTimer);
     }
     idleScrollTimer = setTimeout(() => {
+      resetBoardToToday();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, IDLE_SCROLL_TOP_MS);
+  }
+
+  function resetBoardToToday() {
+    state.settings.weekOffset = 0;
+    ui.focusDateKey = formatDateKey(new Date());
+    saveState();
+    renderApp();
+  }
+
+  function maybeResetToTodayAtMidnight(now = new Date()) {
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const dayKey = formatDateKey(now);
+    if (hours === 0 && minutes === 1) {
+      if (ui.lastAutomaticDayResetKey !== dayKey) {
+        ui.lastAutomaticDayResetKey = dayKey;
+        resetBoardToToday();
+      }
+      return;
+    }
+    if (ui.lastAutomaticDayResetKey !== dayKey && !(hours === 0 && minutes === 0)) {
+      ui.lastAutomaticDayResetKey = null;
+    }
   }
 
   function isFullscreenActive() {
@@ -1058,6 +1114,7 @@
     refs.familyHeading.textContent = t.familyHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
+    refs.fuelHeading.textContent = t.fuelHeading;
     refs.backupHeading.textContent = t.backupHeading;
     refs.exportDataButton.textContent = t.exportData;
     refs.importDataButton.textContent = t.importData;
@@ -1098,6 +1155,7 @@
     renderFamilyDock();
     renderSavedTasks();
     renderQuickTasks();
+    renderFuelPanel();
     renderDialogOptions();
   }
 
@@ -2459,6 +2517,110 @@
       };
     }
     renderApp();
+  }
+
+  async function hydrateFuelPrices() {
+    try {
+      const response = await fetch(`./data/fuel-rovaniemi.json?v=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error("Fuel data unavailable");
+      }
+      const data = await response.json();
+      ui.fuel = {
+        status: "ready",
+        updatedAt: data.updatedAt || null,
+        types: data.types || {},
+      };
+    } catch (error) {
+      ui.fuel = {
+        status: "error",
+        updatedAt: null,
+        types: {},
+      };
+    }
+    renderFuelPanel();
+  }
+
+  function renderFuelPanel() {
+    const t = currentMessages();
+    if (ui.fuel.status !== "ready") {
+      refs.fuelMeta.textContent = "";
+      refs.fuelList.innerHTML = `<div class="fuel-empty">${t.fuelUnavailable}</div>`;
+      return;
+    }
+
+    const entries = Array.isArray(ui.fuel.types?.["95"]) ? ui.fuel.types["95"].slice(0, 5) : [];
+    refs.fuelMeta.textContent = ui.fuel.updatedAt
+      ? t.fuelUpdated.replace("{time}", formatFuelTimestamp(ui.fuel.updatedAt))
+      : "";
+    refs.fuelList.innerHTML = entries.length
+      ? entries
+          .map(
+            (entry, index) => `
+              <article class="fuel-card">
+                <div class="fuel-card-top">
+                  <strong>${index + 1}. ${escapeHtml(repairDisplayText(entry.station))}</strong>
+                  <span class="fuel-price">${formatFuelPrice(entry.priceValue)}</span>
+                </div>
+                <div class="fuel-card-meta">${buildFuelMetaLine(entry, t)}</div>
+                ${entry.address ? `<div class="fuel-address">${escapeHtml(repairDisplayText(entry.address))}</div>` : ""}
+              </article>
+            `
+          )
+          .join("")
+      : `<div class="fuel-empty">${t.fuelUnavailable}</div>`;
+  }
+
+  function formatFuelTimestamp(isoString) {
+    const date = new Date(isoString);
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+    const localeMap = { en: "en-GB", fi: "fi-FI", de: "de-DE" };
+    return new Intl.DateTimeFormat(localeMap[state.settings.language] || "en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(date);
+  }
+
+  function formatFuelDistance(distanceKm) {
+    const value = Number(distanceKm);
+    if (!Number.isFinite(value)) {
+      return "–";
+    }
+    return value < 10 ? value.toFixed(2).replace(".", ",") : Math.round(value).toString();
+  }
+
+  function formatFuelPrice(priceValue) {
+    const value = Number(priceValue);
+    if (!Number.isFinite(value)) {
+      return "–";
+    }
+    return `${value.toFixed(2).replace(".", ",")} €`;
+  }
+
+  function repairDisplayText(value) {
+    const text = String(value ?? "");
+    if (!text.includes("Ã") && !text.includes("â")) {
+      return text;
+    }
+    try {
+      const bytes = Uint8Array.from(Array.from(text).map((char) => char.charCodeAt(0)));
+      return new TextDecoder("utf-8").decode(bytes);
+    } catch {
+      return text;
+    }
+  }
+
+  function buildFuelMetaLine(entry, t) {
+    const parts = [];
+    parts.push(t.fuelDistance.replace("{distance}", formatFuelDistance(entry.distanceKm)));
+    if (entry.updated) {
+      parts.push(String(entry.updated));
+    }
+    return escapeHtml(parts.join(", "));
   }
 
   function resolveWeatherPlace() {
@@ -4444,6 +4606,8 @@
     }
     const hours = now.getHours();
     const minutes = now.getMinutes();
-    return hours > 18 || (hours === 18 && minutes >= 30);
+    const afterEveningStart = hours > 18 || (hours === 18 && minutes >= 30);
+    const beforeMorningEnd = hours < 8;
+    return afterEveningStart || beforeMorningEnd;
   }
 })();

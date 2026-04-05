@@ -1,0 +1,55 @@
+{
+  "source": "https://www.bensa.app/rovaniemi.html",
+  "sourceName": "bensa.app",
+  "fallbackUsed": true,
+  "updatedAt": "2026-04-05T08:40:44.398Z",
+  "center": {
+    "name": "Valtakatu 4, 96100 Rovaniemi",
+    "latitude": 66.5033446,
+    "longitude": 25.72959
+  },
+  "types": {
+    "95": [
+      {
+        "station": "Neste Rovaniemi Ounasvaara",
+        "address": "Erkkilänkuja 4",
+        "updated": "27.03",
+        "price": "2.022 €",
+        "priceValue": 2.022,
+        "distanceKm": 1.2062696757655653
+      },
+      {
+        "station": "St1 Rovaniemi Napapiiri",
+        "address": "Sodankyläntie 715",
+        "updated": "25.03",
+        "price": "2.039 €",
+        "priceValue": 2.039,
+        "distanceKm": 52.626598904761146
+      },
+      {
+        "station": "Vanttauksen Huolto",
+        "address": "Kuusamontie 4947",
+        "updated": "23.03",
+        "price": "2.048 €",
+        "priceValue": 2.048,
+        "distanceKm": 44.47087895142383
+      },
+      {
+        "station": "SEO Vanttauskoski",
+        "address": "Kuusamontie 4947",
+        "updated": "23.03",
+        "price": "2.049 €",
+        "priceValue": 2.049,
+        "distanceKm": 44.47087895142383
+      },
+      {
+        "station": "Neste Rovaniemi Saarenkylä CM",
+        "address": "Pulkamontie 1",
+        "updated": "26.03",
+        "price": "2.054 €",
+        "priceValue": 2.054,
+        "distanceKm": 1.9883406925330631
+      }
+    ]
+  }
+}

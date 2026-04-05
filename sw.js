@@ -1,9 +1,10 @@
-const CACHE_NAME = "homeflow-cache-v1";
+const CACHE_NAME = "homeflow-cache-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./data/fuel-rovaniemi.json",
   "./manifest.webmanifest",
   "./icons/icon.svg",
   "./icons/icon-192.svg",

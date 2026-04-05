@@ -1,0 +1,178 @@
+{
+  "Teboil Rovaniemi Kairatie|Kairatie 55": {
+    "lat": 66.5050116,
+    "lon": 25.7096058
+  },
+  "Teboil Rovaniemi Keskusta|Hallituskatu 29": {
+    "lat": 66.4995505,
+    "lon": 25.7166162
+  },
+  "Neste Rovaniemi Ounasvaara|Erkkilänkuja 4": {
+    "lat": 66.4983147,
+    "lon": 25.7536954
+  },
+  "St1 Rovaniemi Napapiiri|Sodankyläntie 715": {
+    "lat": 66.9295623,
+    "lon": 26.2501369
+  },
+  "Vanttauksen Huolto|Kuusamontie 4947": {
+    "lat": 66.3777818,
+    "lon": 26.6796002
+  },
+  "SEO Vanttauskoski|Kuusamontie 4947": {
+    "lat": 66.3777818,
+    "lon": 26.6796002
+  },
+  "ABC Prisma Rovaniemi|Teollisuustie 2": {
+    "lat": 66.4924479,
+    "lon": 25.6876997
+  },
+  "Neste Rovaniemi Saarenkylä CM|Pulkamontie 1": {
+    "lat": 66.5185688,
+    "lon": 25.7531226
+  },
+  "St1 Rovaniemi Ounasrinne|Kivikaudentie 1": {
+    "lat": 66.4916275,
+    "lon": 25.7806208
+  },
+  "St1 Rovaniemi Saarenkylä Napapiirintie 2|Napapiirintie 2": {
+    "lat": 66.5162831,
+    "lon": 25.7849439
+  },
+  "St1 Rovaniemi Saarenkylä Napapiirintie 1|Napapiirintie 1": {
+    "lat": 66.5160902,
+    "lon": 25.7827865
+  },
+  "St1 Rovaniemi Korkalovaara|Vaaranlammentie 1": {
+    "lat": 66.513768,
+    "lon": 25.6640794
+  },
+  "Neste Rovaniemi Reissumies|Alakorkalontie 22": {
+    "lat": 66.4867162,
+    "lon": 25.6573118
+  },
+  "ABC S-market Talvitie Rovaniemi|Kairatie 82": {
+    "lat": 66.5211445,
+    "lon": 25.7011413
+  },
+  "ABC Rovaniemi Ankkalampi|Nurmenkummuntie 5": {
+    "lat": 66.478077,
+    "lon": 25.6199174
+  },
+  "SEO Tiainen|Sodankyläntie 6810": {
+    "lat": 66.8535497,
+    "lon": 26.1905915
+  },
+  "SEO Jaatila|Kemintie 3907": {
+    "lat": 66.4665678,
+    "lon": 25.6091393
+  },
+  "SEO Meltaus Evesti|Kittiläntie 5512": {
+    "lat": 66.9073167,
+    "lon": 25.3727616
+  },
+  "Neste Rovaniemi Erottaja|Hallituskatu": {
+    "lat": 66.49713,
+    "lon": 25.7302098
+  },
+  "SEO Vikajärvi|Liikekuja 11": {
+    "lat": 66.6224266,
+    "lon": 26.1995631
+  },
+  "SEO Sinettä|Kittiläntie 2069": {
+    "lat": 66.6489381,
+    "lon": 25.4577204
+  },
+  "St1 Rovaniemi Erottaja|Hallituskatu": {
+    "lat": 66.49713,
+    "lon": 25.7302098
+  },
+  "St1 Rovaniemi Teollisuustie|Teollisuustie 25": {
+    "lat": 66.489225,
+    "lon": 25.6567387
+  },
+  "bensa:Neste Rovaniemi Ounasvaara|Erkkilänkuja 4": {
+    "lat": 66.4983147,
+    "lon": 25.7536954
+  },
+  "bensa:St1 Rovaniemi Napapiiri|Sodankyläntie 715": {
+    "lat": 66.9295623,
+    "lon": 26.2501369
+  },
+  "bensa:Vanttauksen Huolto|Kuusamontie 4947": {
+    "lat": 66.3777818,
+    "lon": 26.6796002
+  },
+  "bensa:SEO Vanttauskoski|Kuusamontie 4947": {
+    "lat": 66.3777818,
+    "lon": 26.6796002
+  },
+  "bensa:ABC Prisma Rovaniemi|Teollisuustie 2": {
+    "lat": 66.4924479,
+    "lon": 25.6876997
+  },
+  "bensa:Neste Rovaniemi Saarenkylä CM|Pulkamontie 1": {
+    "lat": 66.5185688,
+    "lon": 25.7531226
+  },
+  "bensa:St1 Rovaniemi Ounasrinne|Kivikaudentie 1": {
+    "lat": 66.4916275,
+    "lon": 25.7806208
+  },
+  "bensa:St1 Rovaniemi Saarenkylä Napapiirintie 2|Napapiirintie 2": {
+    "lat": 66.5162831,
+    "lon": 25.7849439
+  },
+  "bensa:St1 Rovaniemi Saarenkylä Napapiirintie 1|Napapiirintie 1": {
+    "lat": 66.5160902,
+    "lon": 25.7827865
+  },
+  "bensa:St1 Rovaniemi Korkalovaara|Vaaranlammentie 1": {
+    "lat": 66.513768,
+    "lon": 25.6640794
+  },
+  "bensa:Neste Rovaniemi Reissumies|Alakorkalontie 22": {
+    "lat": 66.4867162,
+    "lon": 25.6573118
+  },
+  "bensa:ABC S-market Talvitie Rovaniemi|Kairatie 82": {
+    "lat": 66.5211445,
+    "lon": 25.7011413
+  },
+  "bensa:ABC Rovaniemi Ankkalampi|Nurmenkummuntie 5": {
+    "lat": 66.478077,
+    "lon": 25.6199174
+  },
+  "bensa:SEO Tiainen|Sodankyläntie 6810": {
+    "lat": 66.8535497,
+    "lon": 26.1905915
+  },
+  "bensa:SEO Jaatila|Kemintie 3907": {
+    "lat": 66.4665678,
+    "lon": 25.6091393
+  },
+  "bensa:SEO Meltaus Evesti|Kittiläntie 5512": {
+    "lat": 66.9073167,
+    "lon": 25.3727616
+  },
+  "bensa:Neste Rovaniemi Erottaja|Hallituskatu": {
+    "lat": 66.49713,
+    "lon": 25.7302098
+  },
+  "bensa:SEO Vikajärvi|Liikekuja 11": {
+    "lat": 66.6224266,
+    "lon": 26.1995631
+  },
+  "bensa:SEO Sinettä|Kittiläntie 2069": {
+    "lat": 66.6489381,
+    "lon": 25.4577204
+  },
+  "bensa:St1 Rovaniemi Erottaja|Hallituskatu": {
+    "lat": 66.49713,
+    "lon": 25.7302098
+  },
+  "bensa:St1 Rovaniemi Teollisuustie|Teollisuustie 25": {
+    "lat": 66.489225,
+    "lon": 25.6567387
+  }
+}
