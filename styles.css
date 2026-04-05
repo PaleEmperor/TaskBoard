@@ -3007,6 +3007,40 @@ h1 {
   padding-right: 4px;
 }
 
+.fuel-strip-panel {
+  display: grid;
+  gap: 8px;
+  padding: 8px 10px;
+}
+
+.fuel-strip-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fuel-strip-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.fuel-list-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 0;
+  padding-bottom: 2px;
+  scroll-snap-type: x proximity;
+}
+
+.fuel-list-strip .fuel-card {
+  flex: 0 0 190px;
+  min-width: 190px;
+  scroll-snap-align: start;
+}
+
 .fuel-card {
   display: grid;
   gap: 5px;
@@ -4201,7 +4235,6 @@ body[data-theme="dark"] .orbit-minute-value {
 .weather-overview,
 .weather-mid-panel,
 .weather-overdue-panel,
-.weather-fuel-panel,
 .weather-progress-panel {
   min-width: 0;
   align-self: stretch;
@@ -4217,10 +4250,6 @@ body[data-theme="dark"] .orbit-minute-value {
 
 .weather-overdue-panel {
   flex: 1.05 1 240px;
-}
-
-.weather-fuel-panel {
-  flex: 1.08 1 260px;
 }
 
 .weather-progress-panel {
@@ -4343,18 +4372,6 @@ body[data-theme="dark"] .orbit-minute-value {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.1)),
     radial-gradient(circle at 18% 16%, rgba(255, 148, 162, 0.12), transparent 52%);
-}
-
-.weather-fuel-card {
-  display: grid;
-  align-content: start;
-  gap: 6px;
-  min-height: 100%;
-  padding: 10px 12px;
-  border-radius: 20px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.1)),
-    radial-gradient(circle at 18% 16%, rgba(85, 180, 140, 0.12), transparent 52%);
 }
 
 .weather-overdue-card.is-empty {
@@ -4548,7 +4565,7 @@ body[data-theme="dark"] .weather-overdue-card {
     radial-gradient(circle at 18% 16%, rgba(194, 91, 116, 0.14), transparent 54%);
 }
 
-body[data-theme="dark"] .weather-fuel-card {
+body[data-theme="dark"] .fuel-strip-panel {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
     radial-gradient(circle at 18% 16%, rgba(74, 160, 124, 0.14), transparent 54%);
@@ -4596,7 +4613,6 @@ body[data-theme="dark"] .weather-mid-record strong {
 
   .weather-mid-panel,
   .weather-overdue-panel,
-  .weather-fuel-panel,
   .weather-progress-panel {
     flex-basis: 180px;
   }
@@ -4604,7 +4620,6 @@ body[data-theme="dark"] .weather-mid-record strong {
   .weather-overview,
   .weather-mid-card,
   .weather-overdue-card,
-  .weather-fuel-card,
   .weather-info-card {
     min-height: 96px;
   }
@@ -4667,7 +4682,6 @@ body[data-theme="dark"] .weather-mid-record strong {
   .weather-overview,
   .weather-mid-panel,
   .weather-overdue-panel,
-  .weather-fuel-panel,
   .weather-progress-panel {
     flex-basis: auto;
   }
