@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const STORAGE_KEY = "homeflow-board-v2";
   const AUTO_REFRESH_MS = 60000;
   const WEATHER_REFRESH_MS = 300000;
@@ -13,10 +13,10 @@
   const WEATHER_FALLBACK = { name: "Rovaniemi", latitude: 66.5039, longitude: 25.7294 };
 
   const users = [
-    { id: "bjorn", name: "Björn", emoji: "🍄", role: { en: "Planner", fi: "Suunnittelija", de: "Planer" } },
-    { id: "sini", name: "Sini", emoji: "🌿", role: { en: "Home captain", fi: "Kodinhoitaja", de: "Haushaltsprofi" } },
-    { id: "linnea", name: "Linnea", emoji: "🦄", role: { en: "Kid explorer", fi: "Pikku tutkija", de: "Kinderheldin" } },
-    { id: "nina", name: "Nina", emoji: "🐾", role: { en: "Dog buddy", fi: "Koirakaveri", de: "Hundekumpel" } },
+    { id: "bjorn", name: "BjÃ¶rn", emoji: "ðŸ„", role: { en: "Planner", fi: "Suunnittelija", de: "Planer" } },
+    { id: "sini", name: "Sini", emoji: "ðŸŒ¿", role: { en: "Home captain", fi: "Kodinhoitaja", de: "Haushaltsprofi" } },
+    { id: "linnea", name: "Linnea", emoji: "ðŸ¦„", role: { en: "Kid explorer", fi: "Pikku tutkija", de: "Kinderheldin" } },
+    { id: "nina", name: "Nina", emoji: "ðŸ¾", role: { en: "Dog buddy", fi: "Koirakaveri", de: "Hundekumpel" } },
   ];
 
   const USER_COLORS = {
@@ -33,35 +33,35 @@
   ];
 
   const iconChoices = [
-    "🧺", "🍽️", "🧹", "🪣", "🧽", "🧼", "🧴", "🪥", "🚿", "🛁", "🧻", "🗑️",
-    "🪠", "🛏️", "🛋️", "🚪", "🪟", "🪴", "💡", "🔑", "📦", "🧯", "🔋", "🪫",
-    "🐶", "🦮", "🐕", "🐾", "🦴", "🥣", "🧸", "🪀", "🎲", "🧩", "🎨", "🖍️",
-    "🎒", "📚", "✏️", "📝", "📎", "✂️", "📌", "📖", "🧮", "🎵", "🎹", "🏃",
-    "🚲", "⚽", "🏀", "🧦", "👕", "👖", "🧥", "🧢", "👟", "🪮", "💊", "🩹",
-    "🪥", "🍎", "🥪", "🍞", "🥛", "🍼", "🍌", "🍓", "🥕", "🍲", "🍳", "🥣",
-    "☕", "🫖", "🍽️", "🥄", "🔪", "🛒", "💌", "📅", "⏰", "✅", "⭐", "❤️",
-    "🌿", "🌼", "☀️", "🌙", "❄️", "☔", "🎁", "🚗", "🚌", "🏠", "🛠️", "🔧",
-    "🔨", "🪛", "🧰", "💻", "📱", "🔌", "🎬", "🎮", "🧃", "🍪", "🧁", "🍕",
-    "🍝", "🥗", "🧹", "🪜", "📷", "🪙", "💳", "🛍️", "🎈", "🕯️", "🙏", "💤"
+    "ðŸ§º", "ðŸ½ï¸", "ðŸ§¹", "ðŸª£", "ðŸ§½", "ðŸ§¼", "ðŸ§´", "ðŸª¥", "ðŸš¿", "ðŸ›", "ðŸ§»", "ðŸ—‘ï¸",
+    "ðŸª ", "ðŸ›ï¸", "ðŸ›‹ï¸", "ðŸšª", "ðŸªŸ", "ðŸª´", "ðŸ’¡", "ðŸ”‘", "ðŸ“¦", "ðŸ§¯", "ðŸ”‹", "ðŸª«",
+    "ðŸ¶", "ðŸ¦®", "ðŸ•", "ðŸ¾", "ðŸ¦´", "ðŸ¥£", "ðŸ§¸", "ðŸª€", "ðŸŽ²", "ðŸ§©", "ðŸŽ¨", "ðŸ–ï¸",
+    "ðŸŽ’", "ðŸ“š", "âœï¸", "ðŸ“", "ðŸ“Ž", "âœ‚ï¸", "ðŸ“Œ", "ðŸ“–", "ðŸ§®", "ðŸŽµ", "ðŸŽ¹", "ðŸƒ",
+    "ðŸš²", "âš½", "ðŸ€", "ðŸ§¦", "ðŸ‘•", "ðŸ‘–", "ðŸ§¥", "ðŸ§¢", "ðŸ‘Ÿ", "ðŸª®", "ðŸ’Š", "ðŸ©¹",
+    "ðŸª¥", "ðŸŽ", "ðŸ¥ª", "ðŸž", "ðŸ¥›", "ðŸ¼", "ðŸŒ", "ðŸ“", "ðŸ¥•", "ðŸ²", "ðŸ³", "ðŸ¥£",
+    "â˜•", "ðŸ«–", "ðŸ½ï¸", "ðŸ¥„", "ðŸ”ª", "ðŸ›’", "ðŸ’Œ", "ðŸ“…", "â°", "âœ…", "â­", "â¤ï¸",
+    "ðŸŒ¿", "ðŸŒ¼", "â˜€ï¸", "ðŸŒ™", "â„ï¸", "â˜”", "ðŸŽ", "ðŸš—", "ðŸšŒ", "ðŸ ", "ðŸ› ï¸", "ðŸ”§",
+    "ðŸ”¨", "ðŸª›", "ðŸ§°", "ðŸ’»", "ðŸ“±", "ðŸ”Œ", "ðŸŽ¬", "ðŸŽ®", "ðŸ§ƒ", "ðŸª", "ðŸ§", "ðŸ•",
+    "ðŸ", "ðŸ¥—", "ðŸ§¹", "ðŸªœ", "ðŸ“·", "ðŸª™", "ðŸ’³", "ðŸ›ï¸", "ðŸŽˆ", "ðŸ•¯ï¸", "ðŸ™", "ðŸ’¤"
   ];
   const effortOptions = ["light", "steady", "big"];
   const weekdayKeys = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   const quickTaskTemplates = [
-    { id: "dishes", icon: "🍽️", category: "kitchen", effort: "light", title: { en: "Dishes", fi: "Tiskit", de: "Geschirr" } },
-    { id: "laundry", icon: "🧺", category: "laundry", effort: "steady", title: { en: "Laundry", fi: "Pyykki", de: "Wäsche" } },
-    { id: "trash", icon: "🗑️", category: "home", effort: "light", title: { en: "Trash", fi: "Roskis", de: "Müll" } },
-    { id: "dogwalk", icon: "🐶", category: "dog", effort: "steady", title: { en: "Dog walk", fi: "Koiralenkki", de: "Hundespaziergang" } },
-    { id: "tidy", icon: "🧹", category: "cleaning", effort: "steady", title: { en: "Quick tidy", fi: "Pikasiivous", de: "Kurz aufräumen" } },
-    { id: "vacuum", icon: "🪠", category: "cleaning", effort: "big", title: { en: "Vacuuming", fi: "Imurointi", de: "Staubsaugen" } },
-    { id: "bedsheets", icon: "🛏️", category: "home", effort: "steady", title: { en: "Change bed sheets", fi: "Vaihda lakanat", de: "Bettwäsche wechseln" } },
-    { id: "shopping", icon: "🛒", category: "shopping", effort: "steady", title: { en: "Shopping", fi: "Kauppa", de: "Einkauf" } },
-    { id: "school", icon: "🎒", category: "school", effort: "light", title: { en: "School bag", fi: "Reppu", de: "Schultasche" } },
-    { id: "bath", icon: "🛁", category: "family", effort: "steady", title: { en: "Bath time", fi: "Kylpy", de: "Badezeit" } }
+    { id: "dishes", icon: "ðŸ½ï¸", category: "kitchen", effort: "light", title: { en: "Dishes", fi: "Tiskit", de: "Geschirr" } },
+    { id: "laundry", icon: "ðŸ§º", category: "laundry", effort: "steady", title: { en: "Laundry", fi: "Pyykki", de: "WÃ¤sche" } },
+    { id: "trash", icon: "ðŸ—‘ï¸", category: "home", effort: "light", title: { en: "Trash", fi: "Roskis", de: "MÃ¼ll" } },
+    { id: "dogwalk", icon: "ðŸ¶", category: "dog", effort: "steady", title: { en: "Dog walk", fi: "Koiralenkki", de: "Hundespaziergang" } },
+    { id: "tidy", icon: "ðŸ§¹", category: "cleaning", effort: "steady", title: { en: "Quick tidy", fi: "Pikasiivous", de: "Kurz aufrÃ¤umen" } },
+    { id: "vacuum", icon: "ðŸª ", category: "cleaning", effort: "big", title: { en: "Vacuuming", fi: "Imurointi", de: "Staubsaugen" } },
+    { id: "bedsheets", icon: "ðŸ›ï¸", category: "home", effort: "steady", title: { en: "Change bed sheets", fi: "Vaihda lakanat", de: "BettwÃ¤sche wechseln" } },
+    { id: "shopping", icon: "ðŸ›’", category: "shopping", effort: "steady", title: { en: "Shopping", fi: "Kauppa", de: "Einkauf" } },
+    { id: "school", icon: "ðŸŽ’", category: "school", effort: "light", title: { en: "School bag", fi: "Reppu", de: "Schultasche" } },
+    { id: "bath", icon: "ðŸ›", category: "family", effort: "steady", title: { en: "Bath time", fi: "Kylpy", de: "Badezeit" } }
   ];
 
   const celebrationWords = {
     en: ["Nice", "Good", "Great", "Super", "Yes", "Done"],
-    fi: ["Hyvä", "Jes", "Hieno", "Loisto", "Super", "Valmis"],
+    fi: ["HyvÃ¤", "Jes", "Hieno", "Loisto", "Super", "Valmis"],
     de: ["Gut", "Klasse", "Super", "Prima", "Top", "Erledigt"],
   };
 
@@ -120,11 +120,6 @@
       taskNotes: "Notes",
       previewLabel: "Preview",
       backupHeading: "Backup",
-      fuelHeading: "95 E10 nearby",
-      fuelUpdated: "Updated {time}",
-      fuelUnavailable: "Fuel prices unavailable",
-      fuelDistance: "{distance} km",
-      fuelAddressHidden: "Address available",
       claimPoolHeading: "Claim tasks",
       somedayHeading: "Someday tasks",
       claimNow: "Claim",
@@ -227,116 +222,111 @@
       heroEyebrow: "Tabletille tehty perheen ohjauspaneeli",
       title: "HomeFlow Board",
       subtitle:
-        "Kaunis viikkonäkymä kotiin, lapsiperheen arkeen ja koiran hoitoon. Mahdollisimman vähän kirjoittamista, mahdollisimman paljon sujuvaa käyttöä.",
-      whoLabel: "Kuka käyttää nyt?",
-      quickAdd: "Lisää tehtävä",
+        "Kaunis viikkonÃ¤kymÃ¤ kotiin, lapsiperheen arkeen ja koiran hoitoon. Mahdollisimman vÃ¤hÃ¤n kirjoittamista, mahdollisimman paljon sujuvaa kÃ¤yttÃ¶Ã¤.",
+      whoLabel: "Kuka kÃ¤yttÃ¤Ã¤ nyt?",
+      quickAdd: "LisÃ¤Ã¤ tehtÃ¤vÃ¤",
       everyone: "Kaikki",
-      mine: "Minun tehtävät",
+      mine: "Minun tehtÃ¤vÃ¤t",
       family: "Perheen virta",
-      dueThisWeek: "Tällä viikolla",
-      overdue: "Myöhässä",
-      completed: "Valmiit tänään",
+      dueThisWeek: "TÃ¤llÃ¤ viikolla",
+      overdue: "MyÃ¶hÃ¤ssÃ¤",
+      completed: "Valmiit tÃ¤nÃ¤Ã¤n",
       recurring: "Toistuvat",
-      refreshNote: "Päivittyy automaattisesti minuutin välein seinätablettia varten",
+      refreshNote: "PÃ¤ivittyy automaattisesti minuutin vÃ¤lein seinÃ¤tablettia varten",
       boardLabel: "Nykyinen viikko",
-      focusLabel: "Pikanäkymä",
+      focusLabel: "PikanÃ¤kymÃ¤",
       focusSummaryHeading: "Viikon kohokohdat",
-      quickAssignLabel: "Vedä tähän uudelle henkilölle",
+      quickAssignLabel: "VedÃ¤ tÃ¤hÃ¤n uudelle henkilÃ¶lle",
       familyHeading: "Perhedock",
       templatesLabel: "Nopeat rutiinit",
       templatesHeading: "Kotiarjen pikanapit",
-      noTemplates: "Ei valmiita tehtäviä. Lisää omat kotirutiinit.",
+      noTemplates: "Ei valmiita tehtÃ¤viÃ¤. LisÃ¤Ã¤ omat kotirutiinit.",
       doneZoneLabel: "Valmis nopeasti",
       doneHeading: "Valmis-alue",
-      doneDrop: "Pudota tehtävä tähän merkataaksesi sen valmiiksi",
+      doneDrop: "Pudota tehtÃ¤vÃ¤ tÃ¤hÃ¤n merkataaksesi sen valmiiksi",
       prevWeek: "<- Viikko",
       nextWeek: "Viikko ->",
-      today: "Tänään",
-      fullscreen: "Koko näyttö",
-      exitFullscreen: "Poistu koko näytöstä",
-      focusTitle: "Pidä viikko liikkeessä",
+      today: "TÃ¤nÃ¤Ã¤n",
+      fullscreen: "Koko nÃ¤yttÃ¶",
+      exitFullscreen: "Poistu koko nÃ¤ytÃ¶stÃ¤",
+      focusTitle: "PidÃ¤ viikko liikkeessÃ¤",
       focusOverdue: "Tarvitsee huomiota",
-      focusToday: "Tänään vuorossa",
+      focusToday: "TÃ¤nÃ¤Ã¤n vuorossa",
       focusUpcoming: "Tulossa seuraavaksi",
-      addTask: "Luo tehtävä",
-      editTask: "Muokkaa tehtävää",
-      taskTitle: "Tehtävän nimi",
-      taskIcon: "Tehtävän ikoni",
+      addTask: "Luo tehtÃ¤vÃ¤",
+      editTask: "Muokkaa tehtÃ¤vÃ¤Ã¤",
+      taskTitle: "TehtÃ¤vÃ¤n nimi",
+      taskIcon: "TehtÃ¤vÃ¤n ikoni",
       taskCategory: "Kategoria",
       taskOwner: "Omistaja",
-      taskResponsible: "Vastuuhenkilö",
-      taskDay: "Päivä",
+      taskResponsible: "VastuuhenkilÃ¶",
+      taskDay: "PÃ¤ivÃ¤",
       taskTime: "Aika",
       taskEndTime: "Asti",
       taskRepeat: "Toistuvuus",
-      taskInterval: "Kuinka monen päivän välein?",
-      taskWeekday: "Suosittu viikonpäivä",
-      taskEffort: "Työmäärä",
-      taskClaimable: "Lähetä claim-alueelle",
-      taskSomeday: "Tallenna myöhemmäksi",
+      taskInterval: "Kuinka monen pÃ¤ivÃ¤n vÃ¤lein?",
+      taskWeekday: "Suosittu viikonpÃ¤ivÃ¤",
+      taskEffort: "TyÃ¶mÃ¤Ã¤rÃ¤",
+      taskClaimable: "LÃ¤hetÃ¤ claim-alueelle",
+      taskSomeday: "Tallenna myÃ¶hemmÃ¤ksi",
       taskNotes: "Muistiinpanot",
       previewLabel: "Esikatselu",
       backupHeading: "Varmuuskopio",
-      fuelHeading: "95 E10 lähellä",
-      fuelUpdated: "Päivitetty {time}",
-      fuelUnavailable: "Polttoainehinnat eivät ole saatavilla",
-      fuelDistance: "{distance} km",
-      fuelAddressHidden: "Osoite saatavilla",
-      claimPoolHeading: "Claim-tehtävät",
-      somedayHeading: "Emme tiedä vielä milloin",
+      claimPoolHeading: "Claim-tehtÃ¤vÃ¤t",
+      somedayHeading: "Emme tiedÃ¤ vielÃ¤ milloin",
       claimNow: "Claim",
-      somedayPlanNow: "Joskus on tänään",
+      somedayPlanNow: "Joskus on tÃ¤nÃ¤Ã¤n",
       removeClaimTask: "Poista",
-      claimEmpty: "Vedä tehtäviä tähän tai luo ne claimattaviksi.",
-      sendToClaimInbox: "Lähetä claim-tehtäviin",
-      sendToSomeday: "Tallenna myöhemmäksi",
-      requestedBy: "Pyytänyt: {user}",
-      claimInbox: "Claim-tehtävät",
-      somedayInbox: "Joskus on tänään",
-      openClaimTasks: "Avaa claim-tehtävät: {count}",
-      openSomedayTasks: "Joskus on tänään: {count}",
+      claimEmpty: "VedÃ¤ tehtÃ¤viÃ¤ tÃ¤hÃ¤n tai luo ne claimattaviksi.",
+      sendToClaimInbox: "LÃ¤hetÃ¤ claim-tehtÃ¤viin",
+      sendToSomeday: "Tallenna myÃ¶hemmÃ¤ksi",
+      requestedBy: "PyytÃ¤nyt: {user}",
+      claimInbox: "Claim-tehtÃ¤vÃ¤t",
+      somedayInbox: "Joskus on tÃ¤nÃ¤Ã¤n",
+      openClaimTasks: "Avaa claim-tehtÃ¤vÃ¤t: {count}",
+      openSomedayTasks: "Joskus on tÃ¤nÃ¤Ã¤n: {count}",
       claimWho: "Kuka olet?",
-      claimInboxCopy: "Claimattu tehtävä lisätään tälle päivälle ilman aikaa.",
-      somedayInboxCopy: "Tehtävät odottavat täällä siihen asti, kunnes päätät että nyt on oikea hetki.",
+      claimInboxCopy: "Claimattu tehtÃ¤vÃ¤ lisÃ¤tÃ¤Ã¤n tÃ¤lle pÃ¤ivÃ¤lle ilman aikaa.",
+      somedayInboxCopy: "TehtÃ¤vÃ¤t odottavat tÃ¤Ã¤llÃ¤ siihen asti, kunnes pÃ¤Ã¤tÃ¤t ettÃ¤ nyt on oikea hetki.",
       exportData: "Vie tiedot",
       importData: "Tuo tiedot",
-      save: "Tallenna tehtävä",
+      save: "Tallenna tehtÃ¤vÃ¤",
       cancel: "Peruuta",
       delete: "Poista",
       deleteFromPlan: "Poista suunnitelmasta",
       complete: "Valmis",
       reopen: "Avaa uudelleen",
-      didItFor: "Minä tein tämän: {user}",
-      countedFor: "Laskettu käyttäjälle {user}",
+      didItFor: "MinÃ¤ tein tÃ¤mÃ¤n: {user}",
+      countedFor: "Laskettu kÃ¤yttÃ¤jÃ¤lle {user}",
       claimTask: "Merkitse minulle",
       claimedTask: "Merkitty minulle",
-      dayCleared: "Päivä valmis",
-      dayClearedSub: "Kaikki tämän päivän tehtävät on tehty",
+      dayCleared: "PÃ¤ivÃ¤ valmis",
+      dayClearedSub: "Kaikki tÃ¤mÃ¤n pÃ¤ivÃ¤n tehtÃ¤vÃ¤t on tehty",
       participantEyebrow: "Valmis",
-      participantTitle: "Ketkä osallistuivat?",
-      participantCopy: "Valitse yksi tai useampi henkilö pistelistaa varten.",
+      participantTitle: "KetkÃ¤ osallistuivat?",
+      participantCopy: "Valitse yksi tai useampi henkilÃ¶ pistelistaa varten.",
       confirmParticipants: "Merkitse valmiiksi",
       edit: "Muokkaa",
-      emptyDay: "Pudota tehtäviä tähän tai käytä pikanappia",
+      emptyDay: "Pudota tehtÃ¤viÃ¤ tÃ¤hÃ¤n tai kÃ¤ytÃ¤ pikanappia",
       owner: "Omistaja",
       responsible: "Vastuu",
-      dueToday: "Tänään",
+      dueToday: "TÃ¤nÃ¤Ã¤n",
       dueTomorrow: "Huomenna",
-      overdueBy: "Myöhässä {days} pv",
+      overdueBy: "MyÃ¶hÃ¤ssÃ¤ {days} pv",
       repeatNever: "Ei toistu",
-      repeatDaily: "Päivittäin",
-      repeatWeekdays: "Arkipäivisin",
+      repeatDaily: "PÃ¤ivittÃ¤in",
+      repeatWeekdays: "ArkipÃ¤ivisin",
       repeatWeekly: "Viikoittain",
-      repeatBiweekly: "2 viikon välein",
+      repeatBiweekly: "2 viikon vÃ¤lein",
       repeatMonthly: "Kuukausittain",
-      repeatInterval: "Mukautettu väli",
+      repeatInterval: "Mukautettu vÃ¤li",
       repeatLinneaWeeks: "Linnea-viikot",
       repeatNotLinneaWeeks: "Ei Linnea-viikot",
       light: "Nopea",
       steady: "Tavallinen",
       big: "Iso",
       categoryCleaning: "Siivous",
-      categoryKitchen: "Keittiö",
+      categoryKitchen: "KeittiÃ¶",
       categoryLaundry: "Pyykki",
       categoryFamily: "Perhe",
       categoryDog: "Koira",
@@ -346,30 +336,30 @@
       categoryWellbeing: "Hyvinvointi",
       categoryMisc: "Muut",
       statusRecurring: "Toistuu",
-      statusEffort: "Työmäärä",
-      plusTasks: "{count} tehtävää",
-      plusTask: "1 tehtävä",
+      statusEffort: "TyÃ¶mÃ¤Ã¤rÃ¤",
+      plusTasks: "{count} tehtÃ¤vÃ¤Ã¤",
+      plusTask: "1 tehtÃ¤vÃ¤",
       openTasks: "{count} avoinna",
-      dragHint: "Vedä tehtäviä päivien, henkilöiden tai valmis-alueen välillä.",
-      tapHint: "Kosketuslaitteella napauta tehtävää kerran ja sitten päivää, henkilöä tai valmis-aluetta.",
+      dragHint: "VedÃ¤ tehtÃ¤viÃ¤ pÃ¤ivien, henkilÃ¶iden tai valmis-alueen vÃ¤lillÃ¤.",
+      tapHint: "Kosketuslaitteella napauta tehtÃ¤vÃ¤Ã¤ kerran ja sitten pÃ¤ivÃ¤Ã¤, henkilÃ¶Ã¤ tai valmis-aluetta.",
       currentWeek: "Viikko {weekNumber}",
-      noFocusItems: "Ei kiireellistä juuri nyt",
+      noFocusItems: "Ei kiireellistÃ¤ juuri nyt",
       weatherNow: "Nyt",
-      weatherLoading: "Ladataan säätä",
-      weatherUnavailable: "Sää ei saatavilla",
+      weatherLoading: "Ladataan sÃ¤Ã¤tÃ¤",
+      weatherUnavailable: "SÃ¤Ã¤ ei saatavilla",
       weatherFallback: "Helsinki",
-      tasksDoneToday: "Tehty tänään",
-      doneThisWeek: "Tehty tällä viikolla",
+      tasksDoneToday: "Tehty tÃ¤nÃ¤Ã¤n",
+      doneThisWeek: "Tehty tÃ¤llÃ¤ viikolla",
       bestWeek: "Paras viikko",
-      noBestWeek: "Ei vielä ennätystä",
-      overdueTasks: "Myöhässä olevat",
-      noOverdueTasks: "Ei myöhässä olevia",
+      noBestWeek: "Ei vielÃ¤ ennÃ¤tystÃ¤",
+      overdueTasks: "MyÃ¶hÃ¤ssÃ¤ olevat",
+      noOverdueTasks: "Ei myÃ¶hÃ¤ssÃ¤ olevia",
       goToTask: "Siirry",
       rankingTitle: "Perheen eteneminen",
       rankingGold: "Kulta",
       rankingSilver: "Hopea",
       rankingBronze: "Pronssi",
-      teamworkDone: "{count} tehtävää yhdessä",
+      teamworkDone: "{count} tehtÃ¤vÃ¤Ã¤ yhdessÃ¤",
       weekdayLong: {
         monday: "Maanantai",
         tuesday: "Tiistai",
@@ -384,26 +374,26 @@
       heroEyebrow: "Tabletfreundliche Familienzentrale",
       title: "HomeFlow Board",
       subtitle:
-        "Eine schöne Wochenübersicht für Haushalt, Kinderalltag und Hund. Wenig Tippen, viel Ziehen, klare Zuständigkeiten.",
+        "Eine schÃ¶ne WochenÃ¼bersicht fÃ¼r Haushalt, Kinderalltag und Hund. Wenig Tippen, viel Ziehen, klare ZustÃ¤ndigkeiten.",
       whoLabel: "Wer benutzt es gerade?",
-      quickAdd: "Aufgabe hinzufügen",
+      quickAdd: "Aufgabe hinzufÃ¼gen",
       everyone: "Alle",
       mine: "Meine Aufgaben",
       family: "Familienfluss",
       dueThisWeek: "Diese Woche",
-      overdue: "Überfällig",
+      overdue: "ÃœberfÃ¤llig",
       completed: "Heute erledigt",
       recurring: "Wiederkehrend",
-      refreshNote: "Aktualisiert sich jede Minute automatisch für die Wand-Tablet-Nutzung",
+      refreshNote: "Aktualisiert sich jede Minute automatisch fÃ¼r die Wand-Tablet-Nutzung",
       boardLabel: "Aktuelle Woche",
       focusLabel: "Schnellansicht",
-      focusSummaryHeading: "Wochenübersicht",
+      focusSummaryHeading: "WochenÃ¼bersicht",
       quickAssignLabel: "Hierher ziehen zum Neu-Zuweisen",
       familyHeading: "Familien-Dock",
       templatesLabel: "Routinen mit einem Tipp",
       templatesHeading: "Haushaltsschnellzugriff",
-      noTemplates: "Keine vorgeplanten Aufgaben. Eigene Routinen hinzufügen.",
-      doneZoneLabel: "Schnell abschließen",
+      noTemplates: "Keine vorgeplanten Aufgaben. Eigene Routinen hinzufÃ¼gen.",
+      doneZoneLabel: "Schnell abschlieÃŸen",
       doneHeading: "Erledigt-Zone",
       doneDrop: "Aufgabe hier ablegen, um sie als erledigt zu markieren",
       prevWeek: "<- Woche",
@@ -414,7 +404,7 @@
       focusTitle: "Die Woche im Fluss halten",
       focusOverdue: "Braucht Aufmerksamkeit",
       focusToday: "Heute dran",
-      focusUpcoming: "Als Nächstes",
+      focusUpcoming: "Als NÃ¤chstes",
       addTask: "Aufgabe erstellen",
       editTask: "Aufgabe bearbeiten",
       taskTitle: "Aufgabentitel",
@@ -430,15 +420,10 @@
       taskWeekday: "Bevorzugter Wochentag",
       taskEffort: "Aufwand",
       taskClaimable: "In den Claim-Bereich legen",
-      taskSomeday: "Für irgendwann speichern",
+      taskSomeday: "FÃ¼r irgendwann speichern",
       taskNotes: "Notizen",
       previewLabel: "Vorschau",
       backupHeading: "Sicherung",
-      fuelHeading: "95 E10 in der Nähe",
-      fuelUpdated: "Aktualisiert {time}",
-      fuelUnavailable: "Spritpreise nicht verfügbar",
-      fuelDistance: "{distance} km",
-      fuelAddressHidden: "Adresse verfügbar",
       claimPoolHeading: "Claim-Aufgaben",
       somedayHeading: "Irgendwann-Aufgaben",
       claimNow: "Claim",
@@ -446,32 +431,32 @@
       removeClaimTask: "Entfernen",
       claimEmpty: "Aufgaben hierher ziehen oder direkt als claimbar erstellen.",
       sendToClaimInbox: "In Claim-Aufgaben legen",
-      sendToSomeday: "Für irgendwann speichern",
+      sendToSomeday: "FÃ¼r irgendwann speichern",
       requestedBy: "Angefragt von {user}",
       claimInbox: "Claim-Aufgaben",
       somedayInbox: "Irgendwann-Aufgaben",
-      openClaimTasks: "Claim-Aufgaben öffnen: {count}",
+      openClaimTasks: "Claim-Aufgaben Ã¶ffnen: {count}",
       openSomedayTasks: "Irgendwann: {count}",
       claimWho: "Wer bist du?",
-      claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefügt.",
+      claimInboxCopy: "Eine geclaimte Aufgabe wird ohne Uhrzeit zu heute hinzugefÃ¼gt.",
       somedayInboxCopy: "Aufgaben bleiben hier, bis du sie einplanen willst.",
       exportData: "Daten exportieren",
       importData: "Daten importieren",
       save: "Aufgabe speichern",
       cancel: "Abbrechen",
-      delete: "Löschen",
-      deleteFromPlan: "Aus Plan löschen",
+      delete: "LÃ¶schen",
+      deleteFromPlan: "Aus Plan lÃ¶schen",
       complete: "Erledigt",
-      reopen: "Wieder öffnen",
-      didItFor: "Ich habe das für {user} gemacht",
-      countedFor: "Gezählt für {user}",
-      claimTask: "Für mich beanspruchen",
-      claimedTask: "Für mich beansprucht",
+      reopen: "Wieder Ã¶ffnen",
+      didItFor: "Ich habe das fÃ¼r {user} gemacht",
+      countedFor: "GezÃ¤hlt fÃ¼r {user}",
+      claimTask: "FÃ¼r mich beanspruchen",
+      claimedTask: "FÃ¼r mich beansprucht",
       dayCleared: "Tag geschafft",
-      dayClearedSub: "Alles für diesen Tag ist erledigt",
+      dayClearedSub: "Alles fÃ¼r diesen Tag ist erledigt",
       participantEyebrow: "Erledigt",
       participantTitle: "Wer hat mitgemacht?",
-      participantCopy: "Wähle eine oder mehrere Personen für die Rangliste.",
+      participantCopy: "WÃ¤hle eine oder mehrere Personen fÃ¼r die Rangliste.",
       confirmParticipants: "Aufgabe erledigen",
       edit: "Bearbeiten",
       emptyDay: "Aufgaben hier ablegen oder eine Routine benutzen",
@@ -479,11 +464,11 @@
       responsible: "Verantwortlich",
       dueToday: "Heute",
       dueTomorrow: "Morgen",
-      overdueBy: "{days} T überfällig",
+      overdueBy: "{days} T Ã¼berfÃ¤llig",
       repeatNever: "Keine Wiederholung",
-      repeatDaily: "Täglich",
+      repeatDaily: "TÃ¤glich",
       repeatWeekdays: "Werktags",
-      repeatWeekly: "Wöchentlich",
+      repeatWeekly: "WÃ¶chentlich",
       repeatBiweekly: "Alle 2 Wochen",
       repeatMonthly: "Monatlich",
       repeatInterval: "Eigener Rhythmus",
@@ -491,10 +476,10 @@
       repeatNotLinneaWeeks: "Nicht-Linnea-Wochen",
       light: "Kurz",
       steady: "Normal",
-      big: "Groß",
+      big: "GroÃŸ",
       categoryCleaning: "Reinigung",
-      categoryKitchen: "Küche",
-      categoryLaundry: "Wäsche",
+      categoryKitchen: "KÃ¼che",
+      categoryLaundry: "WÃ¤sche",
       categoryFamily: "Familie",
       categoryDog: "Hund",
       categorySchool: "Schule",
@@ -508,20 +493,20 @@
       plusTask: "1 Aufgabe",
       openTasks: "{count} offen",
       dragHint: "Aufgaben zwischen Tagen, Personen oder der Erledigt-Zone ziehen.",
-      tapHint: "Auf Touch-Geräten Aufgabe antippen und danach Tag, Person oder Erledigt-Zone antippen.",
+      tapHint: "Auf Touch-GerÃ¤ten Aufgabe antippen und danach Tag, Person oder Erledigt-Zone antippen.",
       currentWeek: "Woche {weekNumber}",
       noFocusItems: "Im Moment nichts Dringendes",
       weatherNow: "Jetzt",
-      weatherLoading: "Wetter lädt",
-      weatherUnavailable: "Kein Wetter verfügbar",
+      weatherLoading: "Wetter lÃ¤dt",
+      weatherUnavailable: "Kein Wetter verfÃ¼gbar",
       weatherFallback: "Helsinki",
       tasksDoneToday: "Heute geschafft",
       doneThisWeek: "Diese Woche geschafft",
       bestWeek: "Beste Woche",
       noBestWeek: "Noch kein Rekord",
-      overdueTasks: "Überfällige Aufgaben",
-      noOverdueTasks: "Nichts überfällig",
-      goToTask: "Öffnen",
+      overdueTasks: "ÃœberfÃ¤llige Aufgaben",
+      noOverdueTasks: "Nichts Ã¼berfÃ¤llig",
+      goToTask: "Ã–ffnen",
       rankingTitle: "Familienfortschritt",
       rankingGold: "Gold",
       rankingSilver: "Silber",
@@ -689,11 +674,6 @@
       condition: "",
       theme: "clear",
     },
-    fuel: {
-      status: "loading",
-      updatedAt: null,
-      types: {},
-    },
     progressGardenFrame: null,
     headerClockTimer: null,
     lastAutomaticDayResetKey: null,
@@ -751,9 +731,6 @@
     savedTasksStrip: document.getElementById("savedTasksStrip"),
     quickTasksHeading: document.getElementById("quickTasksHeading"),
     quickTasksStrip: document.getElementById("quickTasksStrip"),
-    fuelHeading: document.getElementById("fuelHeading"),
-    fuelMeta: document.getElementById("fuelMeta"),
-    fuelList: document.getElementById("fuelList"),
     backupHeading: document.getElementById("backupHeading"),
     exportDataButton: document.getElementById("exportDataButton"),
     importDataButton: document.getElementById("importDataButton"),
@@ -843,7 +820,6 @@
   hydrateRecurringTasks();
   registerServiceWorker();
   hydrateWeather();
-  hydrateFuelPrices();
   bindEvents();
   renderApp();
   resetIdleScrollTimer();
@@ -852,9 +828,6 @@
   }, AUTO_REFRESH_MS);
   setInterval(() => {
     hydrateWeather();
-  }, WEATHER_REFRESH_MS);
-  setInterval(() => {
-    hydrateFuelPrices();
   }, WEATHER_REFRESH_MS);
   setInterval(() => {
     maybeResetToTodayAtMidnight();
@@ -1114,7 +1087,6 @@
     refs.familyHeading.textContent = t.familyHeading;
     refs.savedTasksHeading.textContent = "Saved tasks";
     refs.quickTasksHeading.textContent = t.quickTasksHeading || "Quick tasks";
-    refs.fuelHeading.textContent = t.fuelHeading;
     refs.backupHeading.textContent = t.backupHeading;
     refs.exportDataButton.textContent = t.exportData;
     refs.importDataButton.textContent = t.importData;
@@ -1144,7 +1116,7 @@
     refs.prevWeekButton.textContent = t.prevWeek;
     refs.todayButton.textContent = t.today;
     refs.nextWeekButton.textContent = t.nextWeek;
-    refs.fullscreenButton.textContent = isFullscreenActive() ? "⤡" : "⤢";
+    refs.fullscreenButton.textContent = isFullscreenActive() ? "â¤¡" : "â¤¢";
     refs.fullscreenButton.setAttribute("aria-label", isFullscreenActive() ? t.exitFullscreen : t.fullscreen);
     refs.fullscreenButton.title = isFullscreenActive() ? t.exitFullscreen : t.fullscreen;
     fillDialogLabels();
@@ -1155,7 +1127,6 @@
     renderFamilyDock();
     renderSavedTasks();
     renderQuickTasks();
-    renderFuelPanel();
     renderDialogOptions();
   }
 
@@ -1167,7 +1138,7 @@
     refs.weatherKicker.textContent = t.weatherNow;
 
     if (weather.status === "loading") {
-      refs.weatherTemp.textContent = "--°";
+      refs.weatherTemp.textContent = "--Â°";
       refs.weatherCondition.textContent = t.weatherLoading;
       refs.weatherPlace.textContent = t.weatherFallback;
       refs.weatherDetails.textContent = "";
@@ -1176,7 +1147,7 @@
     }
 
     if (weather.status === "error") {
-      refs.weatherTemp.textContent = "--°";
+      refs.weatherTemp.textContent = "--Â°";
       refs.weatherCondition.textContent = t.weatherUnavailable;
       refs.weatherPlace.textContent = weather.place || t.weatherFallback;
       refs.weatherDetails.textContent = "";
@@ -1184,10 +1155,10 @@
       return;
     }
 
-    refs.weatherTemp.textContent = `${Math.round(weather.temperature)}°`;
+    refs.weatherTemp.textContent = `${Math.round(weather.temperature)}Â°`;
     refs.weatherCondition.textContent = localizeWeatherCondition(weather.condition);
     refs.weatherPlace.textContent = weather.place;
-    refs.weatherDetails.textContent = weather.wind ? `🌬 ${formatWindMetersPerSecond(weather.wind)} m/s` : "";
+    refs.weatherDetails.textContent = weather.wind ? `ðŸŒ¬ ${formatWindMetersPerSecond(weather.wind)} m/s` : "";
     renderWeatherRanking();
   }
 
@@ -1208,21 +1179,21 @@
       },
       fi: {
         Sunny: "Aurinkoista",
-        "Clear night": "Selkeä yö",
-        "Partly cloudy": "Puolipilvistä",
-        Cloudy: "Pilvistä",
+        "Clear night": "SelkeÃ¤ yÃ¶",
+        "Partly cloudy": "PuolipilvistÃ¤",
+        Cloudy: "PilvistÃ¤",
         Fog: "Sumua",
         Rain: "Sadetta",
         Snow: "Lunta",
-        Storm: "Myrskyä",
-        Fair: "Selkeää",
-        Night: "Yö",
+        Storm: "MyrskyÃ¤",
+        Fair: "SelkeÃ¤Ã¤",
+        Night: "YÃ¶",
       },
       de: {
         Sunny: "Sonnig",
         "Clear night": "Klare Nacht",
-        "Partly cloudy": "Teilweise bewölkt",
-        Cloudy: "Bewölkt",
+        "Partly cloudy": "Teilweise bewÃ¶lkt",
+        Cloudy: "BewÃ¶lkt",
         Fog: "Nebel",
         Rain: "Regen",
         Snow: "Schnee",
@@ -1272,7 +1243,7 @@
       <div class="weather-mid-label">${t.tasksDoneToday}</div>
       <div class="weather-mid-value" style="--progress-color: ${todayProgressColor}">${completedToday}<span class="weather-mid-total">/${totalToday}</span></div>
       <div class="weather-mid-weekline">${t.doneThisWeek}: <strong>${completedThisWeek}</strong></div>
-      <div class="weather-mid-record">${t.bestWeek}: <strong>${bestWeek ? `${bestWeek.label} · ${bestWeek.count}` : t.noBestWeek}</strong></div>
+      <div class="weather-mid-record">${t.bestWeek}: <strong>${bestWeek ? `${bestWeek.label} Â· ${bestWeek.count}` : t.noBestWeek}</strong></div>
     `;
     refs.weatherOverdueCard.innerHTML = `
       <div class="weather-overdue-title">${t.overdueTasks}</div>
@@ -1283,7 +1254,7 @@
                 (item) => `
                   <div class="weather-overdue-item">
                     <div class="weather-overdue-copy">
-                      <span class="weather-overdue-icon">${item.task.icon || "•"}</span>
+                      <span class="weather-overdue-icon">${item.task.icon || "â€¢"}</span>
                       <span class="weather-overdue-name">${escapeHtml(item.task.title)}</span>
                     </div>
                     <button class="ghost-button weather-overdue-go" type="button" data-jump-date="${item.dateKey}">
@@ -1953,16 +1924,16 @@
 
   function symbolForWeatherTheme(theme) {
     const map = {
-      clear: "☀",
-      partly: "⛅",
-      clouds: "☁",
-      rain: "☂",
-      snow: "❄",
-      storm: "⚡",
-      fog: "◌",
-      night: "☾",
+      clear: "â˜€",
+      partly: "â›…",
+      clouds: "â˜",
+      rain: "â˜‚",
+      snow: "â„",
+      storm: "âš¡",
+      fog: "â—Œ",
+      night: "â˜¾",
     };
-    return map[theme] || "◌";
+    return map[theme] || "â—Œ";
   }
 
   function renderLanguageToggle() {
@@ -2046,7 +2017,7 @@
   function renderWeekGrid() {
     const t = currentMessages();
     const weekStart = getDisplayedWeekStart();
-    refs.weekHeading.textContent = `${formatDateRange(weekStart)} • ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
+    refs.weekHeading.textContent = `${formatDateRange(weekStart)} â€¢ ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
     refs.weekGrid.innerHTML = "";
 
     for (let index = 0; index < 7; index += 1) {
@@ -2119,7 +2090,7 @@
   function renderWeekGrid() {
     const t = currentMessages();
     const weekStart = getDisplayedWeekStart();
-    refs.weekHeading.textContent = `${formatDateRange(weekStart)} • ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
+    refs.weekHeading.textContent = `${formatDateRange(weekStart)} â€¢ ${t.currentWeek.replace("{weekNumber}", String(getWeekNumber(weekStart)))}`;
     refs.weekGrid.innerHTML = "";
 
     const todayKey = formatDateKey(startOfDay(new Date()));
@@ -2245,7 +2216,7 @@
         column.innerHTML = `
           <div class="day-strip">
             <div class="day-strip-day">${t.weekdayLong[weekdayKeys[index]].slice(0, 1)}</div>
-            <div class="day-strip-symbols">${taskIcons || "○"}</div>
+            <div class="day-strip-symbols">${taskIcons || "â—‹"}</div>
             ${openCount ? `<div class="day-strip-count">${openCount}</div>` : ""}
             ${overdueCount ? `<div class="day-strip-alert">!</div>` : ""}
           </div>
@@ -2519,91 +2490,9 @@
     renderApp();
   }
 
-  async function hydrateFuelPrices() {
-    try {
-      const response = await fetch(`./data/fuel-rovaniemi.json?v=${Date.now()}`, { cache: "no-store" });
-      if (!response.ok) {
-        throw new Error("Fuel data unavailable");
-      }
-      const data = await response.json();
-      ui.fuel = {
-        status: "ready",
-        updatedAt: data.updatedAt || null,
-        types: data.types || {},
-      };
-    } catch (error) {
-      ui.fuel = {
-        status: "error",
-        updatedAt: null,
-        types: {},
-      };
-    }
-    renderFuelPanel();
-  }
-
-  function renderFuelPanel() {
-    const t = currentMessages();
-    if (ui.fuel.status !== "ready") {
-      refs.fuelMeta.textContent = "";
-      refs.fuelList.innerHTML = `<div class="fuel-empty">${t.fuelUnavailable}</div>`;
-      return;
-    }
-
-    const entries = Array.isArray(ui.fuel.types?.["95"]) ? ui.fuel.types["95"].slice(0, 5) : [];
-    refs.fuelMeta.textContent = ui.fuel.updatedAt
-      ? t.fuelUpdated.replace("{time}", formatFuelTimestamp(ui.fuel.updatedAt))
-      : "";
-    refs.fuelList.innerHTML = entries.length
-      ? entries
-          .map(
-            (entry, index) => `
-              <article class="fuel-card">
-                <div class="fuel-card-top">
-                  <strong>${index + 1}. ${escapeHtml(repairDisplayText(entry.station))}</strong>
-                  <span class="fuel-price">${formatFuelPrice(entry.priceValue)}</span>
-                </div>
-                <div class="fuel-card-meta">${buildFuelMetaLine(entry, t)}</div>
-                ${entry.address ? `<div class="fuel-address">${escapeHtml(repairDisplayText(entry.address))}</div>` : ""}
-              </article>
-            `
-          )
-          .join("")
-      : `<div class="fuel-empty">${t.fuelUnavailable}</div>`;
-  }
-
-  function formatFuelTimestamp(isoString) {
-    const date = new Date(isoString);
-    if (Number.isNaN(date.getTime())) {
-      return "";
-    }
-    const localeMap = { en: "en-GB", fi: "fi-FI", de: "de-DE" };
-    return new Intl.DateTimeFormat(localeMap[state.settings.language] || "en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(date);
-  }
-
-  function formatFuelDistance(distanceKm) {
-    const value = Number(distanceKm);
-    if (!Number.isFinite(value)) {
-      return "–";
-    }
-    return value < 10 ? value.toFixed(2).replace(".", ",") : Math.round(value).toString();
-  }
-
-  function formatFuelPrice(priceValue) {
-    const value = Number(priceValue);
-    if (!Number.isFinite(value)) {
-      return "–";
-    }
-    return `${value.toFixed(2).replace(".", ",")} €`;
-  }
-
   function repairDisplayText(value) {
     const text = String(value ?? "");
-    if (!text.includes("Ã") && !text.includes("â")) {
+    if (!text.includes("Ãƒ") && !text.includes("Ã¢")) {
       return text;
     }
     try {
@@ -2612,15 +2501,6 @@
     } catch {
       return text;
     }
-  }
-
-  function buildFuelMetaLine(entry, t) {
-    const parts = [];
-    parts.push(t.fuelDistance.replace("{distance}", formatFuelDistance(entry.distanceKm)));
-    if (entry.updated) {
-      parts.push(String(entry.updated));
-    }
-    return escapeHtml(parts.join(", "));
   }
 
   function resolveWeatherPlace() {
@@ -2791,8 +2671,8 @@
       dueLabel = t.dueTomorrow;
     }
     const timeLabel = formatTaskTimeRange({ dueTime, endTime });
-    const timePrefix = timeLabel ? `${timeLabel} • ` : "";
-    return `${messageForCategory(category)} • ${displayUsers(responsibleIds)} • ${timePrefix}${dueLabel}`;
+    const timePrefix = timeLabel ? `${timeLabel} â€¢ ` : "";
+    return `${messageForCategory(category)} â€¢ ${displayUsers(responsibleIds)} â€¢ ${timePrefix}${dueLabel}`;
   }
 
   function createTaskCard(item) {
@@ -4240,8 +4120,8 @@
       dueLabel = t.dueTomorrow;
     }
     const timeRange = formatTaskTimeRange(task);
-    const timeLabel = timeRange ? `${timeRange} • ` : "";
-    return `${messageForCategory(task.category)} • ${displayUsers(getResponsibleIds(task))} • ${timeLabel}${dueLabel}`;
+    const timeLabel = timeRange ? `${timeRange} â€¢ ` : "";
+    return `${messageForCategory(task.category)} â€¢ ${displayUsers(getResponsibleIds(task))} â€¢ ${timeLabel}${dueLabel}`;
   }
 
   function resolveTaskTitle(task) {
@@ -4436,7 +4316,7 @@
     const [year, weekNumber] = best.key.split("-W");
     return {
       count: best.count,
-      label: `${year} · KW ${weekNumber}`,
+      label: `${year} Â· KW ${weekNumber}`,
     };
   }
 
@@ -4611,3 +4491,5 @@
     return afterEveningStart || beforeMorningEnd;
   }
 })();
+
+
