@@ -674,6 +674,7 @@
       condition: "",
       theme: "clear",
     },
+    holidays: {},
     progressGardenFrame: null,
     headerClockTimer: null,
     lastAutomaticDayResetKey: null,
@@ -820,6 +821,7 @@
   hydrateRecurringTasks();
   registerServiceWorker();
   hydrateWeather();
+  hydrateHolidayCalendar();
   bindEvents();
   renderApp();
   resetIdleScrollTimer();
@@ -2105,10 +2107,14 @@
     for (let index = 0; index < 7; index += 1) {
       const dayDate = addDays(weekStart, index);
       const dayKey = formatDateKey(dayDate);
+      const holiday = getHolidayEntry(dayKey);
       const tasks = getItemsForDay(dayDate);
       const isFocused = dayKey === ui.focusDateKey;
       const column = document.createElement("section");
-      column.className = `day-column${isSameDay(dayDate, new Date()) ? " today" : ""}${isFocused ? " focused" : " collapsed"}`;
+      column.className = `day-column${isSameDay(dayDate, new Date()) ? " today" : ""}${isFocused ? " focused" : " collapsed"}${holiday ? " holiday" : ""}`;
+      if (holiday) {
+        column.dataset.holidayTheme = holiday.theme;
+      }
       column.dataset.date = dayKey;
       column.addEventListener("dragover", handleDragOver);
       column.addEventListener("dragleave", handleDragLeave);
@@ -2176,6 +2182,7 @@
             <div>
               <strong>${t.weekdayLong[weekdayKeys[index]]}</strong>
               <span>${formatNumericDate(dayDate)}</span>
+              ${holiday ? `<div class="day-holiday-tag">${holiday.emoji} ${escapeHtml(resolveHolidayName(holiday))}</div>` : ""}
             </div>
             <button class="ghost-button small-button day-add-button" type="button">+ ${t.quickAdd}</button>
           </div>
@@ -2216,6 +2223,7 @@
         column.innerHTML = `
           <div class="day-strip">
             <div class="day-strip-day">${t.weekdayLong[weekdayKeys[index]].slice(0, 1)}</div>
+            ${holiday ? `<div class="day-strip-holiday">${holiday.emoji}</div>` : ""}
             <div class="day-strip-symbols">${taskIcons || "○"}</div>
             ${openCount ? `<div class="day-strip-count">${openCount}</div>` : ""}
             ${overdueCount ? `<div class="day-strip-alert">!</div>` : ""}
@@ -2486,6 +2494,30 @@
         condition: "",
         theme: "clouds",
       };
+    }
+    renderApp();
+  }
+
+  function getHolidayEntry(dateKey) {
+    return ui.holidays?.[dateKey] || null;
+  }
+
+  function resolveHolidayName(holiday) {
+    const lang = state.settings.language;
+    return holiday?.name?.[lang] || holiday?.name?.en || "";
+  }
+
+  async function hydrateHolidayCalendar() {
+    try {
+      const response = await fetch(`./data/fi-holidays.json?v=${APP_VERSION}`, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error("holiday_fetch_failed");
+      }
+      const payload = await response.json();
+      const entries = Array.isArray(payload?.entries) ? payload.entries : [];
+      ui.holidays = Object.fromEntries(entries.map((entry) => [entry.date, entry]));
+    } catch {
+      ui.holidays = {};
     }
     renderApp();
   }

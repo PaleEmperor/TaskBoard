@@ -1,0 +1,1016 @@
+{
+  "country": "FI",
+  "region": "Rovaniemi",
+  "years": [
+    2026,
+    2027,
+    2028,
+    2029,
+    2030,
+    2031,
+    2032
+  ],
+  "entries": [
+    {
+      "date": "2026-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2026-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2026-04-03",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2026-04-06",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2026-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2026-05-14",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2026-06-19",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2026-06-20",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2026-10-31",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2026-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2026-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2026-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2026-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2027-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2027-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2027-03-26",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2027-03-29",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2027-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2027-05-06",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2027-06-25",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2027-06-26",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2027-11-06",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2027-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2027-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2027-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2027-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2028-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2028-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2028-04-14",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2028-04-17",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2028-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2028-05-25",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2028-06-23",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2028-06-24",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2028-11-04",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2028-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2028-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2028-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2028-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2029-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2029-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2029-03-30",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2029-04-02",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2029-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2029-05-10",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2029-06-22",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2029-06-23",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2029-11-03",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2029-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2029-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2029-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2029-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2030-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2030-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2030-04-19",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2030-04-22",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2030-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2030-05-30",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2030-06-21",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2030-06-22",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2030-11-02",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2030-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2030-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2030-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2030-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2031-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2031-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2031-04-11",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2031-04-14",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2031-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2031-05-22",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2031-06-20",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2031-06-21",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2031-11-01",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2031-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2031-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2031-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2031-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    },
+    {
+      "date": "2032-01-01",
+      "key": "new_year",
+      "theme": "winter-light",
+      "emoji": "✨",
+      "name": {
+        "en": "New Year's Day",
+        "fi": "Uudenvuodenpäivä",
+        "de": "Neujahr"
+      }
+    },
+    {
+      "date": "2032-01-06",
+      "key": "epiphany",
+      "theme": "winter-light",
+      "emoji": "🕯️",
+      "name": {
+        "en": "Epiphany",
+        "fi": "Loppiainen",
+        "de": "Heilige Drei Könige"
+      }
+    },
+    {
+      "date": "2032-03-26",
+      "key": "good_friday",
+      "theme": "easter-pastel",
+      "emoji": "🕊️",
+      "name": {
+        "en": "Good Friday",
+        "fi": "Pitkäperjantai",
+        "de": "Karfreitag"
+      }
+    },
+    {
+      "date": "2032-03-29",
+      "key": "easter_monday",
+      "theme": "easter-pastel",
+      "emoji": "🐣",
+      "name": {
+        "en": "Easter Monday",
+        "fi": "2. pääsiäispäivä",
+        "de": "Ostermontag"
+      }
+    },
+    {
+      "date": "2032-05-01",
+      "key": "may_day",
+      "theme": "mayday",
+      "emoji": "🎈",
+      "name": {
+        "en": "May Day",
+        "fi": "Vappu",
+        "de": "Maifeiertag"
+      }
+    },
+    {
+      "date": "2032-05-06",
+      "key": "ascension_day",
+      "theme": "spring-sky",
+      "emoji": "☁️",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "date": "2032-06-25",
+      "key": "midsummer_eve",
+      "theme": "midsummer",
+      "emoji": "🌿",
+      "name": {
+        "en": "Midsummer Eve",
+        "fi": "Juhannusaatto",
+        "de": "Mittsommerabend"
+      }
+    },
+    {
+      "date": "2032-06-26",
+      "key": "midsummer_day",
+      "theme": "midsummer",
+      "emoji": "🌼",
+      "name": {
+        "en": "Midsummer Day",
+        "fi": "Juhannuspäivä",
+        "de": "Mittsommertag"
+      }
+    },
+    {
+      "date": "2032-11-06",
+      "key": "all_saints",
+      "theme": "autumn-candle",
+      "emoji": "🕯️",
+      "name": {
+        "en": "All Saints' Day",
+        "fi": "Pyhäinpäivä",
+        "de": "Allerheiligen"
+      }
+    },
+    {
+      "date": "2032-12-06",
+      "key": "independence_day",
+      "theme": "independence",
+      "emoji": "🇫🇮",
+      "name": {
+        "en": "Independence Day",
+        "fi": "Itsenäisyyspäivä",
+        "de": "Unabhängigkeitstag"
+      }
+    },
+    {
+      "date": "2032-12-24",
+      "key": "christmas_eve",
+      "theme": "christmas",
+      "emoji": "🎄",
+      "name": {
+        "en": "Christmas Eve",
+        "fi": "Jouluaatto",
+        "de": "Heiligabend"
+      }
+    },
+    {
+      "date": "2032-12-25",
+      "key": "christmas_day",
+      "theme": "christmas",
+      "emoji": "🎁",
+      "name": {
+        "en": "Christmas Day",
+        "fi": "Joulupäivä",
+        "de": "Weihnachtstag"
+      }
+    },
+    {
+      "date": "2032-12-26",
+      "key": "boxing_day",
+      "theme": "christmas",
+      "emoji": "❄️",
+      "name": {
+        "en": "Boxing Day",
+        "fi": "Tapaninpäivä",
+        "de": "Zweiter Weihnachtstag"
+      }
+    }
+  ]
+}
