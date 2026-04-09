@@ -280,6 +280,12 @@ body[data-theme="dark"] .responsible-chip {
   border-color: rgba(180, 194, 207, 0.24);
 }
 
+body[data-theme="dark"] .weekday-chip {
+  background: rgba(57, 69, 82, 0.98);
+  color: #f3f7fb;
+  border-color: rgba(180, 194, 207, 0.24);
+}
+
 body[data-theme="dark"] .responsible-picker .claim-chip.active,
 body[data-theme="dark"] .participant-picker .claim-chip.active {
   background: rgba(84, 122, 176, 0.34);
@@ -289,6 +295,13 @@ body[data-theme="dark"] .participant-picker .claim-chip.active {
 }
 
 body[data-theme="dark"] .responsible-chip.active {
+  background: rgba(84, 122, 176, 0.34);
+  color: #ffffff;
+  border-color: rgba(129, 169, 224, 0.46);
+  box-shadow: inset 0 0 0 1px rgba(129, 169, 224, 0.22);
+}
+
+body[data-theme="dark"] .weekday-chip.active {
   background: rgba(84, 122, 176, 0.34);
   color: #ffffff;
   border-color: rgba(129, 169, 224, 0.46);
@@ -3598,6 +3611,12 @@ details[open] > .accordion-summary::after {
   gap: 8px;
 }
 
+.weekday-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .responsible-chip {
   border: 1px solid rgba(68, 95, 118, 0.14);
   border-radius: 999px;
@@ -3607,7 +3626,21 @@ details[open] > .accordion-summary::after {
   padding: 8px 12px;
 }
 
+.weekday-chip {
+  border: 1px solid rgba(68, 95, 118, 0.14);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink);
+  min-height: 38px;
+  padding: 8px 12px;
+}
+
 .responsible-chip.active {
+  background: #edf4fb;
+  border-color: rgba(66, 119, 207, 0.3);
+}
+
+.weekday-chip.active {
   background: #edf4fb;
   border-color: rgba(66, 119, 207, 0.3);
 }

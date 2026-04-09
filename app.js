@@ -113,7 +113,7 @@
       taskEndTime: "Until",
       taskRepeat: "Repeat",
       taskInterval: "Every how many days?",
-      taskWeekday: "Preferred weekday",
+      taskWeekday: "Days of week",
       taskEffort: "Effort",
       taskClaimable: "Send to claim area",
       taskSomeday: "Save for someday",
@@ -265,7 +265,7 @@
       taskEndTime: "Asti",
       taskRepeat: "Toistuvuus",
       taskInterval: "Kuinka monen päivän välein?",
-      taskWeekday: "Suosittu viikonpäivä",
+      taskWeekday: "Viikonpäivät",
       taskEffort: "Työmäärä",
       taskClaimable: "Lähetä claim-alueelle",
       taskSomeday: "Tallenna myöhemmäksi",
@@ -417,7 +417,7 @@
       taskEndTime: "Bis",
       taskRepeat: "Wiederholung",
       taskInterval: "Alle wie viele Tage?",
-      taskWeekday: "Bevorzugter Wochentag",
+      taskWeekday: "Wochentage",
       taskEffort: "Aufwand",
       taskClaimable: "In den Claim-Bereich legen",
       taskSomeday: "Für irgendwann speichern",
@@ -558,6 +558,7 @@
   function buildTask(config) {
     const responsibleIds = normalizeResponsibleIds(config.responsible);
     const finalResponsibleIds = responsibleIds.length ? responsibleIds : ["everyone"];
+    const weekdaysSelected = normalizeWeekdaySelection(config.weekdaysSelected, typeof config.weekday === "number" ? config.weekday : null);
     return {
       id: crypto.randomUUID(),
       title: typeof config.title === "string" ? config.title : config.title.en,
@@ -572,7 +573,8 @@
       endTime: typeof config.endTime === "string" ? config.endTime : "",
       recurrence: config.recurrence || "none",
       interval: config.interval || 1,
-      weekday: typeof config.weekday === "number" ? config.weekday : null,
+      weekday: weekdaysSelected[0] ?? (typeof config.weekday === "number" ? config.weekday : null),
+      weekdaysSelected,
       effort: config.effort || "steady",
       notes: typeof config.notes === "string" ? config.notes : config.notes?.en || "",
       notesTranslations: typeof config.notes === "string" ? null : config.notes || null,
@@ -2436,7 +2438,7 @@
     fillSelect(refs.taskOwnerInput, users.map((user) => ({ value: user.id, label: `${user.emoji} ${user.name}` })));
     renderResponsiblePicker();
     fillSelect(refs.taskEffortInput, effortOptions.map((effort) => ({ value: effort, label: currentMessages()[effort] })));
-    fillSelect(refs.taskWeekdayInput, weekdayKeys.map((key, index) => ({ value: String(index), label: currentMessages().weekdayLong[key] })));
+    renderWeekdayPicker();
     fillSelect(refs.taskRecurrenceInput, [
       { value: "none", label: currentMessages().repeatNever },
       { value: "daily", label: currentMessages().repeatDaily },
@@ -2450,6 +2452,33 @@
     ]);
     renderIconGrid();
     syncDialogFields();
+  }
+
+  function renderWeekdayPicker(selectedDays) {
+    const activeDays = normalizeWeekdaySelection(
+      selectedDays || refs.taskWeekdayInput.dataset.value?.split(","),
+      getWeekdayIndex(parseDateKey(refs.taskDayInput?.value || formatDateKey(startOfDay(new Date()))))
+    );
+    refs.taskWeekdayInput.dataset.value = activeDays.join(",");
+    refs.taskWeekdayInput.innerHTML = "";
+    weekdayKeys.forEach((key, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `weekday-chip${activeDays.includes(index) ? " active" : ""}`;
+      button.textContent = currentMessages().weekdayLong[key];
+      button.setAttribute("aria-pressed", activeDays.includes(index) ? "true" : "false");
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const currentDays = normalizeWeekdaySelection(refs.taskWeekdayInput.dataset.value?.split(","));
+        const nextDays = currentDays.includes(index)
+          ? currentDays.filter((day) => day !== index)
+          : [...currentDays, index];
+        renderWeekdayPicker(nextDays.length ? nextDays : [index]);
+        renderTaskPreview();
+      });
+      refs.taskWeekdayInput.appendChild(button);
+    });
   }
 
   function registerServiceWorker() {
@@ -2809,7 +2838,7 @@
     refs.taskEndTimeInput.value = task?.endTime || defaults?.endTime || "";
     refs.taskRecurrenceInput.value = task?.recurrence || "none";
     refs.taskIntervalInput.value = String(task?.interval || 1);
-    refs.taskWeekdayInput.value = String(task?.weekday ?? getWeekdayIndex(startOfDay(new Date())));
+    renderWeekdayPicker(task?.weekdaysSelected || defaults?.weekdaysSelected || task?.weekday || defaults?.weekday || getWeekdayIndex(parseDateKey(refs.taskDayInput.value)));
     refs.taskEffortInput.value = task?.effort || defaults?.effort || "steady";
     refs.taskClaimableInput.checked = Boolean(defaults?.claimable);
     refs.taskSomedayInput.checked = Boolean(defaults?.someday);
@@ -2844,6 +2873,7 @@
       recurrence: "none",
       interval: 1,
       weekday: null,
+      weekdaysSelected: [],
       effort: template.effort,
       notes: "",
       notesTranslations: null,
@@ -2882,6 +2912,7 @@
       recurrence: entry.recurrence,
       interval: entry.interval,
       weekday: entry.weekday,
+      weekdaysSelected: entry.weekdaysSelected,
       effort: entry.effort,
       notes: entry.notesTranslations || entry.notes,
       libraryId: entry.id,
@@ -3001,6 +3032,7 @@
         recurrence: "none",
         interval: 1,
         weekday: null,
+        weekdaysSelected: [],
         updatedAt: new Date().toISOString(),
       })
     );
@@ -3134,7 +3166,10 @@
       endTime: refs.taskEndTimeInput.value,
       recurrence: refs.taskRecurrenceInput.value,
       interval: Number(refs.taskIntervalInput.value) || 1,
-      weekday: Number(refs.taskWeekdayInput.value),
+      weekdaysSelected: normalizeWeekdaySelection(
+        refs.taskWeekdayInput.dataset.value?.split(","),
+        getWeekdayIndex(parseDateKey(refs.taskDayInput.value || formatDateKey(startOfDay(new Date()))))
+      ),
       effort: refs.taskEffortInput.value,
       claimable: refs.taskClaimableInput.checked,
       someday: refs.taskSomedayInput.checked,
@@ -3178,6 +3213,7 @@
       }
       Object.assign(task, payload, {
         responsibleId: payload.responsibleIds[0] || "everyone",
+        weekday: payload.weekdaysSelected[0] ?? null,
         titleTranslations: null,
         notesTranslations: null,
         completionDates: task.completionDates || [],
@@ -3201,7 +3237,8 @@
         endTime: payload.endTime,
         recurrence: payload.recurrence,
         interval: payload.interval,
-        weekday: payload.weekday,
+        weekday: payload.weekdaysSelected[0] ?? null,
+        weekdaysSelected: payload.weekdaysSelected,
         effort: payload.effort,
         notes: payload.notes,
       });
@@ -3253,11 +3290,15 @@
     const somedayMode = refs.taskSomedayInput.checked;
     const claimMode = refs.taskClaimableInput.checked;
     const unscheduledMode = somedayMode || claimMode;
+    const usesWeekdayPicker = ["weekly", "biweekly", "linneaWeeks", "notLinneaWeeks"].includes(recurrence);
     [refs.taskDayInput, refs.taskTimeInput, refs.taskEndTimeInput, refs.taskRecurrenceInput]
       .map((element) => element.closest(".field"))
       .forEach((field) => field?.classList.toggle("hidden", unscheduledMode));
     refs.intervalField.classList.toggle("hidden", recurrence !== "interval");
-    refs.weekdayField.classList.toggle("hidden", !["weekly", "biweekly", "linneaWeeks", "notLinneaWeeks"].includes(recurrence));
+    refs.weekdayField.classList.toggle("hidden", !usesWeekdayPicker);
+    if (usesWeekdayPicker) {
+      renderWeekdayPicker(normalizeWeekdaySelection(refs.taskWeekdayInput.dataset.value?.split(","), getWeekdayIndex(parseDateKey(refs.taskDayInput.value))));
+    }
     if (unscheduledMode) {
       refs.intervalField.classList.add("hidden");
       refs.weekdayField.classList.add("hidden");
@@ -3285,6 +3326,7 @@
       recurrence: task.recurrence || "none",
       interval: task.interval || 1,
       weekday: typeof task.weekday === "number" ? task.weekday : null,
+      weekdaysSelected: normalizeWeekdaySelection(task.weekdaysSelected, typeof task.weekday === "number" ? task.weekday : null),
       effort: task.effort || "steady",
       notes: task.notes || "",
       notesTranslations: task.notesTranslations || null,
@@ -3466,6 +3508,7 @@
         recurrence: "none",
         interval: 1,
         weekday: null,
+        weekdaysSelected: [],
         updatedAt: new Date().toISOString(),
       })
     );
@@ -3522,6 +3565,7 @@
       recurrence: "none",
       interval: 1,
       weekday: null,
+      weekdaysSelected: [],
       effort: task.effort,
       notes: task.notes,
       notesTranslations: task.notesTranslations,
@@ -3914,6 +3958,9 @@
       return false;
     }
     const diffDays = daysBetween(effectiveAnchor, current);
+    const anchorWeekStart = startOfWeek(anchor);
+    const currentWeekStart = startOfWeek(current);
+    const diffWeeks = Math.floor(daysBetween(anchorWeekStart, currentWeekStart) / 7);
 
     switch (task.recurrence) {
       case "daily":
@@ -3921,9 +3968,9 @@
       case "weekdays":
         return !isWeekend(current);
       case "weekly":
-        return diffDays % 7 === 0 && weekdayMatches(task, current);
+        return diffWeeks >= 0 && weekdayMatches(task, current) && (diffWeeks > 0 || current >= anchor);
       case "biweekly":
-        return diffDays % 14 === 0 && weekdayMatches(task, current);
+        return diffWeeks >= 0 && diffWeeks % 2 === 0 && weekdayMatches(task, current) && (diffWeeks > 0 || current >= anchor);
       case "linneaWeeks":
         return isLinneaWeek(current) && weekdayMatches(task, current);
       case "notLinneaWeeks":
@@ -3938,7 +3985,8 @@
   }
 
   function weekdayMatches(task, date) {
-    return typeof task.weekday === "number" ? getWeekdayIndex(date) === task.weekday : true;
+    const weekdaysSelected = normalizeWeekdaySelection(task.weekdaysSelected, typeof task.weekday === "number" ? task.weekday : null);
+    return weekdaysSelected.length ? weekdaysSelected.includes(getWeekdayIndex(date)) : true;
   }
 
   function matchesBoardFilters(item) {
@@ -3993,6 +4041,20 @@
     return unique;
   }
 
+  function normalizeWeekdaySelection(value, fallbackValue = null) {
+    const raw = Array.isArray(value) ? value : [value];
+    const cleaned = raw
+      .map((entry) => {
+        const parsed = Number(entry);
+        return Number.isInteger(parsed) && parsed >= 0 && parsed <= 6 ? parsed : null;
+      })
+      .filter((entry) => entry != null);
+    if (!cleaned.length && Number.isInteger(fallbackValue) && fallbackValue >= 0 && fallbackValue <= 6) {
+      cleaned.push(fallbackValue);
+    }
+    return Array.from(new Set(cleaned)).sort((left, right) => left - right);
+  }
+
   function normalizeResponsibleRecord(record) {
     if (!record) {
       return record;
@@ -4000,6 +4062,8 @@
     const responsibleIds = normalizeResponsibleIds(record.responsibleIds?.length ? record.responsibleIds : record.responsibleId);
     record.responsibleIds = responsibleIds.length ? responsibleIds : ["everyone"];
     record.responsibleId = record.responsibleIds[0];
+    record.weekdaysSelected = normalizeWeekdaySelection(record.weekdaysSelected, typeof record.weekday === "number" ? record.weekday : null);
+    record.weekday = record.weekdaysSelected[0] ?? (typeof record.weekday === "number" ? record.weekday : null);
     return record;
   }
 
