@@ -4235,14 +4235,12 @@ body[data-theme="dark"] .orbit-minute-value {
 .day-column.focused.birthday .task-list {
   padding-top: 0.35rem;
   padding-bottom: 0.2rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.12) 10%, rgba(255, 255, 255, 0.52) 26%, rgba(255, 255, 255, 0.78) 100%);
+  background: none;
   border-radius: 28px 28px 24px 24px;
 }
 
 body[data-theme="dark"] .day-column.focused.birthday .task-list {
-  background:
-    linear-gradient(180deg, rgba(9, 15, 22, 0) 0%, rgba(9, 15, 22, 0.1) 10%, rgba(9, 15, 22, 0.34) 24%, rgba(9, 15, 22, 0.58) 100%);
+  background: none;
 }
 
 .birthday-scene {
@@ -4342,11 +4340,8 @@ body[data-theme="dark"] .day-column.focused.birthday .task-list {
 }
 
 .birthday-scene__veil {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01) 32%, rgba(255, 255, 255, 0.04)),
-    radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.18), transparent 18%),
-    radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.1), transparent 20%);
-  animation: birthdayGlow 10s ease-in-out infinite alternate;
+  background: none;
+  animation: none;
 }
 
 .birthday-scene__halo {
@@ -4670,8 +4665,7 @@ body[data-theme="dark"] .day-column.birthday .day-holiday-tag {
 
 .birthday-scene__glow {
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.34), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.14));
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.14), transparent 32%);
 }
 
 .birthday-scene__hero {
