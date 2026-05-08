@@ -4236,13 +4236,13 @@ body[data-theme="dark"] .orbit-minute-value {
   padding-top: 0.35rem;
   padding-bottom: 0.2rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 10%, rgba(255, 255, 255, 0.7) 26%, rgba(255, 255, 255, 0.9) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.12) 10%, rgba(255, 255, 255, 0.52) 26%, rgba(255, 255, 255, 0.78) 100%);
   border-radius: 28px 28px 24px 24px;
 }
 
 body[data-theme="dark"] .day-column.focused.birthday .task-list {
   background:
-    linear-gradient(180deg, rgba(9, 15, 22, 0) 0%, rgba(9, 15, 22, 0.18) 10%, rgba(9, 15, 22, 0.58) 24%, rgba(9, 15, 22, 0.82) 100%);
+    linear-gradient(180deg, rgba(9, 15, 22, 0) 0%, rgba(9, 15, 22, 0.1) 10%, rgba(9, 15, 22, 0.34) 24%, rgba(9, 15, 22, 0.58) 100%);
 }
 
 .birthday-scene {
@@ -4343,9 +4343,9 @@ body[data-theme="dark"] .day-column.focused.birthday .task-list {
 
 .birthday-scene__veil {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.02) 32%, rgba(255, 255, 255, 0.08)),
-    radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.28), transparent 18%),
-    radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.16), transparent 20%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.01) 32%, rgba(255, 255, 255, 0.04)),
+    radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.18), transparent 18%),
+    radial-gradient(circle at 84% 20%, rgba(255, 255, 255, 0.1), transparent 20%);
   animation: birthdayGlow 10s ease-in-out infinite alternate;
 }
 
