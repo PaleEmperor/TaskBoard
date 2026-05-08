@@ -1,10 +1,15 @@
-const CACHE_NAME = "homeflow-cache-v2";
+const CACHE_NAME = "homeflow-cache-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./data/fi-holidays.json",
+  "./data/member-birthdays.json",
+  "./art/birthday-images/linnea.png",
+  "./art/birthday-images/sini.png",
+  "./art/birthday-images/bjorn.png",
+  "./art/birthday-images/nina.png",
   "./manifest.webmanifest",
   "./icons/icon.svg",
   "./icons/icon-192.svg",

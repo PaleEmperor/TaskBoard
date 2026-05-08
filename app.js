@@ -4,7 +4,7 @@
   const WEATHER_REFRESH_MS = 300000;
   const IDLE_SCROLL_TOP_MS = 300000;
   const DAY_RESET_CHECK_MS = 60000;
-  const APP_VERSION = "v1";
+  const APP_VERSION = "v4";
   const BOARD_DENSITY = {
     everyone: "everyone",
     mine: "mine",
@@ -2110,12 +2110,16 @@
       const dayDate = addDays(weekStart, index);
       const dayKey = formatDateKey(dayDate);
       const holiday = getHolidayEntry(dayKey);
+      const isBirthday = isBirthdayEntry(holiday);
       const tasks = getItemsForDay(dayDate);
       const isFocused = dayKey === ui.focusDateKey;
       const column = document.createElement("section");
-      column.className = `day-column${isSameDay(dayDate, new Date()) ? " today" : ""}${isFocused ? " focused" : " collapsed"}${holiday ? " holiday" : ""}`;
+      column.className = `day-column${isSameDay(dayDate, new Date()) ? " today" : ""}${isFocused ? " focused" : " collapsed"}${holiday ? " holiday" : ""}${isBirthday ? " birthday" : ""}`;
       if (holiday) {
         column.dataset.holidayTheme = holiday.theme;
+      }
+      if (isBirthday && holiday?.personId) {
+        column.dataset.specialPerson = holiday.personId;
       }
       column.dataset.date = dayKey;
       column.addEventListener("dragover", handleDragOver);
@@ -2188,6 +2192,7 @@
             </div>
             <button class="ghost-button small-button day-add-button" type="button">+ ${t.quickAdd}</button>
           </div>
+          ${buildBirthdaySceneMarkup(holiday)}
           <div class="day-overview">
             <span class="badge">${openCount === 1 ? t.plusTask : t.plusTasks.replace("{count}", String(openCount))}</span>
             ${overdueCount ? `<span class="badge">${t.overdue}</span>` : ""}
@@ -2226,6 +2231,7 @@
           <div class="day-strip">
             <div class="day-strip-day">${t.weekdayLong[weekdayKeys[index]].slice(0, 1)}</div>
             ${holiday ? `<div class="day-strip-holiday">${holiday.emoji}</div>` : ""}
+            ${isBirthday ? buildBirthdayStripMarkup(holiday) : ""}
             <div class="day-strip-symbols">${taskIcons || "○"}</div>
             ${openCount ? `<div class="day-strip-count">${openCount}</div>` : ""}
             ${overdueCount ? `<div class="day-strip-alert">!</div>` : ""}
@@ -2533,22 +2539,72 @@
 
   function resolveHolidayName(holiday) {
     const lang = state.settings.language;
-    return holiday?.name?.[lang] || holiday?.name?.en || "";
+    return repairDisplayText(holiday?.name?.[lang] || holiday?.name?.en || "");
+  }
+
+  function isBirthdayEntry(entry) {
+    return entry?.kind === "birthday" || String(entry?.key || "").startsWith("birthday_");
   }
 
   async function hydrateHolidayCalendar() {
     try {
-      const response = await fetch(`./data/fi-holidays.json?v=${APP_VERSION}`, { cache: "no-store" });
-      if (!response.ok) {
+      const [holidayResponse, birthdayResponse] = await Promise.all([
+        fetch(`./data/fi-holidays.json?v=${APP_VERSION}`, { cache: "no-store" }),
+        fetch(`./data/member-birthdays.json?v=${APP_VERSION}`, { cache: "no-store" }),
+      ]);
+      if (!holidayResponse.ok || !birthdayResponse.ok) {
         throw new Error("holiday_fetch_failed");
       }
-      const payload = await response.json();
-      const entries = Array.isArray(payload?.entries) ? payload.entries : [];
+      const holidayPayload = await holidayResponse.json();
+      const birthdayPayload = await birthdayResponse.json();
+      const entries = [
+        ...(Array.isArray(holidayPayload?.entries) ? holidayPayload.entries : []),
+        ...(Array.isArray(birthdayPayload?.entries) ? birthdayPayload.entries : []),
+      ];
       ui.holidays = Object.fromEntries(entries.map((entry) => [entry.date, entry]));
     } catch {
       ui.holidays = {};
     }
     renderApp();
+  }
+
+  function buildBirthdaySceneMarkup(entry) {
+    if (!isBirthdayEntry(entry)) {
+      return "";
+    }
+    const personId = escapeHtml(entry.personId || "guest");
+    const imagePath = birthdayImagePath(entry.personId || "guest");
+    return `
+      <div class="birthday-scene birthday-scene-${personId}" aria-hidden="true">
+        <span class="birthday-scene__wash birthday-scene__wash--${personId}"></span>
+        <img class="birthday-scene__bg birthday-scene__bg--${personId}" src="${imagePath}" alt="" loading="lazy" decoding="async" />
+        <span class="birthday-scene__glow birthday-scene__glow--${personId}"></span>
+        <img class="birthday-scene__hero birthday-scene__hero--${personId}" src="${imagePath}" alt="" loading="lazy" decoding="async" />
+        <span class="birthday-scene__veil"></span>
+        <span class="birthday-scene__spark birthday-scene__spark--1"></span>
+        <span class="birthday-scene__spark birthday-scene__spark--2"></span>
+        <span class="birthday-scene__spark birthday-scene__spark--3"></span>
+      </div>
+    `;
+  }
+
+  function birthdayImagePath(personId) {
+    return `./art/birthday-images/${personId}.png`;
+  }
+
+  function buildBirthdayStripMarkup(entry) {
+    if (!isBirthdayEntry(entry)) {
+      return "";
+    }
+    const personId = escapeHtml(entry.personId || "guest");
+    const imagePath = birthdayImagePath(entry.personId || "guest");
+    return `
+      <div class="day-strip-birthday day-strip-birthday-${personId}" aria-hidden="true">
+        <span class="day-strip-birthday__wash day-strip-birthday__wash--${personId}"></span>
+        <img class="day-strip-birthday__bg" src="${imagePath}" alt="" loading="lazy" decoding="async" />
+        <img class="day-strip-birthday__hero" src="${imagePath}" alt="" loading="lazy" decoding="async" />
+      </div>
+    `;
   }
 
   function repairDisplayText(value) {
