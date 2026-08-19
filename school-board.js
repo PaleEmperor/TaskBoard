@@ -15,8 +15,6 @@
       today: "Today",
       now: "Now",
       next: "Next",
-      starts: "starts",
-      until: "until",
       finished: "School is finished for today",
       holidayToday: "School holiday today",
       dayLength: "School day",
@@ -41,8 +39,6 @@
       today: "Tänään",
       now: "Nyt",
       next: "Seuraava",
-      starts: "alkaa",
-      until: "asti",
       finished: "Koulupäivä on tältä päivältä ohi",
       holidayToday: "Tänään on koululoma",
       dayLength: "Koulupäivä",
@@ -67,8 +63,6 @@
       today: "Heute",
       now: "Jetzt",
       next: "Als Nächstes",
-      starts: "beginnt",
-      until: "bis",
       finished: "Der Schultag ist für heute vorbei",
       holidayToday: "Heute sind Schulferien",
       dayLength: "Schultag",
@@ -134,6 +128,7 @@
   };
 
   let schoolCalendar = null;
+  let selectedSchoolDateKey = null;
 
   const localeFor = (language) => ({ en: "en-GB", fi: "fi-FI", de: "de-DE" }[language] || "en-GB");
 
@@ -162,16 +157,14 @@
 
   function currentLanguage() {
     const activeChip = document.querySelector("#languageToggle .lang-chip.active[data-lang]");
-    if (activeChip?.dataset.lang && translations[activeChip.dataset.lang]) {
-      return activeChip.dataset.lang;
-    }
+    if (activeChip?.dataset.lang && translations[activeChip.dataset.lang]) return activeChip.dataset.lang;
 
     try {
       const stored = JSON.parse(localStorage.getItem("homeflow-board-v2") || "null");
       const language = stored?.settings?.language;
       if (translations[language]) return language;
     } catch (error) {
-      // The main app owns this storage. A malformed value should not break the school view.
+      // The main app owns this storage. A malformed value should not break this view.
     }
     return "en";
   }
@@ -213,12 +206,20 @@
     return timetable[dayKey] || [];
   }
 
-  function focusedIndex(dates) {
-    const today = dateKey(new Date());
-    const todayIndex = dates.findIndex((date) => dateKey(date) === today);
-    if (todayIndex >= 0) return todayIndex;
-    const weekday = new Date().getDay();
-    return weekday >= 1 && weekday <= 5 ? weekday - 1 : 0;
+  function resolveSelectedIndex(dates) {
+    const keys = dates.map(dateKey);
+    const savedIndex = selectedSchoolDateKey ? keys.indexOf(selectedSchoolDateKey) : -1;
+    if (savedIndex >= 0) return savedIndex;
+
+    const todayIndex = keys.indexOf(dateKey(new Date()));
+    let fallbackIndex = todayIndex;
+    if (fallbackIndex < 0) {
+      const weekday = new Date().getDay();
+      fallbackIndex = weekday >= 1 && weekday <= 5 ? weekday - 1 : 0;
+    }
+
+    selectedSchoolDateKey = keys[fallbackIndex] || keys[0] || null;
+    return Math.max(0, fallbackIndex);
   }
 
   function lessonStateFor(dayKey, lesson, displayedDate) {
@@ -241,31 +242,22 @@
 
     const holiday = holidayForDate(today);
     if (holiday) {
-      return {
-        icon: "🌙",
-        label: `${t.holidayToday} · ${holidayName(holiday, language)}`,
-        tone: "holiday",
-      };
+      return { icon: "🌙", label: `${t.holidayToday} · ${holidayName(holiday, language)}`, tone: "holiday" };
     }
 
     const dayKey = weekdayKeys[displayedIndex];
     const lessons = dayLessons(dayKey, today);
     if (!lessons.length) return null;
-
     const nowMinutes = today.getHours() * 60 + today.getMinutes();
     const finalLesson = lessons[lessons.length - 1];
-    if (nowMinutes >= parseTime(finalLesson[1])) {
-      return { icon: "✨", label: t.finished, tone: "done" };
-    }
-
+    if (nowMinutes >= parseTime(finalLesson[1])) return { icon: "✨", label: t.finished, tone: "done" };
     return null;
   }
 
   function nextWeekHoliday(dates) {
     if (!schoolCalendar?.holidays?.length || !dates.length) return null;
-    const weekStart = dates[0];
-    const nextWeekStart = addDays(weekStart, 7);
-    const nextWeekEnd = addDays(weekStart, 13);
+    const nextWeekStart = addDays(dates[0], 7);
+    const nextWeekEnd = addDays(dates[0], 13);
     const startKey = dateKey(nextWeekStart);
     const endKey = dateKey(nextWeekEnd);
     return schoolCalendar.holidays.find((holiday) => holiday.start >= startKey && holiday.start <= endKey) || null;
@@ -330,12 +322,18 @@
     `;
   }
 
-  function compactSubjects(lessons, language) {
-    return lessons.map((lesson) => {
-      const code = lesson[2];
-      const subject = subjects[code];
-      return `<span class="school-compact-subject school-subject-${code.toLowerCase()}" title="${subject.name[language]}"><span aria-hidden="true">${subject.icon}</span><b>${code}</b></span>`;
-    }).join("");
+  function miniLessonMarkup(dayKey, lesson, displayedDate) {
+    const [start, end, code] = lesson;
+    const subject = subjects[code];
+    const top = ((parseTime(start) - START_MINUTES) / DAY_MINUTES) * 100;
+    const height = ((parseTime(end) - parseTime(start)) / DAY_MINUTES) * 100;
+    const state = lessonStateFor(dayKey, lesson, displayedDate);
+    return `
+      <span class="school-mini-lesson school-subject-${code.toLowerCase()}${state ? ` is-${state}` : ""}"
+        style="--lesson-top:${top}%;--lesson-height:${height}%" title="${subject.name[currentLanguage()]}">
+        <span aria-hidden="true">${subject.icon}</span><b>${code}</b>
+      </span>
+    `;
   }
 
   function renderExpandedDay(dayKey, date, language, isToday) {
@@ -347,7 +345,7 @@
 
     if (holiday) {
       return `
-        <section class="school-day-card is-expanded is-holiday${isToday ? " is-today" : ""}">
+        <section class="school-day-card is-expanded is-holiday${isToday ? " is-today" : ""}" data-selected-school-date="${dateKey(date)}">
           <header class="school-day-card-header">
             <div><strong>${t.weekdays[dayKey]}</strong><span>${formatDayDate(date, language)}</span></div>
             ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
@@ -362,18 +360,15 @@
     }
 
     return `
-      <section class="school-day-card is-expanded${isToday ? " is-today" : ""}">
+      <section class="school-day-card is-expanded${isToday ? " is-today" : ""}" data-selected-school-date="${dateKey(date)}">
         <header class="school-day-card-header">
-          <div>
-            <strong>${t.weekdays[dayKey]}</strong>
-            <span>${formatDayDate(date, language)}</span>
-          </div>
+          <div><strong>${t.weekdays[dayKey]}</strong><span>${formatDayDate(date, language)}</span></div>
           ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
         </header>
         ${span ? `
           <div class="school-day-range expanded">
             <div><small>${t.dayLength}</small><strong>${span.start} → ${span.end}</strong></div>
-            <span>${durationText(span.minutes)}</span>
+            <span>${durationText(span.minutes)} · ${lessonCountText(lessons.length, language)}</span>
           </div>
           <div class="school-expanded-timeline">
             <div class="school-time-rail">${labels}</div>
@@ -391,12 +386,21 @@
     const holiday = holidayForDate(date);
     const lessons = dayLessons(dayKey, date);
     const span = daySpan(lessons);
+    const accessibleSummary = holiday
+      ? `${t.weekdays[dayKey]}, ${holidayName(holiday, language)}`
+      : span
+        ? `${t.weekdays[dayKey]}, ${span.start}–${span.end}, ${lessonCountText(lessons.length, language)}`
+        : `${t.weekdays[dayKey]}, ${t.noLessons}`;
 
     return `
-      <section class="school-day-card is-compact${holiday ? " is-holiday" : ""}${isToday ? " is-today" : ""}">
+      <button type="button" class="school-day-card is-compact${holiday ? " is-holiday" : ""}${isToday ? " is-today" : ""}"
+        data-school-date="${dateKey(date)}" aria-label="${accessibleSummary}">
         <header class="school-day-card-header">
           <div><strong>${t.weekdays[dayKey]}</strong><span>${formatDayDate(date, language)}</span></div>
-          ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
+          <div class="school-card-header-actions">
+            ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
+            <span class="school-expand-chevron" aria-hidden="true">›</span>
+          </div>
         </header>
         ${holiday ? `
           <div class="school-compact-holiday">
@@ -404,24 +408,28 @@
             <strong>${holidayName(holiday, language)}</strong>
           </div>
         ` : span ? `
-          <div class="school-day-range compact">
-            <strong>${span.start}</strong>
-            <span aria-hidden="true">↓</span>
-            <strong>${span.end}</strong>
-            <small>${durationText(span.minutes)}</small>
+          <div class="school-compact-range">
+            <strong>${span.start} → ${span.end}</strong>
+            <span>${durationText(span.minutes)}</span>
+          </div>
+          <div class="school-mini-timeline" aria-hidden="true">
+            <span class="school-mini-hour h8">08</span>
+            <span class="school-mini-hour h10">10</span>
+            <span class="school-mini-hour h12">12</span>
+            <div class="school-mini-lane">
+              ${lessons.map((lesson) => miniLessonMarkup(dayKey, lesson, date)).join("")}
+            </div>
           </div>
           <div class="school-compact-count">${lessonCountText(lessons.length, language)}</div>
-          <div class="school-compact-subjects">${compactSubjects(lessons, language)}</div>
         ` : `<div class="school-no-lessons compact">${t.noLessons}</div>`}
-      </section>
+      </button>
     `;
   }
 
   function renderHolidayTeaser(holiday, language) {
     if (!holiday) return "";
     const t = translations[language];
-    const name = holidayName(holiday, language);
-    const message = t.yayNextWeek.replace("{holiday}", name);
+    const message = t.yayNextWeek.replace("{holiday}", holidayName(holiday, language));
     return `
       <aside class="school-holiday-teaser" role="status">
         <span class="school-holiday-spark" aria-hidden="true">✦</span>
@@ -439,24 +447,21 @@
     const t = translations[language];
     const dates = displayedDates();
     const todayKey = dateKey(new Date());
+    const selectedIndex = resolveSelectedIndex(dates);
     const status = currentDayStatus(language, dates);
     const teaserHoliday = nextWeekHoliday(dates);
-    const expandedIndex = focusedIndex(dates);
 
     const dayCards = weekdayKeys.map((dayKey, index) => {
       const date = dates[index];
       const isToday = dateKey(date) === todayKey;
-      return index === expandedIndex
+      return index === selectedIndex
         ? renderExpandedDay(dayKey, date, language, isToday)
         : renderCompactDay(dayKey, date, language, isToday);
     }).join("");
 
     view.innerHTML = `
       <div class="school-top-row">
-        <div class="school-title">
-          <span aria-hidden="true">🎒</span>
-          <strong>${t.schoolWeek}</strong>
-        </div>
+        <div class="school-title"><span aria-hidden="true">🎒</span><strong>${t.schoolWeek}</strong></div>
         ${status ? `<div class="school-status school-status-${status.tone}"><span aria-hidden="true">${status.icon}</span><strong>${status.label}</strong></div>` : ""}
       </div>
       ${renderHolidayTeaser(teaserHoliday, language)}
@@ -504,7 +509,7 @@
       const response = await fetch(SCHOOL_CALENDAR_URL);
       if (response.ok) schoolCalendar = await response.json();
     } catch (error) {
-      // The timetable still works if the optional local school-calendar file is unavailable.
+      // The timetable still works if the optional local school calendar is unavailable.
     }
     renderSchoolView();
   }
@@ -548,6 +553,13 @@
       const nextView = event.key === "ArrowRight" ? "school" : "tasks";
       setView(nextView);
       switcher.querySelector(`[data-view="${nextView}"]`)?.focus();
+    });
+
+    schoolGrid.addEventListener("click", (event) => {
+      const dayButton = event.target.closest("[data-school-date]");
+      if (!dayButton) return;
+      selectedSchoolDateKey = dayButton.dataset.schoolDate;
+      renderSchoolView();
     });
 
     const languageToggle = document.getElementById("languageToggle");
