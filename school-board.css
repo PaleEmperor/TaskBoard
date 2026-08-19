@@ -1,0 +1,697 @@
+.calendar-view-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid rgba(110, 137, 153, 0.2);
+  border-radius: 16px;
+  background: rgba(237, 244, 248, 0.86);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78), 0 8px 20px rgba(54, 75, 88, 0.07);
+  backdrop-filter: blur(16px);
+}
+
+.calendar-view-option {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #657681;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 13px;
+  font: inherit;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.calendar-view-option:hover {
+  color: #314654;
+  transform: translateY(-1px);
+}
+
+.calendar-view-option.active {
+  color: #fff;
+  background: linear-gradient(135deg, #314c5d, #243844);
+  box-shadow: 0 7px 16px rgba(36, 56, 68, 0.2);
+}
+
+.calendar-view-option:focus-visible {
+  outline: 3px solid rgba(95, 153, 206, 0.32);
+  outline-offset: 2px;
+}
+
+.calendar-view-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.school-week-view[hidden],
+#weekGrid[hidden] {
+  display: none !important;
+}
+
+.school-week-view {
+  padding-top: 2px;
+  animation: school-view-in 180ms ease-out both;
+}
+
+@keyframes school-view-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.school-overview {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(107, 144, 161, 0.18);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 8% 15%, rgba(139, 198, 239, 0.2), transparent 34%),
+    linear-gradient(135deg, rgba(250, 253, 255, 0.98), rgba(241, 248, 251, 0.93));
+  box-shadow: 0 12px 32px rgba(51, 76, 92, 0.08);
+}
+
+.school-overview-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  font-size: 1.45rem;
+  background: linear-gradient(145deg, #dff2ff, #c8e6f8);
+  border: 1px solid rgba(75, 137, 174, 0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.school-overview-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.school-overview-kicker {
+  color: #77909e;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.school-overview-copy strong {
+  color: #263b47;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.school-overview-copy > span:last-child {
+  color: #71838e;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.school-status {
+  max-width: 340px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  background: rgba(232, 240, 245, 0.88);
+  color: #526875;
+  border: 1px solid rgba(111, 139, 155, 0.16);
+}
+
+.school-status-current {
+  background: rgba(218, 244, 225, 0.94);
+  color: #316646;
+  border-color: rgba(64, 145, 89, 0.18);
+}
+
+.school-status-next {
+  background: rgba(235, 238, 255, 0.96);
+  color: #505a91;
+  border-color: rgba(94, 105, 180, 0.16);
+}
+
+.school-status-done {
+  background: rgba(255, 244, 218, 0.96);
+  color: #7b6220;
+  border-color: rgba(166, 127, 31, 0.16);
+}
+
+.school-desktop-timetable {
+  overflow-x: auto;
+  border: 1px solid rgba(108, 136, 151, 0.18);
+  border-radius: 22px;
+  background: rgba(250, 253, 255, 0.96);
+  box-shadow: 0 16px 42px rgba(47, 72, 88, 0.08);
+  scrollbar-width: thin;
+}
+
+.school-timetable-header {
+  min-width: 980px;
+  display: grid;
+  grid-template-columns: 70px repeat(5, minmax(170px, 1fr));
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 1px solid rgba(111, 139, 154, 0.18);
+  background: rgba(247, 251, 253, 0.97);
+  backdrop-filter: blur(16px);
+}
+
+.school-time-heading,
+.school-day-heading {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.school-time-heading {
+  font-size: 1.05rem;
+  opacity: 0.65;
+}
+
+.school-day-heading {
+  flex-direction: column;
+  gap: 2px;
+  border-left: 1px solid rgba(111, 139, 154, 0.14);
+}
+
+.school-day-heading.is-today {
+  background: linear-gradient(180deg, rgba(222, 244, 228, 0.92), rgba(241, 250, 244, 0.6));
+}
+
+.school-day-name {
+  color: #304754;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.school-day-date {
+  color: #84949e;
+  font-size: 0.73rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.school-today-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #337047;
+  background: rgba(199, 236, 208, 0.86);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.school-day-heading .school-today-pill {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+}
+
+.school-timeline {
+  min-width: 980px;
+  height: 575px;
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+}
+
+.school-time-rail {
+  position: relative;
+  background: linear-gradient(180deg, rgba(248, 251, 253, 0.96), rgba(244, 249, 251, 0.96));
+  border-right: 1px solid rgba(111, 139, 154, 0.16);
+}
+
+.school-time-label {
+  position: absolute;
+  top: var(--time-top);
+  right: 12px;
+  transform: translateY(-50%);
+  color: #8a99a2;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+.school-time-label:first-child {
+  transform: translateY(0);
+}
+
+.school-time-label:last-child {
+  transform: translateY(-100%);
+}
+
+.school-lanes {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(170px, 1fr));
+  min-width: 0;
+}
+
+.school-day-lane {
+  position: relative;
+  min-width: 0;
+  border-right: 1px solid rgba(111, 139, 154, 0.12);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(10% - 1px), rgba(116, 141, 155, 0.065) calc(10% - 1px), rgba(116, 141, 155, 0.065) 10%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(20% - 1px), rgba(99, 126, 141, 0.11) calc(20% - 1px), rgba(99, 126, 141, 0.11) 20%),
+    linear-gradient(180deg, rgba(255,255,255,0.92), rgba(249,252,253,0.94));
+}
+
+.school-day-lane:last-child {
+  border-right: 0;
+}
+
+.school-day-lane.is-today {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(10% - 1px), rgba(72, 143, 94, 0.07) calc(10% - 1px), rgba(72, 143, 94, 0.07) 10%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(20% - 1px), rgba(72, 143, 94, 0.12) calc(20% - 1px), rgba(72, 143, 94, 0.12) 20%),
+    linear-gradient(180deg, rgba(244, 251, 246, 0.98), rgba(249, 253, 250, 0.94));
+}
+
+.school-lesson {
+  --subject-color: #588ca8;
+  --subject-soft: #e5f2f8;
+  position: absolute;
+  top: calc(var(--lesson-top) + 4px);
+  left: 6px;
+  right: 6px;
+  height: calc(var(--lesson-height) - 8px);
+  min-height: 62px;
+  overflow: hidden;
+  padding: 9px 10px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--subject-color) 28%, transparent);
+  border-left: 4px solid var(--subject-color);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--subject-soft) 95%, white), color-mix(in srgb, var(--subject-soft) 72%, white));
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--subject-color) 12%, transparent);
+  color: #29404d;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.school-lesson:hover {
+  z-index: 4;
+  transform: translateY(-2px) scale(1.012);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--subject-color) 18%, transparent);
+}
+
+.school-lesson.is-current {
+  z-index: 3;
+  border-color: color-mix(in srgb, var(--subject-color) 58%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--subject-color) 18%, transparent), 0 14px 28px color-mix(in srgb, var(--subject-color) 22%, transparent);
+}
+
+.school-lesson.is-next {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--subject-color) 14%, transparent), 0 9px 20px color-mix(in srgb, var(--subject-color) 15%, transparent);
+}
+
+.school-lesson-topline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  margin-bottom: 3px;
+}
+
+.school-subject-icon {
+  font-size: 0.92rem;
+  line-height: 1;
+}
+
+.school-subject-code {
+  color: var(--subject-color);
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+}
+
+.school-live-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 18px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--subject-color);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.school-lesson strong {
+  display: block;
+  overflow: hidden;
+  color: #2b414d;
+  font-size: 0.8rem;
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.school-lesson-meta {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  color: #6d7f89;
+  font-size: 0.64rem;
+  line-height: 1.15;
+  font-weight: 750;
+}
+
+.school-subject-mu { --subject-color: #7c62bc; --subject-soft: #eee8fb; }
+.school-subject-suk { --subject-color: #4584a7; --subject-soft: #e2f1f8; }
+.school-subject-ks { --subject-color: #b06f3f; --subject-soft: #f8ecdf; }
+.school-subject-ena1 { --subject-color: #536db4; --subject-soft: #e7ebfa; }
+.school-subject-ma { --subject-color: #5b78a7; --subject-soft: #e6edf7; }
+.school-subject-ym { --subject-color: #4d8a68; --subject-soft: #e2f1e7; }
+.school-subject-ueel { --subject-color: #9c6c8f; --subject-soft: #f4e7f0; }
+.school-subject-li { --subject-color: #4e8b79; --subject-soft: #e2f2ec; }
+.school-subject-ku { --subject-color: #a46b86; --subject-soft: #f6e7ee; }
+
+.school-mobile-timetable {
+  display: none;
+}
+
+body.dark-mode .calendar-view-switch {
+  background: rgba(29, 42, 50, 0.9);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 20px rgba(0,0,0,0.14);
+}
+
+body.dark-mode .calendar-view-option {
+  color: #aec0ca;
+}
+
+body.dark-mode .calendar-view-option:hover {
+  color: #eff7fa;
+}
+
+body.dark-mode .calendar-view-option.active {
+  color: #20333d;
+  background: linear-gradient(135deg, #f3f8fa, #dfeaf0);
+}
+
+body.dark-mode .school-overview,
+body.dark-mode .school-desktop-timetable {
+  background: linear-gradient(145deg, rgba(29, 42, 50, 0.97), rgba(24, 36, 43, 0.97));
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 16px 42px rgba(0,0,0,0.18);
+}
+
+body.dark-mode .school-overview-icon {
+  background: linear-gradient(145deg, #304c5d, #263f4d);
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.dark-mode .school-overview-copy strong,
+body.dark-mode .school-day-name,
+body.dark-mode .school-lesson strong {
+  color: #edf5f8;
+}
+
+body.dark-mode .school-overview-kicker,
+body.dark-mode .school-overview-copy > span:last-child,
+body.dark-mode .school-day-date,
+body.dark-mode .school-time-label,
+body.dark-mode .school-lesson-meta {
+  color: #9eb0ba;
+}
+
+body.dark-mode .school-timetable-header {
+  background: rgba(26, 39, 47, 0.98);
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.dark-mode .school-day-heading,
+body.dark-mode .school-time-rail,
+body.dark-mode .school-day-lane {
+  border-color: rgba(255,255,255,0.07);
+}
+
+body.dark-mode .school-day-heading.is-today {
+  background: linear-gradient(180deg, rgba(51, 91, 65, 0.5), rgba(34, 53, 43, 0.38));
+}
+
+body.dark-mode .school-time-rail {
+  background: linear-gradient(180deg, #1c2c35, #19272e);
+}
+
+body.dark-mode .school-day-lane {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(10% - 1px), rgba(255,255,255,0.035) calc(10% - 1px), rgba(255,255,255,0.035) 10%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(20% - 1px), rgba(255,255,255,0.065) calc(20% - 1px), rgba(255,255,255,0.065) 20%),
+    linear-gradient(180deg, #1c2b33, #19262d);
+}
+
+body.dark-mode .school-day-lane.is-today {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(10% - 1px), rgba(98, 182, 123, 0.045) calc(10% - 1px), rgba(98, 182, 123, 0.045) 10%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent calc(20% - 1px), rgba(98, 182, 123, 0.08) calc(20% - 1px), rgba(98, 182, 123, 0.08) 20%),
+    linear-gradient(180deg, #1d3026, #1b2924);
+}
+
+body.dark-mode .school-lesson {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--subject-color) 22%, #21313a), color-mix(in srgb, var(--subject-color) 12%, #1d2b33));
+  color: #eaf2f5;
+}
+
+body.dark-mode .school-status {
+  background: rgba(49, 67, 77, 0.88);
+  color: #d6e2e8;
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.dark-mode .school-status-current {
+  background: rgba(42, 77, 54, 0.9);
+  color: #ccebd4;
+}
+
+body.dark-mode .school-status-next {
+  background: rgba(54, 59, 89, 0.9);
+  color: #d9ddff;
+}
+
+body.dark-mode .school-status-done {
+  background: rgba(83, 67, 35, 0.9);
+  color: #f7e5b6;
+}
+
+@media (max-width: 1180px) {
+  .board-panel-header {
+    flex-wrap: wrap;
+  }
+
+  .calendar-view-switch {
+    order: 3;
+  }
+}
+
+@media (max-width: 880px) {
+  .calendar-view-switch {
+    width: 100%;
+    order: 3;
+  }
+
+  .calendar-view-option {
+    flex: 1;
+  }
+
+  .school-overview {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .school-status {
+    grid-column: 1 / -1;
+    max-width: none;
+    width: 100%;
+  }
+
+  .school-desktop-timetable {
+    display: none;
+  }
+
+  .school-mobile-timetable {
+    display: grid;
+    gap: 12px;
+  }
+
+  .school-mobile-day {
+    overflow: hidden;
+    border: 1px solid rgba(110, 138, 153, 0.17);
+    border-radius: 18px;
+    background: rgba(252, 254, 255, 0.97);
+    box-shadow: 0 10px 28px rgba(50, 73, 86, 0.06);
+  }
+
+  .school-mobile-day > header {
+    min-height: 58px;
+    padding: 11px 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(244,249,252,0.98), rgba(238,246,249,0.9));
+    border-bottom: 1px solid rgba(110, 138, 153, 0.12);
+  }
+
+  .school-mobile-day.is-today > header {
+    background: linear-gradient(135deg, rgba(226, 246, 232, 0.98), rgba(239, 250, 242, 0.96));
+  }
+
+  .school-mobile-day > header > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .school-mobile-day > header strong {
+    color: #2e4552;
+    font-size: 0.94rem;
+  }
+
+  .school-mobile-day > header span:not(.school-today-pill) {
+    color: #82939d;
+    font-size: 0.72rem;
+    font-weight: 750;
+  }
+
+  .school-mobile-lessons {
+    display: grid;
+  }
+
+  .school-mobile-lesson {
+    --subject-color: #588ca8;
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 10px;
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(111, 139, 154, 0.1);
+    border-left: 4px solid var(--subject-color);
+    background: rgba(255,255,255,0.86);
+  }
+
+  .school-mobile-lesson:last-child {
+    border-bottom: 0;
+  }
+
+  .school-mobile-lesson.is-current {
+    background: color-mix(in srgb, var(--subject-color) 7%, white);
+  }
+
+  .school-mobile-time {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    color: #526875;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .school-mobile-time strong {
+    font-size: 0.78rem;
+  }
+
+  .school-mobile-time span {
+    color: #8a9aa3;
+    font-size: 0.67rem;
+    font-weight: 700;
+  }
+
+  .school-mobile-title {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .school-mobile-title strong {
+    min-width: 0;
+    color: #2e4552;
+    font-size: 0.82rem;
+    line-height: 1.2;
+  }
+
+  .school-mobile-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    color: #778993;
+    font-size: 0.67rem;
+    font-weight: 750;
+  }
+
+  body.dark-mode .school-mobile-day,
+  body.dark-mode .school-mobile-lesson {
+    background: rgba(27, 40, 48, 0.97);
+    border-color: rgba(255,255,255,0.07);
+  }
+
+  body.dark-mode .school-mobile-day > header {
+    background: linear-gradient(135deg, rgba(31,47,56,0.98), rgba(27,42,50,0.98));
+    border-color: rgba(255,255,255,0.07);
+  }
+
+  body.dark-mode .school-mobile-day.is-today > header {
+    background: linear-gradient(135deg, rgba(39,67,49,0.96), rgba(30,51,39,0.96));
+  }
+
+  body.dark-mode .school-mobile-day > header strong,
+  body.dark-mode .school-mobile-title strong,
+  body.dark-mode .school-mobile-time {
+    color: #eaf3f7;
+  }
+
+  body.dark-mode .school-mobile-day > header span:not(.school-today-pill),
+  body.dark-mode .school-mobile-time span,
+  body.dark-mode .school-mobile-meta {
+    color: #9aadb7;
+  }
+
+  body.dark-mode .school-mobile-lesson.is-current {
+    background: color-mix(in srgb, var(--subject-color) 12%, #1d2b33);
+  }
+}
+
+@media (max-width: 560px) {
+  .calendar-view-label {
+    font-size: 0.82rem;
+  }
+
+  .school-overview {
+    padding: 12px;
+    border-radius: 17px;
+  }
+
+  .school-overview-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .school-overview-copy strong {
+    font-size: 0.96rem;
+  }
+}

@@ -1,11 +1,11 @@
-const CACHE_NAME = "homeflow-cache-v6";
+const CACHE_NAME = "homeflow-cache-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./school.html",
-  "./tabs.js",
   "./styles.css",
   "./app.js",
+  "./school-board.css",
+  "./school-board.js",
   "./data/fi-holidays.json",
   "./data/member-birthdays.json",
   "./art/birthday-images/linnea.png",
@@ -34,26 +34,6 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-async function injectTabs(response, url) {
-  if (!response || !response.ok || url.pathname.endsWith("/school.html")) {
-    return response;
-  }
-
-  const contentType = response.headers.get("content-type") || "";
-  const isHtml = contentType.includes("text/html") || url.pathname.endsWith("/index.html") || url.pathname.endsWith("/");
-  if (!isHtml) {
-    return response;
-  }
-
-  const html = await response.text();
-  if (html.includes("./tabs.js")) {
-    return new Response(html, { status: response.status, statusText: response.statusText, headers: response.headers });
-  }
-
-  const injected = html.replace("</body>", "<script src=\"./tabs.js\"></script>\n  </body>");
-  return new Response(injected, { status: response.status, statusText: response.statusText, headers: response.headers });
-}
-
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") {
@@ -67,24 +47,18 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.match(request).then(async (cached) => {
-      let response = cached;
-
       try {
         const networkResponse = await fetch(request);
         if (networkResponse && networkResponse.status === 200) {
-          response = networkResponse;
           const copy = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return networkResponse;
         }
       } catch (error) {
-        // Offline: keep using the cached copy when available.
+        // Offline: use the cached copy below.
       }
 
-      if (!response) {
-        return Response.error();
-      }
-
-      return injectTabs(response, url);
+      return cached || Response.error();
     })
   );
 });
