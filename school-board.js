@@ -1,5 +1,6 @@
 (() => {
   const VIEW_KEY = "homeflow-calendar-view-v1";
+  const SCHOOL_CALENDAR_URL = "./data/rovaniemi-school-calendar-2026-2027.json";
   const START_MINUTES = 8 * 60;
   const END_MINUTES = 13 * 60;
   const DAY_MINUTES = END_MINUTES - START_MINUTES;
@@ -11,16 +12,19 @@
       school: "School",
       switchLabel: "Calendar view",
       schoolWeek: "Linnea's school week",
-      repeatNote: "Same timetable every week",
       today: "Today",
       now: "Now",
       next: "Next",
       starts: "starts",
       until: "until",
       finished: "School is finished for today",
-      noSchool: "No school today",
-      noSchoolInView: "This timetable repeats every school week",
-      room: "Room",
+      holidayToday: "School holiday today",
+      dayLength: "School day",
+      lessons: "lessons",
+      lesson: "lesson",
+      noLessons: "No classes",
+      holiday: "Holiday",
+      yayNextWeek: "Yay — {holiday} next week!",
       weekdays: {
         monday: "Monday",
         tuesday: "Tuesday",
@@ -34,16 +38,19 @@
       school: "Koulu",
       switchLabel: "Kalenterinäkymä",
       schoolWeek: "Linnean kouluviikko",
-      repeatNote: "Sama lukujärjestys joka viikko",
       today: "Tänään",
       now: "Nyt",
       next: "Seuraava",
       starts: "alkaa",
       until: "asti",
       finished: "Koulupäivä on tältä päivältä ohi",
-      noSchool: "Ei koulua tänään",
-      noSchoolInView: "Tämä lukujärjestys toistuu joka kouluviikko",
-      room: "Luokka",
+      holidayToday: "Tänään on koululoma",
+      dayLength: "Koulupäivä",
+      lessons: "tuntia",
+      lesson: "tunti",
+      noLessons: "Ei oppitunteja",
+      holiday: "Loma",
+      yayNextWeek: "Jee — ensi viikolla {holiday}!",
       weekdays: {
         monday: "Maanantai",
         tuesday: "Tiistai",
@@ -57,16 +64,19 @@
       school: "Schule",
       switchLabel: "Kalenderansicht",
       schoolWeek: "Linneas Schulwoche",
-      repeatNote: "Gleicher Stundenplan jede Woche",
       today: "Heute",
       now: "Jetzt",
       next: "Als Nächstes",
       starts: "beginnt",
       until: "bis",
       finished: "Der Schultag ist für heute vorbei",
-      noSchool: "Heute ist keine Schule",
-      noSchoolInView: "Dieser Stundenplan wiederholt sich jede Schulwoche",
-      room: "Raum",
+      holidayToday: "Heute sind Schulferien",
+      dayLength: "Schultag",
+      lessons: "Stunden",
+      lesson: "Stunde",
+      noLessons: "Kein Unterricht",
+      holiday: "Ferien",
+      yayNextWeek: "Juhu — nächste Woche {holiday}!",
       weekdays: {
         monday: "Montag",
         tuesday: "Dienstag",
@@ -78,42 +88,15 @@
   };
 
   const subjects = {
-    MU: {
-      icon: "🎵",
-      name: { en: "Music", fi: "Musiikki", de: "Musik" },
-    },
-    SUK: {
-      icon: "📚",
-      name: { en: "Finnish language & literature", fi: "Suomen kieli ja kirjallisuus", de: "Finnisch & Literatur" },
-    },
-    KS: {
-      icon: "🧵",
-      name: { en: "Crafts", fi: "Käsityö", de: "Werken" },
-    },
-    ENA1: {
-      icon: "🇬🇧",
-      name: { en: "English A1", fi: "Englanti A1", de: "Englisch A1" },
-    },
-    MA: {
-      icon: "➗",
-      name: { en: "Mathematics", fi: "Matematiikka", de: "Mathematik" },
-    },
-    YM: {
-      icon: "🌍",
-      name: { en: "Environmental studies", fi: "Ympäristöoppi", de: "Umweltkunde" },
-    },
-    UEEL: {
-      icon: "💭",
-      name: { en: "Religion / ethics", fi: "Uskonto / elämänkatsomustieto", de: "Religion / Ethik" },
-    },
-    LI: {
-      icon: "🏃",
-      name: { en: "Physical education", fi: "Liikunta", de: "Sport" },
-    },
-    KU: {
-      icon: "🎨",
-      name: { en: "Visual arts", fi: "Kuvataide", de: "Kunst" },
-    },
+    MU: { icon: "🎵", name: { en: "Music", fi: "Musiikki", de: "Musik" } },
+    SUK: { icon: "📚", name: { en: "Finnish language & literature", fi: "Suomen kieli ja kirjallisuus", de: "Finnisch & Literatur" } },
+    KS: { icon: "🧵", name: { en: "Crafts", fi: "Käsityö", de: "Werken" } },
+    ENA1: { icon: "🇬🇧", name: { en: "English A1", fi: "Englanti A1", de: "Englisch A1" } },
+    MA: { icon: "➗", name: { en: "Mathematics", fi: "Matematiikka", de: "Mathematik" } },
+    YM: { icon: "🌍", name: { en: "Environmental studies", fi: "Ympäristöoppi", de: "Umweltkunde" } },
+    UEEL: { icon: "💭", name: { en: "Religion / ethics", fi: "Uskonto / elämänkatsomustieto", de: "Religion / Ethik" } },
+    LI: { icon: "🏃", name: { en: "Physical education", fi: "Liikunta", de: "Sport" } },
+    KU: { icon: "🎨", name: { en: "Visual arts", fi: "Kuvataide", de: "Kunst" } },
   };
 
   const timetable = {
@@ -150,6 +133,8 @@
     ],
   };
 
+  let schoolCalendar = null;
+
   const localeFor = (language) => ({ en: "en-GB", fi: "fi-FI", de: "de-DE" }[language] || "en-GB");
 
   function parseTime(value) {
@@ -169,6 +154,12 @@
     return new Date(year, month - 1, day, 12, 0, 0, 0);
   }
 
+  function addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
   function currentLanguage() {
     const activeChip = document.querySelector("#languageToggle .lang-chip.active[data-lang]");
     if (activeChip?.dataset.lang && translations[activeChip.dataset.lang]) {
@@ -182,7 +173,6 @@
     } catch (error) {
       // The main app owns this storage. A malformed value should not break the school view.
     }
-
     return "en";
   }
 
@@ -191,11 +181,7 @@
     const monday = new Date(now);
     monday.setHours(12, 0, 0, 0);
     monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-    return weekdayKeys.map((_, index) => {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + index);
-      return date;
-    });
+    return weekdayKeys.map((_, index) => addDays(monday, index));
   }
 
   function displayedDates() {
@@ -206,6 +192,35 @@
     return dates.length === 5 ? dates : fallbackDates();
   }
 
+  function holidayName(holiday, language) {
+    return holiday?.name?.[language] || holiday?.name?.en || "";
+  }
+
+  function holidayForDate(date) {
+    if (!schoolCalendar?.holidays) return null;
+    const key = dateKey(date);
+    return schoolCalendar.holidays.find((holiday) => key >= holiday.start && key <= holiday.end) || null;
+  }
+
+  function isInsideTerm(date) {
+    if (!schoolCalendar?.termStart || !schoolCalendar?.termEnd) return true;
+    const key = dateKey(date);
+    return key >= schoolCalendar.termStart && key <= schoolCalendar.termEnd;
+  }
+
+  function dayLessons(dayKey, date) {
+    if (!isInsideTerm(date) || holidayForDate(date)) return [];
+    return timetable[dayKey] || [];
+  }
+
+  function focusedIndex(dates) {
+    const today = dateKey(new Date());
+    const todayIndex = dates.findIndex((date) => dateKey(date) === today);
+    if (todayIndex >= 0) return todayIndex;
+    const weekday = new Date().getDay();
+    return weekday >= 1 && weekday <= 5 ? weekday - 1 : 0;
+  }
+
   function lessonStateFor(dayKey, lesson, displayedDate) {
     if (dateKey(displayedDate) !== dateKey(new Date())) return "";
     const now = new Date();
@@ -213,8 +228,7 @@
     const start = parseTime(lesson[0]);
     const end = parseTime(lesson[1]);
     if (nowMinutes >= start && nowMinutes < end) return "current";
-
-    const lessons = timetable[dayKey] || [];
+    const lessons = dayLessons(dayKey, displayedDate);
     const nextLesson = lessons.find((item) => parseTime(item[0]) > nowMinutes);
     return nextLesson === lesson ? "next" : "";
   }
@@ -222,15 +236,21 @@
   function currentDayStatus(language, dates) {
     const t = translations[language];
     const today = new Date();
-    const todayKey = dateKey(today);
-    const displayedIndex = dates.findIndex((date) => dateKey(date) === todayKey);
-    if (displayedIndex === -1) {
-      return { icon: "🔁", label: t.noSchoolInView, tone: "neutral" };
+    const displayedIndex = dates.findIndex((date) => dateKey(date) === dateKey(today));
+    if (displayedIndex === -1) return null;
+
+    const holiday = holidayForDate(today);
+    if (holiday) {
+      return {
+        icon: "🌙",
+        label: `${t.holidayToday} · ${holidayName(holiday, language)}`,
+        tone: "holiday",
+      };
     }
 
     const dayKey = weekdayKeys[displayedIndex];
-    const lessons = timetable[dayKey] || [];
-    if (!lessons.length) return { icon: "🌙", label: t.noSchool, tone: "neutral" };
+    const lessons = dayLessons(dayKey, today);
+    if (!lessons.length) return null;
 
     const nowMinutes = today.getHours() * 60 + today.getMinutes();
     const current = lessons.find((lesson) => nowMinutes >= parseTime(lesson[0]) && nowMinutes < parseTime(lesson[1]));
@@ -256,44 +276,173 @@
     return { icon: "✨", label: t.finished, tone: "done" };
   }
 
+  function nextWeekHoliday(dates) {
+    if (!schoolCalendar?.holidays?.length || !dates.length) return null;
+    const weekStart = dates[0];
+    const nextWeekStart = addDays(weekStart, 7);
+    const nextWeekEnd = addDays(weekStart, 13);
+    const startKey = dateKey(nextWeekStart);
+    const endKey = dateKey(nextWeekEnd);
+    return schoolCalendar.holidays.find((holiday) => holiday.start >= startKey && holiday.start <= endKey) || null;
+  }
+
   function formatDayDate(date, language) {
     return new Intl.DateTimeFormat(localeFor(language), { day: "numeric", month: "short" }).format(date);
+  }
+
+  function daySpan(lessons) {
+    if (!lessons.length) return null;
+    const start = lessons[0][0];
+    const end = lessons[lessons.length - 1][1];
+    return { start, end, minutes: parseTime(end) - parseTime(start) };
+  }
+
+  function durationText(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins ? `${hours} h ${mins} min` : `${hours} h`;
+  }
+
+  function lessonCountText(count, language) {
+    const t = translations[language];
+    return `${count} ${count === 1 ? t.lesson : t.lessons}`;
   }
 
   function timeLabels() {
     const labels = [];
     for (let minutes = START_MINUTES; minutes <= END_MINUTES; minutes += 60) {
-      const hours = String(Math.floor(minutes / 60)).padStart(2, "0");
-      const mins = String(minutes % 60).padStart(2, "0");
-      labels.push({ value: `${hours}:${mins}`, top: ((minutes - START_MINUTES) / DAY_MINUTES) * 100 });
+      labels.push({
+        value: `${String(Math.floor(minutes / 60)).padStart(2, "0")}:00`,
+        top: ((minutes - START_MINUTES) / DAY_MINUTES) * 100,
+      });
     }
     return labels;
   }
 
-  function lessonMarkup(dayKey, lesson, displayedDate, language) {
+  function expandedLessonMarkup(dayKey, lesson, displayedDate, language) {
     const [start, end, code, room] = lesson;
     const subject = subjects[code];
-    const startMinutes = parseTime(start);
-    const endMinutes = parseTime(end);
-    const top = ((startMinutes - START_MINUTES) / DAY_MINUTES) * 100;
-    const height = ((endMinutes - startMinutes) / DAY_MINUTES) * 100;
+    const top = ((parseTime(start) - START_MINUTES) / DAY_MINUTES) * 100;
+    const height = ((parseTime(end) - parseTime(start)) / DAY_MINUTES) * 100;
     const state = lessonStateFor(dayKey, lesson, displayedDate);
     const stateText = state === "current" ? translations[language].now : state === "next" ? translations[language].next : "";
 
     return `
-      <article class="school-lesson school-subject-${code.toLowerCase()}${state ? ` is-${state}` : ""}"
-        style="--lesson-top:${top}%;--lesson-height:${height}%" title="${subject.name[language]} · ${start}–${end}${room ? ` · ${room}` : ""}">
-        <div class="school-lesson-topline">
+      <article class="school-expanded-lesson school-subject-${code.toLowerCase()}${state ? ` is-${state}` : ""}"
+        style="--lesson-top:${top}%;--lesson-height:${height}%"
+        title="${subject.name[language]} · ${start}–${end}${room ? ` · ${room}` : ""}">
+        <div class="school-expanded-lesson-top">
           <span class="school-subject-icon" aria-hidden="true">${subject.icon}</span>
-          <span class="school-subject-code">${code}</span>
+          <strong>${subject.name[language]}</strong>
           ${stateText ? `<span class="school-live-badge">${stateText}</span>` : ""}
         </div>
-        <strong>${subject.name[language]}</strong>
-        <div class="school-lesson-meta">
+        <div class="school-expanded-lesson-meta">
           <span>${start}–${end}</span>
+          <span>${code}</span>
           ${room ? `<span>${room}</span>` : ""}
         </div>
       </article>
+    `;
+  }
+
+  function compactSubjects(lessons, language) {
+    return lessons.map((lesson) => {
+      const code = lesson[2];
+      const subject = subjects[code];
+      return `<span class="school-compact-subject school-subject-${code.toLowerCase()}" title="${subject.name[language]}"><span aria-hidden="true">${subject.icon}</span><b>${code}</b></span>`;
+    }).join("");
+  }
+
+  function renderExpandedDay(dayKey, date, language, isToday) {
+    const t = translations[language];
+    const holiday = holidayForDate(date);
+    const lessons = dayLessons(dayKey, date);
+    const span = daySpan(lessons);
+    const labels = timeLabels().map((item) => `<span class="school-time-label" style="--time-top:${item.top}%">${item.value}</span>`).join("");
+
+    if (holiday) {
+      return `
+        <section class="school-day-card is-expanded is-holiday${isToday ? " is-today" : ""}">
+          <header class="school-day-card-header">
+            <div><strong>${t.weekdays[dayKey]}</strong><span>${formatDayDate(date, language)}</span></div>
+            ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
+          </header>
+          <div class="school-expanded-holiday">
+            <span aria-hidden="true">🌿</span>
+            <strong>${holidayName(holiday, language)}</strong>
+            <small>${t.holiday}</small>
+          </div>
+        </section>
+      `;
+    }
+
+    return `
+      <section class="school-day-card is-expanded${isToday ? " is-today" : ""}">
+        <header class="school-day-card-header">
+          <div>
+            <strong>${t.weekdays[dayKey]}</strong>
+            <span>${formatDayDate(date, language)}</span>
+          </div>
+          ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
+        </header>
+        ${span ? `
+          <div class="school-day-range expanded">
+            <div><small>${t.dayLength}</small><strong>${span.start} → ${span.end}</strong></div>
+            <span>${durationText(span.minutes)}</span>
+          </div>
+          <div class="school-expanded-timeline">
+            <div class="school-time-rail">${labels}</div>
+            <div class="school-expanded-lane">
+              ${lessons.map((lesson) => expandedLessonMarkup(dayKey, lesson, date, language)).join("")}
+            </div>
+          </div>
+        ` : `<div class="school-no-lessons">${t.noLessons}</div>`}
+      </section>
+    `;
+  }
+
+  function renderCompactDay(dayKey, date, language, isToday) {
+    const t = translations[language];
+    const holiday = holidayForDate(date);
+    const lessons = dayLessons(dayKey, date);
+    const span = daySpan(lessons);
+
+    return `
+      <section class="school-day-card is-compact${holiday ? " is-holiday" : ""}${isToday ? " is-today" : ""}">
+        <header class="school-day-card-header">
+          <div><strong>${t.weekdays[dayKey]}</strong><span>${formatDayDate(date, language)}</span></div>
+          ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
+        </header>
+        ${holiday ? `
+          <div class="school-compact-holiday">
+            <span aria-hidden="true">🌿</span>
+            <strong>${holidayName(holiday, language)}</strong>
+          </div>
+        ` : span ? `
+          <div class="school-day-range compact">
+            <strong>${span.start}</strong>
+            <span aria-hidden="true">↓</span>
+            <strong>${span.end}</strong>
+            <small>${durationText(span.minutes)}</small>
+          </div>
+          <div class="school-compact-count">${lessonCountText(lessons.length, language)}</div>
+          <div class="school-compact-subjects">${compactSubjects(lessons, language)}</div>
+        ` : `<div class="school-no-lessons compact">${t.noLessons}</div>`}
+      </section>
+    `;
+  }
+
+  function renderHolidayTeaser(holiday, language) {
+    if (!holiday) return "";
+    const t = translations[language];
+    const name = holidayName(holiday, language);
+    const message = t.yayNextWeek.replace("{holiday}", name);
+    return `
+      <aside class="school-holiday-teaser" role="status">
+        <span class="school-holiday-spark" aria-hidden="true">✦</span>
+        <strong>${message}</strong>
+        <span class="school-holiday-spark second" aria-hidden="true">✦</span>
+      </aside>
     `;
   }
 
@@ -306,91 +455,27 @@
     const dates = displayedDates();
     const todayKey = dateKey(new Date());
     const status = currentDayStatus(language, dates);
+    const teaserHoliday = nextWeekHoliday(dates);
+    const expandedIndex = focusedIndex(dates);
 
-    const headers = weekdayKeys.map((dayKey, index) => {
-      const isToday = dateKey(dates[index]) === todayKey;
-      return `
-        <div class="school-day-heading${isToday ? " is-today" : ""}">
-          <span class="school-day-name">${t.weekdays[dayKey]}</span>
-          <span class="school-day-date">${formatDayDate(dates[index], language)}</span>
-          ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
-        </div>
-      `;
-    }).join("");
-
-    const labels = timeLabels().map((item) => `
-      <span class="school-time-label" style="--time-top:${item.top}%">${item.value}</span>
-    `).join("");
-
-    const lanes = weekdayKeys.map((dayKey, index) => {
+    const dayCards = weekdayKeys.map((dayKey, index) => {
       const date = dates[index];
       const isToday = dateKey(date) === todayKey;
-      return `
-        <div class="school-day-lane${isToday ? " is-today" : ""}">
-          ${(timetable[dayKey] || []).map((lesson) => lessonMarkup(dayKey, lesson, date, language)).join("")}
-        </div>
-      `;
-    }).join("");
-
-    const mobileDays = weekdayKeys.map((dayKey, index) => {
-      const date = dates[index];
-      const isToday = dateKey(date) === todayKey;
-      return `
-        <section class="school-mobile-day${isToday ? " is-today" : ""}">
-          <header>
-            <div>
-              <strong>${t.weekdays[dayKey]}</strong>
-              <span>${formatDayDate(date, language)}</span>
-            </div>
-            ${isToday ? `<span class="school-today-pill">${t.today}</span>` : ""}
-          </header>
-          <div class="school-mobile-lessons">
-            ${(timetable[dayKey] || []).map((lesson) => {
-              const [start, end, code, room] = lesson;
-              const subject = subjects[code];
-              const state = lessonStateFor(dayKey, lesson, date);
-              const stateText = state === "current" ? t.now : state === "next" ? t.next : "";
-              return `
-                <article class="school-mobile-lesson school-subject-${code.toLowerCase()}${state ? ` is-${state}` : ""}">
-                  <div class="school-mobile-time"><strong>${start}</strong><span>${end}</span></div>
-                  <div class="school-mobile-subject">
-                    <div class="school-mobile-title"><span aria-hidden="true">${subject.icon}</span><strong>${subject.name[language]}</strong>${stateText ? `<span class="school-live-badge">${stateText}</span>` : ""}</div>
-                    <div class="school-mobile-meta"><span>${code}</span>${room ? `<span>${room}</span>` : ""}</div>
-                  </div>
-                </article>
-              `;
-            }).join("")}
-          </div>
-        </section>
-      `;
+      return index === expandedIndex
+        ? renderExpandedDay(dayKey, date, language, isToday)
+        : renderCompactDay(dayKey, date, language, isToday);
     }).join("");
 
     view.innerHTML = `
-      <section class="school-overview">
-        <div class="school-overview-icon" aria-hidden="true">🎒</div>
-        <div class="school-overview-copy">
-          <span class="school-overview-kicker">${t.school}</span>
+      <div class="school-top-row">
+        <div class="school-title">
+          <span aria-hidden="true">🎒</span>
           <strong>${t.schoolWeek}</strong>
-          <span>${t.repeatNote}</span>
         </div>
-        <div class="school-status school-status-${status.tone}">
-          <span aria-hidden="true">${status.icon}</span>
-          <strong>${status.label}</strong>
-        </div>
-      </section>
-
-      <div class="school-desktop-timetable">
-        <div class="school-timetable-header">
-          <div class="school-time-heading">⏰</div>
-          ${headers}
-        </div>
-        <div class="school-timeline">
-          <div class="school-time-rail">${labels}</div>
-          <div class="school-lanes">${lanes}</div>
-        </div>
+        ${status ? `<div class="school-status school-status-${status.tone}"><span aria-hidden="true">${status.icon}</span><strong>${status.label}</strong></div>` : ""}
       </div>
-
-      <div class="school-mobile-timetable">${mobileDays}</div>
+      ${renderHolidayTeaser(teaserHoliday, language)}
+      <div class="school-week-days">${dayCards}</div>
     `;
   }
 
@@ -429,6 +514,16 @@
     if (persist) localStorage.setItem(VIEW_KEY, targetView);
   }
 
+  async function loadSchoolCalendar() {
+    try {
+      const response = await fetch(SCHOOL_CALENDAR_URL);
+      if (response.ok) schoolCalendar = await response.json();
+    } catch (error) {
+      // The timetable still works if the optional local school-calendar file is unavailable.
+    }
+    renderSchoolView();
+  }
+
   function install() {
     const taskGrid = document.getElementById("weekGrid");
     const boardHeader = document.querySelector(".board-panel-header");
@@ -459,8 +554,7 @@
 
     switcher.addEventListener("click", (event) => {
       const button = event.target.closest("[data-view]");
-      if (!button) return;
-      setView(button.dataset.view);
+      if (button) setView(button.dataset.view);
     });
 
     switcher.addEventListener("keydown", (event) => {
@@ -486,6 +580,8 @@
     updateToggleLanguage();
     renderSchoolView();
     setView(localStorage.getItem(VIEW_KEY) || "tasks", false);
+    loadSchoolCalendar();
+
     window.setInterval(() => {
       if (!schoolGrid.hidden) renderSchoolView();
     }, 60000);
