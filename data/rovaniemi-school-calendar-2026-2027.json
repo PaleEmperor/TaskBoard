@@ -1,0 +1,68 @@
+{
+  "source": "Rovaniemi city / Perusopetus",
+  "schoolYear": "2026-2027",
+  "termStart": "2026-08-12",
+  "termEnd": "2027-06-05",
+  "holidays": [
+    {
+      "id": "autumn-break",
+      "start": "2026-10-12",
+      "end": "2026-10-16",
+      "name": {
+        "en": "Autumn holiday",
+        "fi": "Syysloma",
+        "de": "Herbstferien"
+      }
+    },
+    {
+      "id": "christmas-break",
+      "start": "2026-12-23",
+      "end": "2027-01-06",
+      "name": {
+        "en": "Christmas holiday",
+        "fi": "Joululoma",
+        "de": "Weihnachtsferien"
+      }
+    },
+    {
+      "id": "winter-break",
+      "start": "2027-03-08",
+      "end": "2027-03-12",
+      "name": {
+        "en": "Winter holiday",
+        "fi": "Talviloma",
+        "de": "Winterferien"
+      }
+    },
+    {
+      "id": "easter-break",
+      "start": "2027-03-26",
+      "end": "2027-03-29",
+      "name": {
+        "en": "Easter holiday",
+        "fi": "Pääsiäisvapaat",
+        "de": "Osterferien"
+      }
+    },
+    {
+      "id": "ascension-day",
+      "start": "2027-05-06",
+      "end": "2027-05-06",
+      "name": {
+        "en": "Ascension Day",
+        "fi": "Helatorstai",
+        "de": "Christi Himmelfahrt"
+      }
+    },
+    {
+      "id": "school-free-day",
+      "start": "2027-05-07",
+      "end": "2027-05-07",
+      "name": {
+        "en": "School day off",
+        "fi": "Vapaapäivä",
+        "de": "Schulfrei"
+      }
+    }
+  ]
+}
