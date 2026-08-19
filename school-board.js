@@ -253,27 +253,12 @@
     if (!lessons.length) return null;
 
     const nowMinutes = today.getHours() * 60 + today.getMinutes();
-    const current = lessons.find((lesson) => nowMinutes >= parseTime(lesson[0]) && nowMinutes < parseTime(lesson[1]));
-    if (current) {
-      const subject = subjects[current[2]];
-      return {
-        icon: subject.icon,
-        label: `${t.now}: ${subject.name[language]} · ${t.until} ${current[1]}`,
-        tone: "current",
-      };
+    const finalLesson = lessons[lessons.length - 1];
+    if (nowMinutes >= parseTime(finalLesson[1])) {
+      return { icon: "✨", label: t.finished, tone: "done" };
     }
 
-    const next = lessons.find((lesson) => parseTime(lesson[0]) > nowMinutes);
-    if (next) {
-      const subject = subjects[next[2]];
-      return {
-        icon: subject.icon,
-        label: `${t.next}: ${subject.name[language]} · ${t.starts} ${next[0]}`,
-        tone: "next",
-      };
-    }
-
-    return { icon: "✨", label: t.finished, tone: "done" };
+    return null;
   }
 
   function nextWeekHoliday(dates) {
