@@ -1,4 +1,4 @@
-const CACHE_NAME = "homeflow-cache-v10";
+const CACHE_NAME = "homeflow-cache-v11";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -37,15 +37,9 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
-  if (request.method !== "GET") {
-    return;
-  }
-
+  if (request.method !== "GET") return;
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) {
-    return;
-  }
-
+  if (url.origin !== self.location.origin) return;
   event.respondWith(
     caches.match(request).then(async (cached) => {
       try {
@@ -58,7 +52,6 @@ self.addEventListener("fetch", (event) => {
       } catch (error) {
         // Offline: use the cached copy below.
       }
-
       return cached || Response.error();
     })
   );
