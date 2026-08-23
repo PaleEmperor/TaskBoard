@@ -135,7 +135,7 @@
           <div class="afternoon-club-compat-error" data-compat-error aria-live="polite"></div>
         </div>
         <div class="afternoon-club-compat-actions">
-          <button class="afternoon-club-compat-remove" type="button" data-compat-remove></button><span class="compat-spacer"></span><button class="afternoon-club-compat-cancel" type="button" data-compat-close></button><button class="afternoon-club-compat-save" type="button" data-compat-save></button>
+          <button class="afternoon-club-compat-remove" type="button" data-compat-remove></button><span class="compat-spacer"></span><button class="afternoon-club-compat-cancel" type="button" data-compat-close data-compat-cancel></button><button class="afternoon-club-compat-save" type="button" data-compat-save></button>
         </div>
       </section>
     `;
