@@ -21,6 +21,10 @@
       cancel: "Cancel",
       remove: "Remove",
       invalid: "The club has to end after school ({time}).",
+      copyWeek: "Copy last week",
+      copyWeekTitle: "Copy last week's Afternoon Club times to this week",
+      copiedWeek: "Copied {count} Afternoon Club days from last week",
+      copiedNone: "Last week had no Afternoon Club entries",
       weekdays: { monday: "Monday", tuesday: "Tuesday", wednesday: "Wednesday", thursday: "Thursday", friday: "Friday" },
     },
     fi: {
@@ -34,6 +38,10 @@
       cancel: "Peruuta",
       remove: "Poista",
       invalid: "Kerhon täytyy päättyä koulupäivän jälkeen ({time}).",
+      copyWeek: "Kopioi viime viikko",
+      copyWeekTitle: "Kopioi viime viikon iltapäiväkerhoajat tälle viikolle",
+      copiedWeek: "Kopioitiin {count} iltapäiväkerhopäivää viime viikolta",
+      copiedNone: "Viime viikolla ei ollut iltapäiväkerhomerkintöjä",
       weekdays: { monday: "Maanantai", tuesday: "Tiistai", wednesday: "Keskiviikko", thursday: "Torstai", friday: "Perjantai" },
     },
     de: {
@@ -47,12 +55,17 @@
       cancel: "Abbrechen",
       remove: "Entfernen",
       invalid: "Die Betreuung muss nach Schulschluss ({time}) enden.",
+      copyWeek: "Letzte Woche kopieren",
+      copyWeekTitle: "Nachmittagsbetreuung der letzten Woche auf diese Woche kopieren",
+      copiedWeek: "{count} Betreuungstage aus der letzten Woche kopiert",
+      copiedNone: "Letzte Woche gab es keine Betreuungseinträge",
       weekdays: { monday: "Montag", tuesday: "Dienstag", wednesday: "Mittwoch", thursday: "Donnerstag", friday: "Freitag" },
     },
   };
 
   let activeDate = null;
   let activeDay = null;
+  let schoolObserver = null;
 
   function language() {
     const active = document.querySelector("#languageToggle .lang-chip.active[data-lang]")?.dataset.lang;
@@ -82,13 +95,33 @@
     localStorage.setItem(CLUB_KEY, JSON.stringify(value));
   }
 
-  function formatDate(dateKey, lang) {
+  function dateFromKey(dateKey) {
     const [year, month, day] = String(dateKey).split("-").map(Number);
-    const date = new Date(year, month - 1, day, 12);
+    return new Date(year, month - 1, day, 12, 0, 0, 0);
+  }
+
+  function dateKey(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  }
+
+  function shiftDateKey(value, days) {
+    const date = dateFromKey(value);
+    date.setDate(date.getDate() + days);
+    return dateKey(date);
+  }
+
+  function formatDate(value, lang) {
     return new Intl.DateTimeFormat({ en: "en-GB", fi: "fi-FI", de: "de-DE" }[lang] || "en-GB", {
       day: "numeric",
       month: "short",
-    }).format(date);
+    }).format(dateFromKey(value));
+  }
+
+  function displayedWeekKeys() {
+    return Array.from(document.querySelectorAll("#weekGrid .day-column[data-date]"))
+      .slice(0, 5)
+      .map((column) => column.dataset.date)
+      .filter(Boolean);
   }
 
   function refreshSchoolView() {
@@ -99,10 +132,10 @@
     marker.remove();
   }
 
-  function ensureOverlay() {
-    if (document.getElementById("afternoonClubCompatOverlay")) return;
-
+  function ensureStyles() {
+    if (document.getElementById("afternoonClubCompatStyles")) return;
     const style = document.createElement("style");
+    style.id = "afternoonClubCompatStyles";
     style.textContent = `
       .afternoon-club-compat-overlay[hidden]{display:none!important}
       .afternoon-club-compat-overlay{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:14px;background:rgba(30,43,50,.38);backdrop-filter:blur(5px)}
@@ -112,10 +145,19 @@
       .afternoon-club-compat-close{width:36px;height:36px;border:0;border-radius:999px;background:rgba(224,234,239,.78);color:#5e727e;cursor:pointer;font:inherit;font-size:1.4rem;line-height:1}
       .afternoon-club-compat-body{display:grid;gap:12px;padding:16px}.afternoon-club-compat-time{display:grid;gap:7px;color:#5c707d;font-size:.76rem;font-weight:850}.afternoon-club-compat-time input{width:100%;min-width:0;height:58px;box-sizing:border-box;padding:0 14px;border:1px solid rgba(106,137,154,.22);border-radius:14px;background:#fff;color:#2d4552;font:inherit;font-size:1.35rem;font-weight:900;font-variant-numeric:tabular-nums}.afternoon-club-compat-label,.afternoon-club-compat-helper{color:#7b8c96;font-size:.69rem;font-weight:800}.afternoon-club-compat-quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.afternoon-club-compat-quick button{min-height:42px;border:1px solid rgba(106,137,154,.18);border-radius:12px;background:rgba(242,247,250,.92);color:#506773;cursor:pointer;font:inherit;font-weight:900;font-variant-numeric:tabular-nums}.afternoon-club-compat-quick button.active{border-color:rgba(190,151,83,.32);background:rgba(255,246,220,.96);color:#7b6135}.afternoon-club-compat-error{min-height:18px;color:#a34e4e;font-size:.7rem;font-weight:800}
       .afternoon-club-compat-actions{display:grid;grid-template-columns:auto 1fr auto auto;gap:8px;align-items:center;padding:12px 16px 16px;border-top:1px solid rgba(104,133,150,.1)}.afternoon-club-compat-actions button{min-height:40px;padding:8px 13px;border-radius:12px;cursor:pointer;font:inherit;font-size:.74rem;font-weight:900}.afternoon-club-compat-remove{border:1px solid rgba(176,91,91,.18);background:rgba(253,239,239,.92);color:#9b5555}.afternoon-club-compat-cancel{border:1px solid rgba(106,137,154,.16);background:rgba(242,247,250,.92);color:#5c707d}.afternoon-club-compat-save{border:0;background:linear-gradient(135deg,#314c5d,#243844);color:#fff;box-shadow:0 7px 16px rgba(36,56,68,.16)}
-      body.dark-mode .afternoon-club-compat-panel{background:#1c2b33;color:#eaf3f7;border-color:rgba(255,255,255,.08)}body.dark-mode .afternoon-club-compat-head{background:linear-gradient(135deg,rgba(69,57,36,.94),rgba(30,46,54,.98));border-color:rgba(255,255,255,.07)}body.dark-mode .afternoon-club-compat-time input{background:#23343d;color:#eef6f8;border-color:rgba(255,255,255,.1);color-scheme:dark}body.dark-mode .afternoon-club-compat-quick button,body.dark-mode .afternoon-club-compat-cancel{background:#263943;color:#c7d5dc;border-color:rgba(255,255,255,.08)}body.dark-mode .afternoon-club-compat-quick button.active{background:#594a30;color:#f0dba9;border-color:rgba(218,179,101,.18)}body.dark-mode .afternoon-club-compat-save{background:linear-gradient(135deg,#eef5f8,#dce8ed);color:#243844}
+      .school-copy-week-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 11px;border:1px solid rgba(108,136,151,.18);border-radius:12px;background:linear-gradient(135deg,rgba(247,251,253,.98),rgba(237,245,249,.94));color:#526a77;cursor:pointer;font:inherit;font-size:.7rem;font-weight:900;white-space:nowrap;box-shadow:0 7px 18px rgba(49,73,88,.06);transition:transform .15s ease,border-color .15s ease,background .15s ease}.school-copy-week-button:hover{transform:translateY(-1px);border-color:rgba(91,134,158,.3);background:#fff}.school-copy-week-button span:first-child{font-size:.9rem}
+      .school-copy-toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));z-index:2147482999;transform:translateX(-50%);max-width:min(520px,calc(100vw - 28px));padding:10px 15px;border:1px solid rgba(104,133,150,.16);border-radius:999px;background:rgba(42,61,72,.94);color:#fff;box-shadow:0 14px 38px rgba(30,43,50,.22);font-size:.76rem;font-weight:850;text-align:center;animation:school-copy-toast-in .18s ease-out both}@keyframes school-copy-toast-in{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+      body.dark-mode .afternoon-club-compat-panel{background:#1c2b33;color:#eaf3f7;border-color:rgba(255,255,255,.08)}body.dark-mode .afternoon-club-compat-head{background:linear-gradient(135deg,rgba(69,57,36,.94),rgba(30,46,54,.98));border-color:rgba(255,255,255,.07)}body.dark-mode .afternoon-club-compat-time input{background:#23343d;color:#eef6f8;border-color:rgba(255,255,255,.1);color-scheme:dark}body.dark-mode .afternoon-club-compat-quick button,body.dark-mode .afternoon-club-compat-cancel{background:#263943;color:#c7d5dc;border-color:rgba(255,255,255,.08)}body.dark-mode .afternoon-club-compat-quick button.active{background:#594a30;color:#f0dba9;border-color:rgba(218,179,101,.18)}body.dark-mode .afternoon-club-compat-save{background:linear-gradient(135deg,#eef5f8,#dce8ed);color:#243844}body.dark-mode .school-copy-week-button{background:linear-gradient(135deg,rgba(39,57,67,.96),rgba(31,47,56,.96));color:#c6d6de;border-color:rgba(255,255,255,.08)}body.dark-mode .school-copy-week-button:hover{background:#2c424d;color:#eef6f8}
+      @media(max-width:700px){.school-copy-week-button{width:100%;min-height:40px}}
       @media(max-width:500px){.afternoon-club-compat-quick{grid-template-columns:repeat(2,minmax(0,1fr))}.afternoon-club-compat-actions{grid-template-columns:1fr 1fr}.afternoon-club-compat-actions .compat-spacer{display:none}.afternoon-club-compat-remove{grid-column:1}.afternoon-club-compat-cancel{grid-column:1;grid-row:2}.afternoon-club-compat-save{grid-column:2;grid-row:2}}
+      @media(prefers-reduced-motion:reduce){.school-copy-week-button,.school-copy-toast{animation:none!important;transition:none!important}}
     `;
     document.head.appendChild(style);
+  }
+
+  function ensureOverlay() {
+    ensureStyles();
+    if (document.getElementById("afternoonClubCompatOverlay")) return;
 
     const overlay = document.createElement("div");
     overlay.id = "afternoonClubCompatOverlay";
@@ -161,28 +203,40 @@
     activeDay = null;
   }
 
-  function openOverlay(dateKey, dayKey) {
+  function openOverlay(value, dayKey) {
     ensureOverlay();
-    activeDate = dateKey;
+    activeDate = value;
     activeDay = dayKey;
     const overlay = document.getElementById("afternoonClubCompatOverlay");
+    if (!overlay || !SCHOOL_END[dayKey]) return;
+
     const lang = language();
     const t = copy[lang];
     const clubs = readClubs();
-    const existing = clubs[dateKey] || "";
+    const existing = clubs[value] || "";
     const schoolEnd = SCHOOL_END[dayKey];
     const input = overlay.querySelector("[data-compat-time]");
+    const title = overlay.querySelector("#afternoonClubCompatTitle");
+    const dateLabel = overlay.querySelector("[data-compat-date]");
+    const endLabel = overlay.querySelector("[data-compat-end-label]");
+    const quickLabel = overlay.querySelector("[data-compat-quick-label]");
+    const helper = overlay.querySelector("[data-compat-helper]");
+    const save = overlay.querySelector("[data-compat-save]");
+    const cancel = overlay.querySelector("[data-compat-cancel]");
+    const remove = overlay.querySelector("[data-compat-remove]");
+    const error = overlay.querySelector("[data-compat-error]");
+    if (!input || !title || !dateLabel || !endLabel || !quickLabel || !helper || !save || !cancel || !remove || !error) return;
 
-    overlay.querySelector("#afternoonClubCompatTitle").textContent = t.title;
-    overlay.querySelector("[data-compat-date]").textContent = t.forDay.replace("{day}", `${t.weekdays[dayKey]} ${formatDate(dateKey, lang)}`);
-    overlay.querySelector("[data-compat-end-label]").textContent = t.endTime;
-    overlay.querySelector("[data-compat-quick-label]").textContent = t.quick;
-    overlay.querySelector("[data-compat-helper]").textContent = `${t.custom} · ${t.schoolEnds.replace("{time}", schoolEnd)}`;
-    overlay.querySelector("[data-compat-save]").textContent = t.save;
-    overlay.querySelector("[data-compat-cancel]").textContent = t.cancel;
-    overlay.querySelector("[data-compat-remove]").textContent = t.remove;
-    overlay.querySelector("[data-compat-remove]").hidden = !existing;
-    overlay.querySelector("[data-compat-error]").textContent = "";
+    title.textContent = t.title;
+    dateLabel.textContent = t.forDay.replace("{day}", `${t.weekdays[dayKey]} ${formatDate(value, lang)}`);
+    endLabel.textContent = t.endTime;
+    quickLabel.textContent = t.quick;
+    helper.textContent = `${t.custom} · ${t.schoolEnds.replace("{time}", schoolEnd)}`;
+    save.textContent = t.save;
+    cancel.textContent = t.cancel;
+    remove.textContent = t.remove;
+    remove.hidden = !existing;
+    error.textContent = "";
     input.min = schoolEnd;
     input.value = existing || "15:00";
     overlay.querySelectorAll("[data-compat-quick]").forEach((button) => button.classList.toggle("active", button.dataset.compatQuick === input.value));
@@ -193,10 +247,12 @@
   function saveActive() {
     if (!activeDate || !activeDay) return;
     const overlay = document.getElementById("afternoonClubCompatOverlay");
-    const input = overlay.querySelector("[data-compat-time]");
+    const input = overlay?.querySelector("[data-compat-time]");
+    const error = overlay?.querySelector("[data-compat-error]");
     const schoolEnd = SCHOOL_END[activeDay];
+    if (!overlay || !input || !error || !schoolEnd) return;
     if (!input.value || parseTime(input.value) <= parseTime(schoolEnd)) {
-      overlay.querySelector("[data-compat-error]").textContent = copy[language()].invalid.replace("{time}", schoolEnd);
+      error.textContent = copy[language()].invalid.replace("{time}", schoolEnd);
       return;
     }
     const clubs = readClubs();
@@ -215,12 +271,104 @@
     refreshSchoolView();
   }
 
+  function showToast(message) {
+    document.getElementById("schoolCopyWeekToast")?.remove();
+    const toast = document.createElement("div");
+    toast.id = "schoolCopyWeekToast";
+    toast.className = "school-copy-toast";
+    toast.setAttribute("role", "status");
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    window.setTimeout(() => toast.remove(), 2600);
+  }
+
+  function copyPreviousWeek() {
+    const currentWeek = displayedWeekKeys();
+    if (currentWeek.length !== 5) return;
+
+    const schoolGrid = document.getElementById("schoolWeekGrid");
+    const validSchoolDates = new Set(Array.from(schoolGrid?.querySelectorAll("[data-club-date]") || []).map((button) => button.dataset.clubDate));
+    const clubs = readClubs();
+    let count = 0;
+
+    currentWeek.forEach((currentDate) => {
+      const previousDate = shiftDateKey(currentDate, -7);
+      const previousValue = clubs[previousDate];
+      delete clubs[currentDate];
+      if (validSchoolDates.has(currentDate) && previousValue) {
+        clubs[currentDate] = previousValue;
+        count += 1;
+      }
+    });
+
+    writeClubs(clubs);
+    refreshSchoolView();
+    const t = copy[language()];
+    showToast(count ? t.copiedWeek.replace("{count}", String(count)) : t.copiedNone);
+  }
+
+  function ensureCopyButton() {
+    const row = document.querySelector("#schoolWeekGrid .school-top-row");
+    if (!row) return;
+    const t = copy[language()];
+    let button = row.querySelector("[data-copy-afternoon-week]");
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "school-copy-week-button";
+      button.dataset.copyAfternoonWeek = "true";
+      const status = row.querySelector(".school-status");
+      if (status) row.insertBefore(button, status);
+      else row.appendChild(button);
+    }
+    button.innerHTML = `<span aria-hidden="true">↶</span><span>${t.copyWeek}</span>`;
+    button.title = t.copyWeekTitle;
+    button.setAttribute("aria-label", t.copyWeekTitle);
+  }
+
+  function observeSchoolGrid() {
+    const schoolGrid = document.getElementById("schoolWeekGrid");
+    if (!schoolGrid) return false;
+    schoolObserver?.disconnect();
+    schoolObserver = new MutationObserver(() => ensureCopyButton());
+    schoolObserver.observe(schoolGrid, { childList: true, subtree: false });
+    ensureCopyButton();
+    return true;
+  }
+
+  function boot() {
+    ensureStyles();
+    ensureOverlay();
+    if (!observeSchoolGrid()) {
+      const bodyObserver = new MutationObserver(() => {
+        if (observeSchoolGrid()) bodyObserver.disconnect();
+      });
+      bodyObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
+    const languageToggle = document.getElementById("languageToggle");
+    if (languageToggle) {
+      new MutationObserver(() => ensureCopyButton()).observe(languageToggle, { subtree: true, attributes: true, attributeFilter: ["class"], childList: true });
+    }
+  }
+
   document.addEventListener("click", (event) => {
-    const target = event.target instanceof Element ? event.target.closest("[data-club-date]") : null;
-    if (!target || !document.getElementById("schoolWeekGrid")?.contains(target)) return;
+    const element = event.target instanceof Element ? event.target : null;
+    if (!element) return;
+
+    const copyButton = element.closest("[data-copy-afternoon-week]");
+    if (copyButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      copyPreviousWeek();
+      return;
+    }
+
+    const clubButton = element.closest("[data-club-date]");
+    if (!clubButton || !document.getElementById("schoolWeekGrid")?.contains(clubButton)) return;
     event.preventDefault();
     event.stopImmediatePropagation();
-    openOverlay(target.dataset.clubDate, target.dataset.clubDay);
+    openOverlay(clubButton.dataset.clubDate, clubButton.dataset.clubDay);
   }, true);
 
   document.addEventListener("keydown", (event) => {
@@ -229,4 +377,7 @@
       closeOverlay();
     }
   });
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
+  else boot();
 })();
