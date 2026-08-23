@@ -40,8 +40,13 @@ tasks.register("syncWebAssets", Sync) {
     include "index.html"
     include "styles.css"
     include "app.js"
+    include "school-board.css"
+    include "school-board.js"
+    include "school-club-fix.js"
     include "manifest.webmanifest"
     include "sw.js"
+    include "data/**"
+    include "art/**"
     include "icons/**"
   }
   into(assetOutput)
