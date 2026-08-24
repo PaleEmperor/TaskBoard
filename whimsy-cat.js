@@ -233,18 +233,16 @@
   }
 
   function chooseNextSpot(forceDifferent = true) {
-    const all = candidateSpots();
-    const safe = all.filter((spot) => !overlapsPlan(spot));
-    const pool = safe.length ? safe : all;
+    const safe = candidateSpots().filter((spot) => !overlapsPlan(spot));
 
-    if (!pool.length) {
+    if (!safe.length) {
       const { width } = catSize();
       return { id: "offscreen-safe", x: -width - 24, y: EDGE_MARGIN, pose: "floor", flip: 1 };
     }
 
     const protectedAreas = protectedRects();
-    let choices = pool.filter((spot) => !forceDifferent || spot.id !== currentSpotId);
-    if (!choices.length) choices = pool;
+    let choices = safe.filter((spot) => !forceDifferent || spot.id !== currentSpotId);
+    if (!choices.length) choices = safe;
 
     const ranked = choices
       .map((spot) => ({ spot, score: candidateScore(spot, protectedAreas) }))
