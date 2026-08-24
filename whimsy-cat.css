@@ -23,9 +23,18 @@
   aspect-ratio: 1.08 / 1;
   opacity: .96;
   transform: translate3d(var(--cat-x), var(--cat-y), 0);
-  transition: transform .7s cubic-bezier(.2,.75,.22,1), opacity .24s ease, filter .24s ease;
+  transition-property: transform, opacity, filter;
+  transition-duration: .7s, .24s, .24s;
+  transition-timing-function: cubic-bezier(.2,.75,.22,1), ease, ease;
   filter: drop-shadow(0 7px 9px rgba(49, 67, 77, .13));
   will-change: transform, opacity;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.homeflow-cat-stage:hover {
+  filter: drop-shadow(0 9px 12px rgba(49, 67, 77, .17));
 }
 
 .homeflow-cat-stage.is-relocating {
@@ -51,6 +60,7 @@
   width: 100%;
   height: 100%;
   animation: homeflow-cat-bob 4.8s ease-in-out infinite;
+  transform-origin: 50% 85%;
 }
 
 .homeflow-cat-body {
@@ -62,6 +72,7 @@
   border-radius: 42% 54% 35% 33%;
   background: linear-gradient(145deg, #f8d56d 0%, var(--cat-fur) 58%, var(--cat-fur-deep) 120%);
   box-shadow: inset -5px -5px 0 rgba(177, 126, 48, .08);
+  transform-origin: 50% 100%;
 }
 
 .homeflow-cat-tail {
@@ -88,6 +99,7 @@
   border-radius: 4px 4px 45% 45%;
   background: var(--cat-fur);
   box-shadow: inset 0 -3px 0 rgba(178, 126, 47, .08);
+  transform-origin: 50% 0;
 }
 
 .homeflow-cat-paw.left { left: 10%; }
@@ -103,6 +115,7 @@
   background: linear-gradient(150deg, #f9d66e 0%, var(--cat-fur) 63%, #e8b64d 115%);
   box-shadow: inset -4px -4px 0 rgba(177, 126, 48, .06);
   z-index: 2;
+  transform-origin: 50% 80%;
 }
 
 .homeflow-cat-ear {
@@ -199,25 +212,86 @@
   content: "";
 }
 
-.homeflow-cat-whiskers {
-  top: 68%;
-}
-
+.homeflow-cat-whiskers { top: 68%; }
 .homeflow-cat-whiskers::before { top: -5px; width: 100%; transform: rotate(9deg); }
 .homeflow-cat-whiskers::after { top: 5px; width: 100%; transform: rotate(-9deg); }
 .homeflow-cat-whiskers.left { left: -20%; }
 .homeflow-cat-whiskers.right { right: -20%; transform: scaleX(-1); }
 
-.homeflow-cat-stage[data-pose="peek"] .homeflow-cat {
-  transform: translateY(6%);
+.homeflow-cat-bubble {
+  position: absolute;
+  left: 54%;
+  bottom: 92%;
+  z-index: 5;
+  min-width: 42px;
+  max-width: 100px;
+  padding: 6px 9px;
+  border: 1px solid rgba(111, 139, 155, .18);
+  border-radius: 13px 13px 13px 5px;
+  background: rgba(252, 254, 255, .96);
+  color: #526875;
+  box-shadow: 0 8px 22px rgba(49, 73, 88, .12);
+  font-size: clamp(.62rem, .7vw, .72rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .01em;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(5px) scale(.92);
+  transform-origin: 0 100%;
+  transition: opacity .2s ease, transform .24s cubic-bezier(.2,.75,.22,1);
+  pointer-events: none;
 }
 
-.homeflow-cat-stage[data-pose="perch"] .homeflow-cat-paw {
-  bottom: -2%;
+.homeflow-cat-bubble::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 100%;
+  width: 9px;
+  height: 9px;
+  background: inherit;
+  border-right: 1px solid rgba(111, 139, 155, .18);
+  border-bottom: 1px solid rgba(111, 139, 155, .18);
+  transform: translateY(-5px) rotate(45deg);
 }
 
-.homeflow-cat-stage[data-pose="floor"] .homeflow-cat {
-  animation-duration: 5.7s;
+.homeflow-cat-bubble.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.homeflow-cat-stage[data-pose="peek"] .homeflow-cat { transform: translateY(6%); }
+.homeflow-cat-stage[data-pose="perch"] .homeflow-cat-paw { bottom: -2%; }
+.homeflow-cat-stage[data-pose="floor"] .homeflow-cat { animation-duration: 5.7s; }
+
+.homeflow-cat-stage.is-walking .homeflow-cat {
+  animation: homeflow-cat-walk-body .34s ease-in-out infinite alternate;
+}
+
+.homeflow-cat-stage.is-walking .homeflow-cat-body {
+  animation: homeflow-cat-walk-body .34s ease-in-out infinite alternate-reverse;
+}
+
+.homeflow-cat-stage.is-walking .homeflow-cat-head {
+  animation: homeflow-cat-walk-head .34s ease-in-out infinite alternate;
+}
+
+.homeflow-cat-stage.is-walking .homeflow-cat-paw.left {
+  animation: homeflow-cat-step-left .34s ease-in-out infinite alternate;
+}
+
+.homeflow-cat-stage.is-walking .homeflow-cat-paw.right {
+  animation: homeflow-cat-step-right .34s ease-in-out infinite alternate;
+}
+
+.homeflow-cat-stage.is-walking .homeflow-cat-tail {
+  animation: homeflow-cat-walk-tail .68s ease-in-out infinite alternate;
+}
+
+.homeflow-cat-stage.is-poked .homeflow-cat-orientation {
+  animation: homeflow-cat-poke .4s ease;
 }
 
 body.dark-mode .homeflow-cat-stage {
@@ -229,6 +303,18 @@ body.dark-mode .homeflow-cat {
   --cat-fur-deep: #c9943d;
   --cat-ear: #dc93a3;
   --cat-eye: #78a88c;
+}
+
+body.dark-mode .homeflow-cat-bubble {
+  border-color: rgba(255, 255, 255, .09);
+  background: rgba(35, 52, 61, .97);
+  color: #d8e4e9;
+  box-shadow: 0 9px 24px rgba(0, 0, 0, .24);
+}
+
+body.dark-mode .homeflow-cat-bubble::after {
+  border-right-color: rgba(255, 255, 255, .09);
+  border-bottom-color: rgba(255, 255, 255, .09);
 }
 
 @keyframes homeflow-cat-blink {
@@ -246,10 +332,46 @@ body.dark-mode .homeflow-cat {
   50% { translate: 0 -1.5px; }
 }
 
+@keyframes homeflow-cat-walk-body {
+  from { transform: translateY(0) rotate(-1deg); }
+  to { transform: translateY(-3px) rotate(1deg); }
+}
+
+@keyframes homeflow-cat-walk-head {
+  from { transform: translateY(0) rotate(1deg); }
+  to { transform: translateY(2px) rotate(-1.5deg); }
+}
+
+@keyframes homeflow-cat-step-left {
+  from { transform: rotate(17deg) translateY(-1px); }
+  to { transform: rotate(-17deg) translateY(2px); }
+}
+
+@keyframes homeflow-cat-step-right {
+  from { transform: rotate(-17deg) translateY(2px); }
+  to { transform: rotate(17deg) translateY(-1px); }
+}
+
+@keyframes homeflow-cat-walk-tail {
+  from { transform: rotate(7deg); }
+  to { transform: rotate(31deg); }
+}
+
+@keyframes homeflow-cat-poke {
+  0%, 100% { transform: rotate(var(--cat-rotate)) scaleX(var(--cat-flip)) translateY(0); }
+  35% { transform: rotate(var(--cat-rotate)) scaleX(var(--cat-flip)) translateY(-7px) rotate(-4deg); }
+  65% { transform: rotate(var(--cat-rotate)) scaleX(var(--cat-flip)) translateY(-2px) rotate(3deg); }
+}
+
 @media (max-width: 720px) {
   .homeflow-cat-stage {
     width: clamp(58px, 14vw, 76px);
     opacity: .94;
+  }
+
+  .homeflow-cat-bubble {
+    font-size: .62rem;
+    padding: 5px 7px;
   }
 }
 
@@ -258,7 +380,11 @@ body.dark-mode .homeflow-cat {
   .homeflow-cat-orientation,
   .homeflow-cat,
   .homeflow-cat-tail,
-  .homeflow-cat-eye {
+  .homeflow-cat-eye,
+  .homeflow-cat-body,
+  .homeflow-cat-head,
+  .homeflow-cat-paw,
+  .homeflow-cat-bubble {
     transition: none !important;
     animation: none !important;
   }
