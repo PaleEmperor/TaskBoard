@@ -43,6 +43,8 @@ tasks.register("syncWebAssets", Sync) {
     include "school-board.css"
     include "school-board.js"
     include "school-club-fix.js"
+    include "whimsy-cat.css"
+    include "whimsy-cat.js"
     include "manifest.webmanifest"
     include "sw.js"
     include "data/**"
