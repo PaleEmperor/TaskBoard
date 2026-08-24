@@ -5,6 +5,8 @@
   const MIN_SEGMENT_MS = 520;
   const MAX_SEGMENT_MS = 2600;
   const EDGE_MARGIN = 10;
+  const PLAN_CLEARANCE = 14;
+  const UPPER_ZONE_FRACTION = 0.30;
 
   const meows = {
     en: ["meow", "mrrp", "mew"],
@@ -17,6 +19,7 @@
   let moveTimer = null;
   let meowTimer = null;
   let meowHideTimer = null;
+  let layoutTimer = null;
   let isWalking = false;
 
   function language() {
@@ -91,28 +94,57 @@
     return document.querySelector(".app-shell")?.getBoundingClientRect() || null;
   }
 
+  function visibleRects(selectors, expandBy = 0) {
+    return Array.from(document.querySelectorAll(selectors.join(",")))
+      .filter((element) => !element.closest("#homeflowCatLayer"))
+      .map((element) => element.getBoundingClientRect())
+      .filter((rect) =>
+        rect.width > 0 &&
+        rect.height > 0 &&
+        rect.bottom > 0 &&
+        rect.right > 0 &&
+        rect.top < window.innerHeight &&
+        rect.left < window.innerWidth
+      )
+      .map((rect) => expandedRect(rect, expandBy));
+  }
+
+  function planRects() {
+    return visibleRects([
+      "#weekGrid",
+      "#schoolWeekGrid",
+      ".week-grid",
+      ".school-week-grid",
+    ], PLAN_CLEARANCE);
+  }
+
+  function upperZoneBottom() {
+    const { height } = catSize();
+    let bottom = window.innerHeight * UPPER_ZONE_FRACTION;
+    const plans = planRects();
+    if (plans.length) bottom = Math.min(bottom, ...plans.map((rect) => rect.top));
+    return Math.max(EDGE_MARGIN + height, bottom);
+  }
+
   function candidateSpots() {
     const { width, height } = catSize();
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const maxX = Math.max(EDGE_MARGIN, vw - width - EDGE_MARGIN);
-    const maxY = Math.max(EDGE_MARGIN, vh - height - EDGE_MARGIN);
-    const y1 = clamp(vh * .18, EDGE_MARGIN, maxY);
-    const y2 = clamp(vh * .43, EDGE_MARGIN, maxY);
-    const y3 = clamp(vh * .68, EDGE_MARGIN, maxY);
-    const bottom = maxY;
+    const maxUpperY = Math.max(EDGE_MARGIN, upperZoneBottom() - height);
+    const y1 = clamp(vh * .055, Math.min(42, maxUpperY), maxUpperY);
+    const y2 = clamp(vh * .12, EDGE_MARGIN, maxUpperY);
+    const y3 = clamp(vh * .19, EDGE_MARGIN, maxUpperY);
     const left = EDGE_MARGIN;
     const right = maxX;
 
     const spots = [
-      { id: "edge-left-high", x: left, y: y1, pose: "peek", flip: 1 },
-      { id: "edge-right-high", x: right, y: y1, pose: "peek", flip: -1 },
-      { id: "edge-left-mid", x: left, y: y2, pose: "perch", flip: 1 },
-      { id: "edge-right-mid", x: right, y: y2, pose: "perch", flip: -1 },
-      { id: "edge-left-low", x: left, y: y3, pose: "floor", flip: 1 },
-      { id: "edge-right-low", x: right, y: y3, pose: "floor", flip: -1 },
-      { id: "bottom-left", x: left, y: bottom, pose: "floor", flip: 1 },
-      { id: "bottom-right", x: right, y: bottom, pose: "floor", flip: -1 },
+      { id: "edge-left-top", x: left, y: y1, pose: "peek", flip: 1 },
+      { id: "edge-right-top", x: right, y: y1, pose: "peek", flip: -1 },
+      { id: "edge-left-upper", x: left, y: y2, pose: "perch", flip: 1 },
+      { id: "edge-right-upper", x: right, y: y2, pose: "perch", flip: -1 },
+      { id: "edge-left-lower", x: left, y: y3, pose: "floor", flip: 1 },
+      { id: "edge-right-lower", x: right, y: y3, pose: "floor", flip: -1 },
     ];
 
     const app = appBounds();
@@ -122,17 +154,17 @@
       if (leftGap >= width + 18) {
         const gutterX = clamp(app.left - width - 10, EDGE_MARGIN, maxX);
         spots.push(
-          { id: "gutter-left-high", x: gutterX, y: y1, pose: "peek", flip: 1 },
-          { id: "gutter-left-mid", x: gutterX, y: y2, pose: "perch", flip: 1 },
-          { id: "gutter-left-low", x: gutterX, y: y3, pose: "floor", flip: 1 },
+          { id: "gutter-left-top", x: gutterX, y: y1, pose: "peek", flip: 1 },
+          { id: "gutter-left-upper", x: gutterX, y: y2, pose: "perch", flip: 1 },
+          { id: "gutter-left-lower", x: gutterX, y: y3, pose: "floor", flip: 1 },
         );
       }
       if (rightGap >= width + 18) {
         const gutterX = clamp(app.right + 10, EDGE_MARGIN, maxX);
         spots.push(
-          { id: "gutter-right-high", x: gutterX, y: y1, pose: "peek", flip: -1 },
-          { id: "gutter-right-mid", x: gutterX, y: y2, pose: "perch", flip: -1 },
-          { id: "gutter-right-low", x: gutterX, y: y3, pose: "floor", flip: -1 },
+          { id: "gutter-right-top", x: gutterX, y: y1, pose: "peek", flip: -1 },
+          { id: "gutter-right-upper", x: gutterX, y: y2, pose: "perch", flip: -1 },
+          { id: "gutter-right-lower", x: gutterX, y: y3, pose: "floor", flip: -1 },
         );
       }
     }
@@ -155,8 +187,23 @@
     return width * height;
   }
 
+  function spotRect(spot) {
+    const { width, height } = catSize();
+    return {
+      left: spot.x,
+      top: spot.y,
+      right: spot.x + width,
+      bottom: spot.y + height,
+    };
+  }
+
+  function overlapsPlan(spot) {
+    const rect = spotRect(spot);
+    return planRects().some((plan) => overlapArea(rect, plan) > 0);
+  }
+
   function protectedRects() {
-    const selectors = [
+    return visibleRects([
       "button",
       "a",
       "input",
@@ -170,41 +217,34 @@
       ".tool-drawer",
       ".school-club-button",
       "#afternoonClubCompatOverlay:not([hidden])",
-    ];
-
-    return Array.from(document.querySelectorAll(selectors.join(",")))
-      .filter((element) => !element.closest("#homeflowCatLayer"))
-      .map((element) => element.getBoundingClientRect())
-      .filter((rect) => rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.right > 0 && rect.top < window.innerHeight && rect.left < window.innerWidth)
-      .map((rect) => expandedRect(rect));
+    ], 8);
   }
 
   function candidateScore(spot, protectedAreas) {
-    const { width, height } = catSize();
-    const rect = {
-      left: spot.x,
-      top: spot.y,
-      right: spot.x + width,
-      bottom: spot.y + height,
-    };
+    const rect = spotRect(spot);
     let score = 0;
     protectedAreas.forEach((protectedRect) => {
       score += overlapArea(rect, protectedRect);
     });
 
-    /* Prefer actual gutters/outer edges when scores are otherwise equal. */
     if (spot.id.startsWith("gutter-")) score -= 800;
-    if (spot.id.startsWith("bottom-")) score -= 180;
+    if (spot.id.includes("top")) score -= 100;
     return score;
   }
 
   function chooseNextSpot(forceDifferent = true) {
     const all = candidateSpots();
-    if (!all.length) return { id: "fallback", x: EDGE_MARGIN, y: EDGE_MARGIN, pose: "floor", flip: 1 };
+    const safe = all.filter((spot) => !overlapsPlan(spot));
+    const pool = safe.length ? safe : all;
+
+    if (!pool.length) {
+      const { width } = catSize();
+      return { id: "offscreen-safe", x: -width - 24, y: EDGE_MARGIN, pose: "floor", flip: 1 };
+    }
 
     const protectedAreas = protectedRects();
-    let choices = all.filter((spot) => !forceDifferent || spot.id !== currentSpotId);
-    if (!choices.length) choices = all;
+    let choices = pool.filter((spot) => !forceDifferent || spot.id !== currentSpotId);
+    if (!choices.length) choices = pool;
 
     const ranked = choices
       .map((spot) => ({ spot, score: candidateScore(spot, protectedAreas) }))
@@ -241,7 +281,7 @@
   }
 
   function segmentDuration(from, to, initial = false) {
-    if (initial) return 2100;
+    if (initial) return 1800;
     const distance = Math.hypot(to.x - from.x, to.y - from.y);
     return clamp(distance * 4.4, MIN_SEGMENT_MS, MAX_SEGMENT_MS);
   }
@@ -255,24 +295,14 @@
   }
 
   function movementPath(from, target) {
-    const { width, height } = catSize();
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const fromLeft = from.x + width / 2 < vw / 2;
-    const targetLeft = target.x + width / 2 < vw / 2;
+    const corridorY = EDGE_MARGIN;
+    const path = [];
 
-    /* Crossing the screen goes around the bottom edge instead of through the board. */
-    if (fromLeft !== targetLeft) {
-      const corridorY = Math.max(EDGE_MARGIN, vh - height - EDGE_MARGIN);
-      return [
-        { x: from.x, y: corridorY },
-        { x: target.x, y: corridorY },
-        target,
-      ];
-    }
-
-    /* Same-side moves stay near that edge/gutter. */
-    return [target];
+    /* All travel is routed through the top gutter, never through task/school plans. */
+    if (Math.abs(from.y - corridorY) > 3) path.push({ x: from.x, y: corridorY });
+    if (Math.abs(from.x - target.x) > 3) path.push({ x: target.x, y: corridorY });
+    path.push(target);
+    return path;
   }
 
   async function walkToSpot(spot, { initial = false } = {}) {
@@ -337,11 +367,17 @@
   function repositionCurrent() {
     if (!stage || isWalking) return;
     const spots = candidateSpots();
-    const current = spots.find((spot) => spot.id === currentSpotId) || chooseNextSpot(false);
+    let current = spots.find((spot) => spot.id === currentSpotId);
+    if (!current || overlapsPlan(current)) current = chooseNextSpot(false);
     currentSpotId = current.id;
     stage.style.transitionDuration = "260ms";
     stage.style.setProperty("--cat-x", `${current.x}px`);
     stage.style.setProperty("--cat-y", `${current.y}px`);
+  }
+
+  function scheduleLayoutCheck() {
+    if (layoutTimer) window.clearTimeout(layoutTimer);
+    layoutTimer = window.setTimeout(repositionCurrent, 120);
   }
 
   function boot() {
@@ -349,8 +385,7 @@
     if (!stage) return;
 
     const first = chooseNextSpot(false);
-    const { height } = catSize();
-    const startY = clamp(window.innerHeight * .80, 20, window.innerHeight - height - 10);
+    const startY = Math.max(EDGE_MARGIN, Math.min(48, upperZoneBottom() - catSize().height));
     stage.style.transitionDuration = "0ms";
     stage.style.setProperty("--cat-x", "-120px");
     stage.style.setProperty("--cat-y", `${startY}px`);
@@ -366,6 +401,14 @@
         repositionCurrent();
         scheduleMeow(45000, 120000);
       }
+    });
+
+    const app = document.querySelector(".app-shell") || document.body;
+    new MutationObserver(scheduleLayoutCheck).observe(app, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "hidden"],
     });
   }
 
