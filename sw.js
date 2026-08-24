@@ -1,4 +1,4 @@
-const CACHE_NAME = "homeflow-cache-v14";
+const CACHE_NAME = "homeflow-cache-v15";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,6 +7,8 @@ const APP_SHELL = [
   "./school-board.css",
   "./school-board.js",
   "./school-club-fix.js",
+  "./whimsy-cat.css",
+  "./whimsy-cat.js",
   "./data/rovaniemi-school-calendar-2026-2027.json",
   "./data/fi-holidays.json",
   "./data/member-birthdays.json",
