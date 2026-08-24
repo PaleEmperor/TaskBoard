@@ -1,12 +1,10 @@
-/* HomeFlow wandering cat.
- * Clean-room recreation of the visual supplied by the user:
- * https://github.com/sanemeliff/pureCSS_cat
- * Movement/interaction code remains HomeFlow-specific.
+/* HomeFlow wandering cat — recreated from the user-supplied video screenshot.
+ * Dark sitting-cat silhouette with warm eye rings, ears and nose.
  */
 .homeflow-cat-layer {
   position: fixed;
   inset: 0;
-  z-index: 7;
+  z-index: 6;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
@@ -20,13 +18,13 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: clamp(88px, 7.2vw, 124px);
-  aspect-ratio: .74 / 1;
+  width: clamp(78px, 5.4vw, 104px);
+  aspect-ratio: .88 / 1;
   transform: translate3d(var(--cat-x), var(--cat-y), 0);
-  transition-property: transform, opacity, filter;
-  transition-duration: .7s, .24s, .24s;
-  transition-timing-function: cubic-bezier(.2,.75,.22,1), ease, ease;
-  filter: drop-shadow(0 7px 8px rgba(46, 62, 70, .13));
+  transition-property: transform, filter;
+  transition-duration: .7s, .2s;
+  transition-timing-function: cubic-bezier(.2,.75,.22,1), ease;
+  filter: drop-shadow(0 7px 8px rgba(26, 30, 32, .16));
   will-change: transform;
   pointer-events: auto;
   cursor: pointer;
@@ -34,7 +32,7 @@
 }
 
 .homeflow-cat-stage:hover {
-  filter: drop-shadow(0 9px 11px rgba(46, 62, 70, .18));
+  filter: drop-shadow(0 9px 11px rgba(26, 30, 32, .22));
 }
 
 .homeflow-cat-orientation {
@@ -42,112 +40,108 @@
   height: 100%;
   transform: rotate(var(--cat-rotate)) scaleX(var(--cat-flip));
   transform-origin: 50% 88%;
-  transition: transform .35s ease;
+  transition: transform .34s ease;
 }
 
 .homeflow-cat {
-  --cat-yellow: #ffd03a;
-  --cat-pink: #fc8eac;
-  --cat-green: #6ca580;
-  --cat-black: #111820;
+  --cat-fur: #33292b;
+  --cat-fur-soft: #3a2f31;
+  --cat-accent: #d2873b;
+  --cat-ear: #d36149;
+  --cat-pupil: #1f191a;
   position: relative;
   width: 100%;
   height: 100%;
-  transform-origin: 50% 91%;
+  transform-origin: 47% 91%;
   animation: homeflow-cat-idle 5.4s ease-in-out infinite;
 }
 
-/* The deliberately simple geometry below matches the supplied CSS-cat look:
-   rounded yellow head, triangular ears, oversized eyes, compact body and tail. */
+/* Head: the broad rounded-square face from the video. */
 .homeflow-cat-head {
   position: absolute;
   z-index: 3;
-  left: 7%;
-  top: 17%;
-  width: 86%;
-  height: 37%;
-  border-radius: 19% 19% 18% 18%;
-  background: var(--cat-yellow);
-  transform-origin: 50% 84%;
+  left: 8%;
+  top: 13%;
+  width: 65%;
+  height: 43%;
+  border-radius: 28% 28% 32% 32%;
+  background: var(--cat-fur);
+  transform-origin: 50% 82%;
 }
 
 .homeflow-cat-ear {
   position: absolute;
   z-index: -1;
-  top: -39%;
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 34px solid var(--cat-yellow);
+  top: -27%;
+  width: 31%;
+  height: 38%;
+  background: var(--cat-fur);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
   transform-origin: 50% 100%;
 }
 
 .homeflow-cat-ear::after {
   content: "";
   position: absolute;
-  left: -8px;
-  top: 10px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 23px solid var(--cat-pink);
+  left: 28%;
+  top: 28%;
+  width: 44%;
+  height: 58%;
+  background: var(--cat-ear);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
 }
 
-.homeflow-cat-ear.left {
-  left: 1%;
-  transform: rotate(-27deg);
-}
+.homeflow-cat-ear.left { left: -2%; transform: rotate(-8deg); }
+.homeflow-cat-ear.right { right: -2%; transform: rotate(8deg); }
 
-.homeflow-cat-ear.right {
-  right: 1%;
-  transform: rotate(27deg);
-}
-
+/* Eyes are warm orange rings on the dark face, matching the screenshot. */
 .homeflow-cat-eye {
   position: absolute;
-  top: 22%;
-  width: 19%;
-  height: 35%;
+  top: 35%;
+  width: 21%;
+  aspect-ratio: 1;
+  border: clamp(2px, .18vw, 3px) solid var(--cat-accent);
   border-radius: 50%;
-  background: #f3f7fd;
-  border-top: 1px solid rgba(20, 25, 28, .78);
+  background: transparent;
+  box-sizing: border-box;
   transform-origin: 50% 50%;
-  animation: homeflow-cat-blink 6.5s infinite;
+  animation: homeflow-cat-blink 7.2s infinite;
 }
 
-.homeflow-cat-eye.left { left: 25%; }
-.homeflow-cat-eye.right { right: 25%; }
+.homeflow-cat-eye.left { left: 21%; }
+.homeflow-cat-eye.right { right: 21%; }
 
 .homeflow-cat-eye::before {
   content: "";
   position: absolute;
-  inset: 7%;
+  left: 37%;
+  top: 28%;
+  width: 26%;
+  height: 45%;
   border-radius: 50%;
-  background: var(--cat-green);
+  background: var(--cat-pupil);
 }
 
 .homeflow-cat-eye::after {
   content: "";
   position: absolute;
-  left: 27%;
-  top: 20%;
-  width: 48%;
-  height: 70%;
+  left: 45%;
+  top: 30%;
+  width: 8%;
+  height: 11%;
   border-radius: 50%;
-  background: var(--cat-black);
+  background: rgba(255, 227, 184, .58);
 }
 
 .homeflow-cat-nose {
   position: absolute;
-  left: 45%;
-  top: 63%;
+  left: 46%;
+  top: 66%;
   width: 0;
   height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 7px solid var(--cat-pink);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--cat-ear);
 }
 
 .homeflow-cat-mouth,
@@ -155,86 +149,83 @@
   content: "";
   position: absolute;
   width: 1px;
-  height: 10px;
-  background: var(--cat-pink);
+  height: 7px;
+  background: var(--cat-ear);
 }
 
 .homeflow-cat-mouth {
-  left: 47%;
-  top: 68%;
-  transform: rotate(45deg);
+  left: 48%;
+  top: 70%;
+  transform: rotate(42deg);
 }
 
 .homeflow-cat-mouth::after {
-  left: 7px;
-  top: 7px;
-  transform: rotate(-90deg);
+  left: 5px;
+  top: 5px;
+  transform: rotate(-84deg);
   transform-origin: top;
 }
 
-.homeflow-cat-whiskers,
-.homeflow-cat-whiskers::before,
-.homeflow-cat-whiskers::after {
-  content: "";
-  position: absolute;
-  width: 25%;
-  height: 1px;
-  background: rgba(42, 49, 53, .28);
-}
+/* The source/video cat has no visible whiskers; retain the DOM nodes but hide them. */
+.homeflow-cat-whiskers { display: none; }
 
-.homeflow-cat-whiskers {
-  top: 69%;
-}
-
-.homeflow-cat-whiskers::before { top: -5px; transform: rotate(8deg); width: 100%; }
-.homeflow-cat-whiskers::after { top: 5px; transform: rotate(-8deg); width: 100%; }
-.homeflow-cat-whiskers.left { left: -15%; }
-.homeflow-cat-whiskers.right { right: -15%; transform: scaleX(-1); }
-
+/* Upright body with a rounded shoulder on the right. */
 .homeflow-cat-body {
   position: absolute;
   z-index: 2;
-  left: 20%;
+  left: 27%;
   top: 49%;
-  width: 74%;
-  height: 42%;
-  border-radius: 0 52% 0 0;
-  background: var(--cat-yellow);
-  transform-origin: 50% 100%;
+  width: 55%;
+  height: 43%;
+  border-radius: 3% 55% 11% 6%;
+  background: var(--cat-fur);
+  transform-origin: 45% 100%;
+}
+
+.homeflow-cat-body::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6%;
+  width: 46%;
+  height: 33%;
+  border-radius: 45% 12% 20% 20%;
+  background: var(--cat-fur);
 }
 
 .homeflow-cat-paw {
   position: absolute;
-  bottom: -17%;
-  width: 20%;
-  height: 23%;
-  border-radius: 0 0 38% 38%;
-  background: var(--cat-yellow);
+  bottom: -8%;
+  width: 23%;
+  height: 13%;
+  border-radius: 0 0 48% 48%;
+  background: var(--cat-fur);
   transform-origin: 50% 0;
 }
 
-.homeflow-cat-paw.left { left: 0; }
+.homeflow-cat-paw.left { left: 5%; }
 .homeflow-cat-paw.right { left: 47%; }
 
+/* Long, straight horizontal tail from the screenshot. */
 .homeflow-cat-tail {
   position: absolute;
   z-index: 1;
-  right: -7%;
-  top: 72%;
-  width: 40%;
-  height: 12%;
-  border-radius: 999px 999px 4px 4px;
-  background: var(--cat-yellow);
-  transform: rotate(4deg);
+  left: 60%;
+  top: 82%;
+  width: 38%;
+  height: 9%;
+  border-radius: 0 999px 999px 0;
+  background: var(--cat-fur);
+  transform: rotate(0deg);
   transform-origin: 0 50%;
-  animation: homeflow-cat-tail 4.2s ease-in-out infinite;
+  animation: homeflow-cat-tail 5s ease-in-out infinite;
 }
 
 .homeflow-cat-bubble {
   position: absolute;
   z-index: 5;
-  left: 62%;
-  bottom: 83%;
+  left: 57%;
+  bottom: 87%;
   min-width: 42px;
   padding: 6px 9px;
   border: 1px solid rgba(111,139,155,.18);
@@ -271,31 +262,31 @@
   transform: translateY(0) scale(1);
 }
 
-.homeflow-cat-stage[data-pose="peek"] .homeflow-cat { transform: translateY(10%); }
-.homeflow-cat-stage[data-pose="perch"] .homeflow-cat { transform: translateY(3%); }
+.homeflow-cat-stage[data-pose="peek"] .homeflow-cat { transform: translateY(8%); }
+.homeflow-cat-stage[data-pose="perch"] .homeflow-cat { transform: translateY(2%); }
 
 .homeflow-cat-stage.is-walking .homeflow-cat {
-  animation: homeflow-cat-walk-body .3s ease-in-out infinite alternate;
+  animation: homeflow-cat-walk-body .31s ease-in-out infinite alternate;
 }
 
 .homeflow-cat-stage.is-walking .homeflow-cat-head {
-  animation: homeflow-cat-walk-head .3s ease-in-out infinite alternate;
+  animation: homeflow-cat-walk-head .31s ease-in-out infinite alternate;
 }
 
 .homeflow-cat-stage.is-walking .homeflow-cat-body {
-  animation: homeflow-cat-walk-body-inner .3s ease-in-out infinite alternate-reverse;
+  animation: homeflow-cat-walk-body-inner .31s ease-in-out infinite alternate-reverse;
 }
 
 .homeflow-cat-stage.is-walking .homeflow-cat-paw.left {
-  animation: homeflow-cat-step-left .3s ease-in-out infinite alternate;
+  animation: homeflow-cat-step-left .31s ease-in-out infinite alternate;
 }
 
 .homeflow-cat-stage.is-walking .homeflow-cat-paw.right {
-  animation: homeflow-cat-step-right .3s ease-in-out infinite alternate;
+  animation: homeflow-cat-step-right .31s ease-in-out infinite alternate;
 }
 
 .homeflow-cat-stage.is-walking .homeflow-cat-tail {
-  animation: homeflow-cat-walk-tail .55s ease-in-out infinite alternate;
+  animation: homeflow-cat-walk-tail .62s ease-in-out infinite alternate;
 }
 
 .homeflow-cat-stage.is-poked .homeflow-cat-orientation {
@@ -303,7 +294,14 @@
 }
 
 body.dark-mode .homeflow-cat-stage {
-  filter: drop-shadow(0 8px 11px rgba(0,0,0,.28));
+  filter: drop-shadow(0 8px 11px rgba(0,0,0,.32));
+}
+
+body.dark-mode .homeflow-cat {
+  --cat-fur: #302729;
+  --cat-fur-soft: #392e30;
+  --cat-accent: #d7954f;
+  --cat-ear: #cf654f;
 }
 
 body.dark-mode .homeflow-cat-bubble {
@@ -319,13 +317,13 @@ body.dark-mode .homeflow-cat-bubble::after {
 }
 
 @keyframes homeflow-cat-blink {
-  0%, 45%, 48%, 78%, 81%, 100% { transform: scaleY(1); }
-  46.5%, 79.5% { transform: scaleY(.08); }
+  0%, 47%, 50%, 82%, 85%, 100% { transform: scaleY(1); }
+  48.5%, 83.5% { transform: scaleY(.10); }
 }
 
 @keyframes homeflow-cat-tail {
-  0%,100% { transform: rotate(2deg); }
-  50% { transform: rotate(12deg); }
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg); }
 }
 
 @keyframes homeflow-cat-idle {
@@ -334,8 +332,8 @@ body.dark-mode .homeflow-cat-bubble::after {
 }
 
 @keyframes homeflow-cat-walk-body {
-  from { transform: translateY(0) rotate(-.8deg); }
-  to { transform: translateY(-3px) rotate(.8deg); }
+  from { transform: translateY(0) rotate(-.7deg); }
+  to { transform: translateY(-3px) rotate(.7deg); }
 }
 
 @keyframes homeflow-cat-walk-body-inner {
@@ -349,18 +347,18 @@ body.dark-mode .homeflow-cat-bubble::after {
 }
 
 @keyframes homeflow-cat-step-left {
-  from { transform: rotate(16deg) translateY(-2px); }
-  to { transform: rotate(-16deg) translateY(2px); }
+  from { transform: rotate(15deg) translateY(-2px); }
+  to { transform: rotate(-15deg) translateY(2px); }
 }
 
 @keyframes homeflow-cat-step-right {
-  from { transform: rotate(-16deg) translateY(2px); }
-  to { transform: rotate(16deg) translateY(-2px); }
+  from { transform: rotate(-15deg) translateY(2px); }
+  to { transform: rotate(15deg) translateY(-2px); }
 }
 
 @keyframes homeflow-cat-walk-tail {
   from { transform: rotate(-2deg); }
-  to { transform: rotate(18deg); }
+  to { transform: rotate(8deg); }
 }
 
 @keyframes homeflow-cat-poke {
@@ -370,9 +368,7 @@ body.dark-mode .homeflow-cat-bubble::after {
 }
 
 @media (max-width:720px) {
-  .homeflow-cat-stage { width: clamp(76px,18vw,96px); }
-  .homeflow-cat-ear { border-left-width: 10px; border-right-width: 10px; border-bottom-width: 28px; }
-  .homeflow-cat-ear::after { left: -6px; border-left-width: 6px; border-right-width: 6px; border-bottom-width: 19px; }
+  .homeflow-cat-stage { width: clamp(68px,15vw,84px); }
   .homeflow-cat-bubble { padding: 5px 7px; font-size: .62rem; }
 }
 
