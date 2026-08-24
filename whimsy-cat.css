@@ -1,0 +1,265 @@
+/* HomeFlow wandering cat.
+ * Visual inspiration: https://github.com/sanemeliff/pureCSS_cat
+ * This implementation is original for HomeFlow rather than a verbatim copy.
+ */
+.homeflow-cat-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.homeflow-cat-stage {
+  --cat-x: 12px;
+  --cat-y: 12px;
+  --cat-rotate: 0deg;
+  --cat-flip: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(64px, 5.5vw, 92px);
+  aspect-ratio: 1.08 / 1;
+  opacity: .96;
+  transform: translate3d(var(--cat-x), var(--cat-y), 0);
+  transition: transform .7s cubic-bezier(.2,.75,.22,1), opacity .24s ease, filter .24s ease;
+  filter: drop-shadow(0 7px 9px rgba(49, 67, 77, .13));
+  will-change: transform, opacity;
+}
+
+.homeflow-cat-stage.is-relocating {
+  opacity: 0;
+  filter: drop-shadow(0 3px 5px rgba(49, 67, 77, .04));
+}
+
+.homeflow-cat-orientation {
+  width: 100%;
+  height: 100%;
+  transform: rotate(var(--cat-rotate)) scaleX(var(--cat-flip));
+  transform-origin: 50% 82%;
+  transition: transform .45s ease;
+}
+
+.homeflow-cat {
+  --cat-fur: #f4ca5b;
+  --cat-fur-deep: #dca945;
+  --cat-ear: #efa1b0;
+  --cat-eye: #79a98c;
+  --cat-ink: #35434a;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: homeflow-cat-bob 4.8s ease-in-out infinite;
+}
+
+.homeflow-cat-body {
+  position: absolute;
+  left: 24%;
+  bottom: 8%;
+  width: 61%;
+  height: 48%;
+  border-radius: 42% 54% 35% 33%;
+  background: linear-gradient(145deg, #f8d56d 0%, var(--cat-fur) 58%, var(--cat-fur-deep) 120%);
+  box-shadow: inset -5px -5px 0 rgba(177, 126, 48, .08);
+}
+
+.homeflow-cat-tail {
+  position: absolute;
+  right: 0;
+  bottom: 18%;
+  width: 37%;
+  height: 31%;
+  box-sizing: border-box;
+  border: clamp(5px, .47vw, 7px) solid var(--cat-fur);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50% 60% 55% 45%;
+  transform: rotate(18deg);
+  transform-origin: 12% 82%;
+  animation: homeflow-cat-tail 4s ease-in-out infinite;
+}
+
+.homeflow-cat-paw {
+  position: absolute;
+  bottom: -8%;
+  width: 24%;
+  height: 24%;
+  border-radius: 4px 4px 45% 45%;
+  background: var(--cat-fur);
+  box-shadow: inset 0 -3px 0 rgba(178, 126, 47, .08);
+}
+
+.homeflow-cat-paw.left { left: 10%; }
+.homeflow-cat-paw.right { left: 49%; }
+
+.homeflow-cat-head {
+  position: absolute;
+  left: 12%;
+  top: 4%;
+  width: 65%;
+  height: 49%;
+  border-radius: 43% 43% 38% 38%;
+  background: linear-gradient(150deg, #f9d66e 0%, var(--cat-fur) 63%, #e8b64d 115%);
+  box-shadow: inset -4px -4px 0 rgba(177, 126, 48, .06);
+  z-index: 2;
+}
+
+.homeflow-cat-ear {
+  position: absolute;
+  top: -29%;
+  width: 38%;
+  height: 49%;
+  background: var(--cat-fur);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  z-index: -1;
+}
+
+.homeflow-cat-ear::after {
+  content: "";
+  position: absolute;
+  left: 26%;
+  top: 27%;
+  width: 48%;
+  height: 58%;
+  background: var(--cat-ear);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  opacity: .9;
+}
+
+.homeflow-cat-ear.left { left: -7%; transform: rotate(-16deg); }
+.homeflow-cat-ear.right { right: -7%; transform: rotate(16deg); }
+
+.homeflow-cat-eye {
+  position: absolute;
+  top: 34%;
+  width: 20%;
+  height: 31%;
+  border-radius: 50%;
+  background: #f9fbfc;
+  box-shadow: inset 0 1px 0 rgba(45, 57, 63, .18);
+  transform-origin: center;
+  animation: homeflow-cat-blink 6.4s infinite;
+}
+
+.homeflow-cat-eye.left { left: 23%; }
+.homeflow-cat-eye.right { right: 23%; }
+
+.homeflow-cat-eye::before {
+  content: "";
+  position: absolute;
+  inset: 10% 9%;
+  border-radius: 50%;
+  background: var(--cat-eye);
+}
+
+.homeflow-cat-eye::after {
+  content: "";
+  position: absolute;
+  left: 33%;
+  top: 18%;
+  width: 35%;
+  height: 67%;
+  border-radius: 50%;
+  background: #243138;
+  box-shadow: 2px -1px 0 rgba(255, 255, 255, .8);
+}
+
+.homeflow-cat-nose {
+  position: absolute;
+  left: 45%;
+  top: 62%;
+  width: 11%;
+  height: 11%;
+  background: var(--cat-ear);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.homeflow-cat-mouth,
+.homeflow-cat-mouth::after {
+  position: absolute;
+  content: "";
+  top: 72%;
+  width: 15%;
+  height: 13%;
+  border-bottom: 1.5px solid rgba(62, 65, 67, .55);
+  border-radius: 0 0 50% 50%;
+}
+
+.homeflow-cat-mouth { left: 36%; transform: rotate(8deg); }
+.homeflow-cat-mouth::after { left: 86%; top: 0; width: 100%; height: 100%; transform: rotate(-16deg); }
+
+.homeflow-cat-whiskers,
+.homeflow-cat-whiskers::before,
+.homeflow-cat-whiskers::after {
+  position: absolute;
+  width: 28%;
+  height: 1px;
+  background: rgba(65, 75, 79, .34);
+  content: "";
+}
+
+.homeflow-cat-whiskers {
+  top: 68%;
+}
+
+.homeflow-cat-whiskers::before { top: -5px; width: 100%; transform: rotate(9deg); }
+.homeflow-cat-whiskers::after { top: 5px; width: 100%; transform: rotate(-9deg); }
+.homeflow-cat-whiskers.left { left: -20%; }
+.homeflow-cat-whiskers.right { right: -20%; transform: scaleX(-1); }
+
+.homeflow-cat-stage[data-pose="peek"] .homeflow-cat {
+  transform: translateY(6%);
+}
+
+.homeflow-cat-stage[data-pose="perch"] .homeflow-cat-paw {
+  bottom: -2%;
+}
+
+.homeflow-cat-stage[data-pose="floor"] .homeflow-cat {
+  animation-duration: 5.7s;
+}
+
+body.dark-mode .homeflow-cat-stage {
+  filter: drop-shadow(0 8px 11px rgba(0, 0, 0, .28));
+}
+
+body.dark-mode .homeflow-cat {
+  --cat-fur: #e8bb53;
+  --cat-fur-deep: #c9943d;
+  --cat-ear: #dc93a3;
+  --cat-eye: #78a88c;
+}
+
+@keyframes homeflow-cat-blink {
+  0%, 44%, 48%, 76%, 80%, 100% { transform: scaleY(1); }
+  46%, 78% { transform: scaleY(.08); }
+}
+
+@keyframes homeflow-cat-tail {
+  0%, 100% { transform: rotate(15deg); }
+  50% { transform: rotate(28deg); }
+}
+
+@keyframes homeflow-cat-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -1.5px; }
+}
+
+@media (max-width: 720px) {
+  .homeflow-cat-stage {
+    width: clamp(58px, 14vw, 76px);
+    opacity: .94;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homeflow-cat-stage,
+  .homeflow-cat-orientation,
+  .homeflow-cat,
+  .homeflow-cat-tail,
+  .homeflow-cat-eye {
+    transition: none !important;
+    animation: none !important;
+  }
+}
