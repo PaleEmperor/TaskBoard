@@ -16,7 +16,7 @@ I built this for my family. We are pretty autistic, so the board leans hard into
 - Claim inbox for tasks that should be picked up by whoever wants to do them
 - Completion tracking with a simple leaderboard
 - English, Finnish, and German UI
-- Voice word assistant with English, German, and Finnish translations plus a Wikimedia Commons image
+- Voice translator for words and sentences, with English, German, and Finnish translations plus a Wikimedia Commons image
 - Offline-friendly PWA install for tablet use
 
 ## What it is not

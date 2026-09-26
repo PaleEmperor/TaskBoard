@@ -33,17 +33,16 @@
   ];
   const wordAssistantText = {
     en: {
-      button: "Word",
-      title: "Word translator",
-      listening: "Listening. Say one word.",
+      button: "Speak",
+      title: "Voice translator",
+      listening: "Listening. Say a word or sentence.",
       loading: "Finding translations and a picture...",
-      ready: "Here is your word.",
+      ready: "Here is your translation.",
       partial: "Some results could not be found.",
       unsupported: "Voice input is not available in this browser.",
       permission: "Microphone access was blocked.",
       microphoneUnavailable: "No microphone is available on this device.",
-      noSpeech: "I did not hear a word. Try again.",
-      oneWord: "Please say one word only.",
+      noSpeech: "I did not hear anything. Try again.",
       failed: "Could not load results. Check the internet and try again.",
       noImage: "No picture found",
       closeIn: "Closes in {seconds}s",
@@ -52,17 +51,16 @@
       close: "Close",
     },
     fi: {
-      button: "Sana",
-      title: "Sanan kääntäjä",
-      listening: "Kuuntelen. Sano yksi sana.",
+      button: "Puhu",
+      title: "Puhekääntäjä",
+      listening: "Kuuntelen. Sano sana tai lause.",
       loading: "Etsitään käännöksiä ja kuvaa...",
-      ready: "Tässä sanasi.",
+      ready: "Tässä käännöksesi.",
       partial: "Kaikkia tuloksia ei löytynyt.",
       unsupported: "Puheentunnistus ei ole käytettävissä tässä selaimessa.",
       permission: "Mikrofonin käyttö estettiin.",
       microphoneUnavailable: "Laitteesta ei löytynyt mikrofonia.",
-      noSpeech: "En kuullut sanaa. Yritä uudelleen.",
-      oneWord: "Sano vain yksi sana.",
+      noSpeech: "En kuullut mitään. Yritä uudelleen.",
       failed: "Tuloksia ei voitu ladata. Tarkista internetyhteys ja yritä uudelleen.",
       noImage: "Kuvaa ei löytynyt",
       closeIn: "Sulkeutuu {seconds} s kuluttua",
@@ -71,17 +69,16 @@
       close: "Sulje",
     },
     de: {
-      button: "Wort",
-      title: "Wortübersetzer",
-      listening: "Ich höre zu. Sage ein Wort.",
+      button: "Sprechen",
+      title: "Sprachübersetzer",
+      listening: "Ich höre zu. Sage ein Wort oder einen Satz.",
       loading: "Übersetzungen und Bild werden gesucht...",
-      ready: "Hier ist dein Wort.",
+      ready: "Hier ist deine Übersetzung.",
       partial: "Einige Ergebnisse wurden nicht gefunden.",
       unsupported: "Spracheingabe ist in diesem Browser nicht verfügbar.",
       permission: "Der Mikrofonzugriff wurde blockiert.",
       microphoneUnavailable: "Auf diesem Gerät wurde kein Mikrofon gefunden.",
-      noSpeech: "Ich habe kein Wort gehört. Versuche es erneut.",
-      oneWord: "Bitte sage nur ein Wort.",
+      noSpeech: "Ich habe nichts gehört. Versuche es erneut.",
       failed: "Ergebnisse konnten nicht geladen werden. Prüfe die Internetverbindung.",
       noImage: "Kein Bild gefunden",
       closeIn: "Schließt in {seconds}s",
@@ -899,7 +896,9 @@
     countdownTimer: null,
     listenTimer: null,
     restartTimer: null,
+    resultTimer: null,
     listenDeadline: 0,
+    transcript: "",
     requestId: 0,
     status: "idle",
   };
@@ -4743,6 +4742,7 @@
     wordAssistant.requestId += 1;
     const requestId = wordAssistant.requestId;
     wordAssistant.status = "listening";
+    wordAssistant.transcript = "";
     refs.wordAssistantResult.classList.add("hidden");
     refs.wordAssistantLoading.classList.add("hidden");
     refs.wordAssistantCountdown.textContent = "";
@@ -4771,16 +4771,22 @@
       if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
         return;
       }
-      const spokenWord = String(event.results?.[0]?.[0]?.transcript || "").trim();
-      clearWordAssistantListeningTimers();
-      stopWordAssistantRecognition();
-      if (!/^[\p{L}\p{M}]+(?:['’\-][\p{L}\p{M}]+)*$/u.test(spokenWord)) {
-        wordAssistant.status = "oneWord";
-        refs.wordAssistantStatus.textContent = text.oneWord;
-        refs.wordAssistantListenButton.classList.remove("hidden");
+      const spokenText = Array.from(event.results || [])
+        .map((result) => result[0]?.transcript || "")
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!spokenText) {
         return;
       }
-      loadWordAssistantResult(spokenWord, state.settings.language, requestId);
+      wordAssistant.transcript = spokenText;
+      if (wordAssistant.resultTimer) {
+        window.clearTimeout(wordAssistant.resultTimer);
+      }
+      wordAssistant.resultTimer = window.setTimeout(() => {
+        wordAssistant.resultTimer = null;
+        finishWordAssistantRecognition(requestId);
+      }, 900);
     };
     recognition.onerror = (event) => {
       if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
@@ -4798,6 +4804,12 @@
     };
     recognition.onend = () => {
       if (requestId !== wordAssistant.requestId || wordAssistant.status !== "listening" || !refs.wordAssistantDialog.open) {
+        return;
+      }
+      if (wordAssistant.transcript) {
+        if (!wordAssistant.resultTimer) {
+          finishWordAssistantRecognition(requestId);
+        }
         return;
       }
       if (Date.now() >= wordAssistant.listenDeadline) {
@@ -4839,7 +4851,21 @@
     }
   }
 
-  async function loadWordAssistantResult(spokenWord, sourceLanguage, requestId) {
+  function finishWordAssistantRecognition(requestId) {
+    if (requestId !== wordAssistant.requestId || wordAssistant.status !== "listening" || !refs.wordAssistantDialog.open) {
+      return;
+    }
+    const spokenText = wordAssistant.transcript.trim();
+    clearWordAssistantListeningTimers();
+    stopWordAssistantRecognition();
+    if (!spokenText) {
+      showWordAssistantError("noSpeech", requestId);
+      return;
+    }
+    loadWordAssistantResult(spokenText, state.settings.language, requestId);
+  }
+
+  async function loadWordAssistantResult(spokenText, sourceLanguage, requestId) {
     const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
     wordAssistant.status = "loading";
     refs.wordAssistantStatus.textContent = text.loading;
@@ -4850,10 +4876,10 @@
       const languagesToShow = ["en", "de", "fi"];
       const translationResults = await Promise.all(languagesToShow.map(async (targetLanguage) => {
         if (targetLanguage === sourceLanguage) {
-          return [targetLanguage, spokenWord, true];
+          return [targetLanguage, spokenText, true];
         }
         try {
-          return [targetLanguage, await fetchWordTranslation(spokenWord, sourceLanguage, targetLanguage), true];
+          return [targetLanguage, await fetchWordTranslation(spokenText, sourceLanguage, targetLanguage), true];
         } catch {
           return [targetLanguage, "", false];
         }
@@ -4864,7 +4890,7 @@
 
       const translations = Object.fromEntries(translationResults.map(([language, translation]) => [language, translation]));
       const allTranslationsFound = translationResults.every(([, , found]) => found);
-      const image = await searchWordImage(translations.en || spokenWord).catch(() => null);
+      const image = await searchWordImage(translations.en || spokenText).catch(() => null);
       if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
         return;
       }
@@ -4872,7 +4898,7 @@
       refs.wordAssistantEnglish.textContent = translations.en || text.unavailable;
       refs.wordAssistantGerman.textContent = translations.de || text.unavailable;
       refs.wordAssistantFinnish.textContent = translations.fi || text.unavailable;
-      showWordAssistantImage(image, translations.en || spokenWord, text);
+      showWordAssistantImage(image, translations.en || spokenText, text);
       refs.wordAssistantLoading.classList.add("hidden");
       refs.wordAssistantResult.classList.remove("hidden");
       refs.wordAssistantStatus.textContent = allTranslationsFound && image ? text.ready : text.partial;
@@ -5008,7 +5034,11 @@
     wordAssistant.listenDeadline = Date.now() + 12000;
     wordAssistant.listenTimer = window.setTimeout(() => {
       wordAssistant.listenTimer = null;
-      showWordAssistantError("noSpeech", requestId);
+      if (wordAssistant.transcript) {
+        finishWordAssistantRecognition(requestId);
+      } else {
+        showWordAssistantError("noSpeech", requestId);
+      }
     }, 12000);
   }
 
@@ -5020,6 +5050,10 @@
     if (wordAssistant.restartTimer) {
       window.clearTimeout(wordAssistant.restartTimer);
       wordAssistant.restartTimer = null;
+    }
+    if (wordAssistant.resultTimer) {
+      window.clearTimeout(wordAssistant.resultTimer);
+      wordAssistant.resultTimer = null;
     }
     wordAssistant.listenDeadline = 0;
   }
