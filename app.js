@@ -4764,7 +4764,7 @@
     recognition.lang = { en: "en-GB", de: "de-DE", fi: "fi-FI" }[state.settings.language] || "en-GB";
     recognition.continuous = true;
     recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    recognition.maxAlternatives = 5;
     wordAssistant.recognition = recognition;
 
     recognition.onresult = (event) => {
@@ -4772,7 +4772,7 @@
         return;
       }
       const spokenText = Array.from(event.results || [])
-        .map((result) => result[0]?.transcript || "")
+        .map(selectBestSpeechAlternative)
         .join(" ")
         .replace(/\s+/g, " ")
         .trim();
@@ -4830,6 +4830,12 @@
     };
 
     requestWordAssistantMicrophone(recognition, requestId);
+  }
+
+  function selectBestSpeechAlternative(result) {
+    const alternatives = Array.from(result || []).filter((alternative) => String(alternative?.transcript || "").trim());
+    alternatives.sort((left, right) => (Number(right.confidence) || 0) - (Number(left.confidence) || 0));
+    return String(alternatives[0]?.transcript || "").trim();
   }
 
   async function requestWordAssistantMicrophone(recognition, requestId) {
