@@ -897,6 +897,9 @@
   const wordAssistant = {
     recognition: null,
     countdownTimer: null,
+    listenTimer: null,
+    restartTimer: null,
+    listenDeadline: 0,
     requestId: 0,
     status: "idle",
   };
@@ -4735,6 +4738,7 @@
   function startWordRecognition() {
     const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
     clearWordAssistantTimer();
+    clearWordAssistantListeningTimers();
     stopWordAssistantRecognition();
     wordAssistant.requestId += 1;
     const requestId = wordAssistant.requestId;
@@ -4758,7 +4762,7 @@
 
     const recognition = new SpeechRecognition();
     recognition.lang = { en: "en-GB", de: "de-DE", fi: "fi-FI" }[state.settings.language] || "en-GB";
-    recognition.continuous = false;
+    recognition.continuous = true;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     wordAssistant.recognition = recognition;
@@ -4768,6 +4772,8 @@
         return;
       }
       const spokenWord = String(event.results?.[0]?.[0]?.transcript || "").trim();
+      clearWordAssistantListeningTimers();
+      stopWordAssistantRecognition();
       if (!/^[\p{L}\p{M}]+(?:['’\-][\p{L}\p{M}]+)*$/u.test(spokenWord)) {
         wordAssistant.status = "oneWord";
         refs.wordAssistantStatus.textContent = text.oneWord;
@@ -4780,12 +4786,35 @@
       if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
         return;
       }
-      showWordAssistantError(event.error === "not-allowed" || event.error === "service-not-allowed" ? "permission" : "noSpeech", requestId);
+      if (event.error === "no-speech") {
+        return;
+      }
+      const errorKey = event.error === "not-allowed" || event.error === "service-not-allowed"
+        ? "permission"
+        : event.error === "audio-capture"
+          ? "microphoneUnavailable"
+          : "noSpeech";
+      showWordAssistantError(errorKey, requestId);
     };
     recognition.onend = () => {
-      if (requestId === wordAssistant.requestId && wordAssistant.status === "listening" && refs.wordAssistantDialog.open) {
-        showWordAssistantError("noSpeech", requestId);
+      if (requestId !== wordAssistant.requestId || wordAssistant.status !== "listening" || !refs.wordAssistantDialog.open) {
+        return;
       }
+      if (Date.now() >= wordAssistant.listenDeadline) {
+        showWordAssistantError("noSpeech", requestId);
+        return;
+      }
+      wordAssistant.restartTimer = window.setTimeout(() => {
+        wordAssistant.restartTimer = null;
+        if (requestId !== wordAssistant.requestId || wordAssistant.status !== "listening" || !refs.wordAssistantDialog.open) {
+          return;
+        }
+        try {
+          recognition.start();
+        } catch {
+          showWordAssistantError("noSpeech", requestId);
+        }
+      }, 250);
     };
 
     requestWordAssistantMicrophone(recognition, requestId);
@@ -4800,6 +4829,7 @@
       if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
         return;
       }
+      startWordAssistantListeningWindow(requestId);
       recognition.start();
     } catch (error) {
       const errorKey = error?.name === "NotFoundError" || error?.name === "DevicesNotFoundError"
@@ -4939,6 +4969,8 @@
       return;
     }
     const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    clearWordAssistantListeningTimers();
+    stopWordAssistantRecognition();
     wordAssistant.status = key;
     refs.wordAssistantLoading.classList.add("hidden");
     refs.wordAssistantStatus.textContent = text[key] || text.failed;
@@ -4971,6 +5003,27 @@
     }
   }
 
+  function startWordAssistantListeningWindow(requestId) {
+    clearWordAssistantListeningTimers();
+    wordAssistant.listenDeadline = Date.now() + 12000;
+    wordAssistant.listenTimer = window.setTimeout(() => {
+      wordAssistant.listenTimer = null;
+      showWordAssistantError("noSpeech", requestId);
+    }, 12000);
+  }
+
+  function clearWordAssistantListeningTimers() {
+    if (wordAssistant.listenTimer) {
+      window.clearTimeout(wordAssistant.listenTimer);
+      wordAssistant.listenTimer = null;
+    }
+    if (wordAssistant.restartTimer) {
+      window.clearTimeout(wordAssistant.restartTimer);
+      wordAssistant.restartTimer = null;
+    }
+    wordAssistant.listenDeadline = 0;
+  }
+
   function stopWordAssistantRecognition() {
     const recognition = wordAssistant.recognition;
     wordAssistant.recognition = null;
@@ -4991,6 +5044,7 @@
     wordAssistant.requestId += 1;
     wordAssistant.status = "idle";
     clearWordAssistantTimer();
+    clearWordAssistantListeningTimers();
     stopWordAssistantRecognition();
   }
 
