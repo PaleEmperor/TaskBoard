@@ -16,6 +16,7 @@ I built this for my family. We are pretty autistic, so the board leans hard into
 - Claim inbox for tasks that should be picked up by whoever wants to do them
 - Completion tracking with a simple leaderboard
 - English, Finnish, and German UI
+- Voice word assistant with English, German, and Finnish translations plus a Wikimedia Commons image
 - Offline-friendly PWA install for tablet use
 
 ## What it is not
@@ -46,6 +47,8 @@ Notes:
 - The app now includes a `manifest.webmanifest` and `sw.js`.
 - After the first successful load, the app shell is cached for offline use.
 - Your task data stays on the tablet in browser storage.
+- The voice assistant asks the browser for microphone permission when tapped and needs browser speech-recognition support; Chrome or Edge over HTTPS is the intended setup. Speech uses the tablet's default microphone.
+- Word translations and Commons images are fetched directly from free third-party services and need an internet connection. No app backend or API key is used.
 
 ### Option 2: Android app wrapper
 

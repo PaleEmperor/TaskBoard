@@ -4,7 +4,7 @@
   const WEATHER_REFRESH_MS = 300000;
   const IDLE_SCROLL_TOP_MS = 300000;
   const DAY_RESET_CHECK_MS = 60000;
-  const APP_VERSION = "v4";
+  const APP_VERSION = "v5";
   const BOARD_DENSITY = {
     everyone: "everyone",
     mine: "mine",
@@ -31,6 +31,65 @@
     { id: "fi", countryCode: "FI", short: "FI" },
     { id: "de", countryCode: "DE", short: "DE" },
   ];
+  const wordAssistantText = {
+    en: {
+      button: "Word",
+      title: "Word translator",
+      listening: "Listening. Say one word.",
+      loading: "Finding translations and a picture...",
+      ready: "Here is your word.",
+      partial: "Some results could not be found.",
+      unsupported: "Voice input is not available in this browser.",
+      permission: "Microphone access was blocked.",
+      microphoneUnavailable: "No microphone is available on this device.",
+      noSpeech: "I did not hear a word. Try again.",
+      oneWord: "Please say one word only.",
+      failed: "Could not load results. Check the internet and try again.",
+      noImage: "No picture found",
+      closeIn: "Closes in {seconds}s",
+      listenAgain: "🎙 Listen again",
+      unavailable: "Not found",
+      close: "Close",
+    },
+    fi: {
+      button: "Sana",
+      title: "Sanan kääntäjä",
+      listening: "Kuuntelen. Sano yksi sana.",
+      loading: "Etsitään käännöksiä ja kuvaa...",
+      ready: "Tässä sanasi.",
+      partial: "Kaikkia tuloksia ei löytynyt.",
+      unsupported: "Puheentunnistus ei ole käytettävissä tässä selaimessa.",
+      permission: "Mikrofonin käyttö estettiin.",
+      microphoneUnavailable: "Laitteesta ei löytynyt mikrofonia.",
+      noSpeech: "En kuullut sanaa. Yritä uudelleen.",
+      oneWord: "Sano vain yksi sana.",
+      failed: "Tuloksia ei voitu ladata. Tarkista internetyhteys ja yritä uudelleen.",
+      noImage: "Kuvaa ei löytynyt",
+      closeIn: "Sulkeutuu {seconds} s kuluttua",
+      listenAgain: "🎙 Kuuntele uudelleen",
+      unavailable: "Ei löytynyt",
+      close: "Sulje",
+    },
+    de: {
+      button: "Wort",
+      title: "Wortübersetzer",
+      listening: "Ich höre zu. Sage ein Wort.",
+      loading: "Übersetzungen und Bild werden gesucht...",
+      ready: "Hier ist dein Wort.",
+      partial: "Einige Ergebnisse wurden nicht gefunden.",
+      unsupported: "Spracheingabe ist in diesem Browser nicht verfügbar.",
+      permission: "Der Mikrofonzugriff wurde blockiert.",
+      microphoneUnavailable: "Auf diesem Gerät wurde kein Mikrofon gefunden.",
+      noSpeech: "Ich habe kein Wort gehört. Versuche es erneut.",
+      oneWord: "Bitte sage nur ein Wort.",
+      failed: "Ergebnisse konnten nicht geladen werden. Prüfe die Internetverbindung.",
+      noImage: "Kein Bild gefunden",
+      closeIn: "Schließt in {seconds}s",
+      listenAgain: "🎙 Nochmal hören",
+      unavailable: "Nicht gefunden",
+      close: "Schließen",
+    },
+  };
 
   const iconChoices = [
     "🧺", "🍽️", "🧹", "🪣", "🧽", "🧼", "🧴", "🪥", "🚿", "🛁", "🧻", "🗑️",
@@ -773,6 +832,23 @@
     somedayDialogList: document.getElementById("somedayDialogList"),
     closeSomedayDialogButton: document.getElementById("closeSomedayDialogButton"),
     closeSomedayDialogFooterButton: document.getElementById("closeSomedayDialogFooterButton"),
+    wordAssistantButton: document.getElementById("wordAssistantButton"),
+    wordAssistantButtonText: document.getElementById("wordAssistantButtonText"),
+    wordAssistantDialog: document.getElementById("wordAssistantDialog"),
+    wordAssistantTitle: document.getElementById("wordAssistantTitle"),
+    wordAssistantStatus: document.getElementById("wordAssistantStatus"),
+    wordAssistantLoading: document.getElementById("wordAssistantLoading"),
+    wordAssistantResult: document.getElementById("wordAssistantResult"),
+    wordAssistantImage: document.getElementById("wordAssistantImage"),
+    wordAssistantNoImage: document.getElementById("wordAssistantNoImage"),
+    wordAssistantImageCredit: document.getElementById("wordAssistantImageCredit"),
+    wordAssistantImageSource: document.getElementById("wordAssistantImageSource"),
+    wordAssistantEnglish: document.getElementById("wordAssistantEnglish"),
+    wordAssistantGerman: document.getElementById("wordAssistantGerman"),
+    wordAssistantFinnish: document.getElementById("wordAssistantFinnish"),
+    wordAssistantCountdown: document.getElementById("wordAssistantCountdown"),
+    wordAssistantListenButton: document.getElementById("wordAssistantListenButton"),
+    wordAssistantCloseButton: document.getElementById("wordAssistantCloseButton"),
     taskForm: document.getElementById("taskForm"),
     closeDialogButton: document.getElementById("closeDialogButton"),
     dialogEyebrow: document.getElementById("dialogEyebrow"),
@@ -818,6 +894,12 @@
     saveTaskButton: document.getElementById("saveTaskButton"),
     taskCardTemplate: document.getElementById("taskCardTemplate"),
   };
+  const wordAssistant = {
+    recognition: null,
+    countdownTimer: null,
+    requestId: 0,
+    status: "idle",
+  };
   let idleScrollTimer = null;
 
   hydrateRecurringTasks();
@@ -850,6 +932,10 @@
     document.addEventListener("touchstart", resetIdleScrollTimer, activityOptions);
 
     refs.quickAddButton.addEventListener("click", () => openTaskDialog());
+    refs.wordAssistantButton.addEventListener("click", openWordAssistant);
+    refs.wordAssistantListenButton.addEventListener("click", startWordRecognition);
+    refs.wordAssistantCloseButton.addEventListener("click", () => refs.wordAssistantDialog.close());
+    refs.wordAssistantDialog.addEventListener("close", stopWordAssistant);
     refs.toolDrawerToggle.addEventListener("click", () => {
       ui.drawerOpen = true;
       renderApp();
@@ -1076,6 +1162,13 @@
       refs.appSubtitle.classList.add("hidden");
     }
     refs.quickAddButton.textContent = t.quickAdd;
+    const assistantText = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    refs.wordAssistantButtonText.textContent = assistantText.button;
+    refs.wordAssistantButton.setAttribute("aria-label", assistantText.title);
+    refs.wordAssistantButton.title = assistantText.title;
+    refs.wordAssistantTitle.textContent = assistantText.title;
+    refs.wordAssistantCloseButton.setAttribute("aria-label", assistantText.close);
+    refs.wordAssistantListenButton.textContent = assistantText.listenAgain;
     refs.refreshNote.textContent = "";
     refs.refreshNote.classList.add("hidden");
     refs.boardLabel.textContent = t.boardLabel;
@@ -4630,6 +4723,275 @@
 
   function getWeekdayIndex(date) {
     return (date.getDay() + 6) % 7;
+  }
+
+  function openWordAssistant() {
+    if (!refs.wordAssistantDialog.open) {
+      refs.wordAssistantDialog.showModal();
+    }
+    startWordRecognition();
+  }
+
+  function startWordRecognition() {
+    const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    clearWordAssistantTimer();
+    stopWordAssistantRecognition();
+    wordAssistant.requestId += 1;
+    const requestId = wordAssistant.requestId;
+    wordAssistant.status = "listening";
+    refs.wordAssistantResult.classList.add("hidden");
+    refs.wordAssistantLoading.classList.add("hidden");
+    refs.wordAssistantCountdown.textContent = "";
+    refs.wordAssistantListenButton.classList.add("hidden");
+    refs.wordAssistantImage.hidden = true;
+    refs.wordAssistantImage.removeAttribute("src");
+    refs.wordAssistantImageCredit.textContent = "";
+    refs.wordAssistantNoImage.textContent = "";
+    refs.wordAssistantImageSource.href = "https://commons.wikimedia.org/";
+    refs.wordAssistantStatus.textContent = text.listening;
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showWordAssistantError("unsupported", requestId);
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = { en: "en-GB", de: "de-DE", fi: "fi-FI" }[state.settings.language] || "en-GB";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    wordAssistant.recognition = recognition;
+
+    recognition.onresult = (event) => {
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        return;
+      }
+      const spokenWord = String(event.results?.[0]?.[0]?.transcript || "").trim();
+      if (!/^[\p{L}\p{M}]+(?:['’\-][\p{L}\p{M}]+)*$/u.test(spokenWord)) {
+        wordAssistant.status = "oneWord";
+        refs.wordAssistantStatus.textContent = text.oneWord;
+        refs.wordAssistantListenButton.classList.remove("hidden");
+        return;
+      }
+      loadWordAssistantResult(spokenWord, state.settings.language, requestId);
+    };
+    recognition.onerror = (event) => {
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        return;
+      }
+      showWordAssistantError(event.error === "not-allowed" || event.error === "service-not-allowed" ? "permission" : "noSpeech", requestId);
+    };
+    recognition.onend = () => {
+      if (requestId === wordAssistant.requestId && wordAssistant.status === "listening" && refs.wordAssistantDialog.open) {
+        showWordAssistantError("noSpeech", requestId);
+      }
+    };
+
+    requestWordAssistantMicrophone(recognition, requestId);
+  }
+
+  async function requestWordAssistantMicrophone(recognition, requestId) {
+    try {
+      if (navigator.mediaDevices?.getUserMedia) {
+        const permissionStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        permissionStream.getTracks().forEach((track) => track.stop());
+      }
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        return;
+      }
+      recognition.start();
+    } catch (error) {
+      const errorKey = error?.name === "NotFoundError" || error?.name === "DevicesNotFoundError"
+        ? "microphoneUnavailable"
+        : "permission";
+      showWordAssistantError(errorKey, requestId);
+    }
+  }
+
+  async function loadWordAssistantResult(spokenWord, sourceLanguage, requestId) {
+    const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    wordAssistant.status = "loading";
+    refs.wordAssistantStatus.textContent = text.loading;
+    refs.wordAssistantLoading.classList.remove("hidden");
+    refs.wordAssistantResult.classList.add("hidden");
+
+    try {
+      const languagesToShow = ["en", "de", "fi"];
+      const translationResults = await Promise.all(languagesToShow.map(async (targetLanguage) => {
+        if (targetLanguage === sourceLanguage) {
+          return [targetLanguage, spokenWord, true];
+        }
+        try {
+          return [targetLanguage, await fetchWordTranslation(spokenWord, sourceLanguage, targetLanguage), true];
+        } catch {
+          return [targetLanguage, "", false];
+        }
+      }));
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        return;
+      }
+
+      const translations = Object.fromEntries(translationResults.map(([language, translation]) => [language, translation]));
+      const allTranslationsFound = translationResults.every(([, , found]) => found);
+      const image = await searchWordImage(translations.en || spokenWord).catch(() => null);
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        return;
+      }
+
+      refs.wordAssistantEnglish.textContent = translations.en || text.unavailable;
+      refs.wordAssistantGerman.textContent = translations.de || text.unavailable;
+      refs.wordAssistantFinnish.textContent = translations.fi || text.unavailable;
+      showWordAssistantImage(image, translations.en || spokenWord, text);
+      refs.wordAssistantLoading.classList.add("hidden");
+      refs.wordAssistantResult.classList.remove("hidden");
+      refs.wordAssistantStatus.textContent = allTranslationsFound && image ? text.ready : text.partial;
+      wordAssistant.status = "showing";
+      startWordAssistantCountdown(requestId);
+    } catch {
+      showWordAssistantError("failed", requestId);
+    }
+  }
+
+  async function fetchWordTranslation(word, sourceLanguage, targetLanguage) {
+    const url = new URL("https://api.mymemory.translated.net/get");
+    url.searchParams.set("q", word);
+    url.searchParams.set("langpair", `${sourceLanguage}|${targetLanguage}`);
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("translation_request_failed");
+    }
+    const payload = await response.json();
+    const translated = String(payload?.responseData?.translatedText || "").trim();
+    if (payload?.responseStatus !== 200 || !translated || translated.toLowerCase() === "invalid source language") {
+      throw new Error("translation_missing");
+    }
+    return translated;
+  }
+
+  async function searchWordImage(word) {
+    const url = new URL("https://commons.wikimedia.org/w/api.php");
+    url.search = new URLSearchParams({
+      action: "query",
+      generator: "search",
+      gsrsearch: word,
+      gsrnamespace: "6",
+      gsrlimit: "5",
+      prop: "imageinfo",
+      iiprop: "url|extmetadata",
+      iiurlwidth: "720",
+      format: "json",
+      origin: "*",
+    }).toString();
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("image_search_failed");
+    }
+    const payload = await response.json();
+    const pages = Object.values(payload?.query?.pages || {}).sort((left, right) => left.index - right.index);
+    for (const page of pages) {
+      const imageInfo = page.imageinfo?.[0];
+      if (imageInfo && (imageInfo.thumburl || imageInfo.url)) {
+        return imageInfo;
+      }
+    }
+    return null;
+  }
+
+  function showWordAssistantImage(imageInfo, word, text) {
+    refs.wordAssistantImage.hidden = true;
+    refs.wordAssistantNoImage.textContent = text.noImage;
+    refs.wordAssistantImageCredit.textContent = "";
+    refs.wordAssistantImageSource.textContent = "Wikimedia Commons";
+    refs.wordAssistantImageSource.href = `https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=${encodeURIComponent(word)}`;
+    if (!imageInfo) {
+      return;
+    }
+
+    refs.wordAssistantImage.src = imageInfo.thumburl || imageInfo.url;
+    refs.wordAssistantImage.alt = word;
+    refs.wordAssistantImage.hidden = false;
+    refs.wordAssistantNoImage.textContent = "";
+    refs.wordAssistantImageSource.href = imageInfo.descriptionurl;
+    const metadata = imageInfo.extmetadata || {};
+    const artist = plainMetadataText(metadata.Artist?.value || metadata.Credit?.value || "");
+    const license = plainMetadataText(metadata.LicenseShortName?.value || "");
+    const licenseUrl = metadata.LicenseUrl?.value || "";
+    refs.wordAssistantImageCredit.textContent = [artist, license].filter(Boolean).join(" · ");
+    if (licenseUrl.startsWith("https://")) {
+      refs.wordAssistantImageCredit.append(" ");
+      const licenseLink = document.createElement("a");
+      licenseLink.href = licenseUrl;
+      licenseLink.target = "_blank";
+      licenseLink.rel = "noopener noreferrer";
+      licenseLink.textContent = "License";
+      refs.wordAssistantImageCredit.appendChild(licenseLink);
+    }
+  }
+
+  function plainMetadataText(value) {
+    const parsed = new DOMParser().parseFromString(String(value), "text/html");
+    return parsed.body.textContent.trim();
+  }
+
+  function showWordAssistantError(key, requestId) {
+    if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+      return;
+    }
+    const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    wordAssistant.status = key;
+    refs.wordAssistantLoading.classList.add("hidden");
+    refs.wordAssistantStatus.textContent = text[key] || text.failed;
+    refs.wordAssistantListenButton.classList.remove("hidden");
+  }
+
+  function startWordAssistantCountdown(requestId) {
+    const text = wordAssistantText[state.settings.language] || wordAssistantText.en;
+    let secondsRemaining = 20;
+    refs.wordAssistantCountdown.textContent = text.closeIn.replace("{seconds}", String(secondsRemaining));
+    wordAssistant.countdownTimer = window.setInterval(() => {
+      if (requestId !== wordAssistant.requestId || !refs.wordAssistantDialog.open) {
+        clearWordAssistantTimer();
+        return;
+      }
+      secondsRemaining -= 1;
+      if (secondsRemaining <= 0) {
+        clearWordAssistantTimer();
+        refs.wordAssistantDialog.close();
+        return;
+      }
+      refs.wordAssistantCountdown.textContent = text.closeIn.replace("{seconds}", String(secondsRemaining));
+    }, 1000);
+  }
+
+  function clearWordAssistantTimer() {
+    if (wordAssistant.countdownTimer) {
+      window.clearInterval(wordAssistant.countdownTimer);
+      wordAssistant.countdownTimer = null;
+    }
+  }
+
+  function stopWordAssistantRecognition() {
+    const recognition = wordAssistant.recognition;
+    wordAssistant.recognition = null;
+    if (!recognition) {
+      return;
+    }
+    recognition.onresult = null;
+    recognition.onerror = null;
+    recognition.onend = null;
+    try {
+      recognition.abort();
+    } catch {
+      // Recognition may already have ended.
+    }
+  }
+
+  function stopWordAssistant() {
+    wordAssistant.requestId += 1;
+    wordAssistant.status = "idle";
+    clearWordAssistantTimer();
+    stopWordAssistantRecognition();
   }
 
   function shouldUseDarkMode(now = new Date()) {

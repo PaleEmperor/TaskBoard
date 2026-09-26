@@ -1,4 +1,4 @@
-const CACHE_NAME = "homeflow-cache-v19";
+const CACHE_NAME = "homeflow-cache-v20";
 const APP_SHELL = [
   "./",
   "./index.html",

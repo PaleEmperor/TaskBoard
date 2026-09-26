@@ -74,6 +74,9 @@
 
         <div class="panel top-controls">
           <div class="language-toggle" id="languageToggle"></div>
+          <button class="ghost-button word-assistant-trigger" id="wordAssistantButton" type="button" aria-label="Word translator">
+            <span aria-hidden="true">🎙</span><span id="wordAssistantButtonText">Word</span>
+          </button>
           <button class="primary-button" id="quickAddButton" type="button"></button>
         </div>
       </header>
@@ -319,6 +322,39 @@
           <button class="ghost-button" id="closeSomedayDialogFooterButton" type="button"></button>
         </div>
       </form>
+    </dialog>
+
+    <dialog class="word-assistant-dialog" id="wordAssistantDialog" aria-labelledby="wordAssistantTitle">
+      <section class="word-assistant-card">
+        <header class="word-assistant-header">
+          <div>
+            <div class="word-assistant-eyebrow">HomeFlow</div>
+            <h2 id="wordAssistantTitle">Word translator</h2>
+          </div>
+          <button class="icon-button" id="wordAssistantCloseButton" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="word-assistant-status" id="wordAssistantStatus" role="status" aria-live="polite"></div>
+        <div class="word-assistant-loading hidden" id="wordAssistantLoading" aria-hidden="true"></div>
+        <section class="word-assistant-result hidden" id="wordAssistantResult" aria-live="polite">
+          <figure class="word-assistant-picture">
+            <img id="wordAssistantImage" alt="" hidden />
+            <div class="word-assistant-no-image" id="wordAssistantNoImage"></div>
+            <figcaption>
+              <span id="wordAssistantImageCredit"></span>
+              <a id="wordAssistantImageSource" href="https://commons.wikimedia.org/" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>
+            </figcaption>
+          </figure>
+          <div class="word-assistant-translations">
+            <div class="word-assistant-translation"><span>English</span><strong id="wordAssistantEnglish"></strong></div>
+            <div class="word-assistant-translation"><span>Deutsch</span><strong id="wordAssistantGerman"></strong></div>
+            <div class="word-assistant-translation"><span>Suomeksi</span><strong id="wordAssistantFinnish"></strong></div>
+          </div>
+        </section>
+        <footer class="word-assistant-footer">
+          <span id="wordAssistantCountdown"></span>
+          <button class="ghost-button small-button hidden" id="wordAssistantListenButton" type="button"></button>
+        </footer>
+      </section>
     </dialog>
 
     <template id="taskCardTemplate">
